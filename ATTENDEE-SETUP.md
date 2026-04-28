@@ -47,7 +47,7 @@ python3 -m http.server 8080
 
 1. In any demo, find the provider selector at the top — click **OPENROUTER** (it will highlight)
 2. A text field appears below it — paste your key (`sk-or-v1-...`)
-3. The key is saved to localStorage immediately — you'll see a lock icon or confirmation text
+3. The key is saved to localStorage immediately as you type — no confirmation button needed
 4. The model field will show `anthropic/claude-sonnet-4-6` — leave it as-is
 
 **The key is stored only in your browser.** It never leaves your machine except in direct API calls to openrouter.ai.
