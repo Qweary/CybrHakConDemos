@@ -224,6 +224,9 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
   <div class="bsep"></div>
   <button class="prv-mini sel" id="cprv-ant" onclick="setCombatProvider('anthropic')" title="Use Anthropic API directly">ANT</button>
   <button class="prv-mini" id="cprv-or" onclick="setCombatProvider('openrouter')" title="Use OpenRouter (vendor-agnostic)">OR</button>
+  <button class="prv-mini" id="cprv-local" onclick="setCombatProvider('local')" title="Local relay — run relay.py first">LOCAL</button>
+  <button class="prv-mini" id="cprv-orfree" onclick="setCombatProvider('orfree')" title="OpenRouter free tier — no credits needed">OR FREE</button>
+  <span id="cfree-note" style="display:none;font-size:8px;color:#4fc3f7;letter-spacing:1px;font-family:'Share Tech Mono',monospace">⚠ FREE TIER</span>
   <input class="or-mdl" type="text" id="cor-model" list="cor-models" placeholder="anthropic/claude-sonnet-4-6"/>
   <datalist id="cor-models">
     <option value="anthropic/claude-sonnet-4-6">Claude Sonnet 4.6</option>
@@ -2008,8 +2011,18 @@ async function tw(id,txt,isRed){
 }
 
 async function callAPI(sys,user,ak){
-  if(combatProvider==='openrouter'){
-    const model=(document.getElementById('cor-model')?.value.trim())||combatOrModel;
+  if(combatProvider==='local'){
+    const r=await fetch('http://localhost:3001/v1/chat',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({system:sys,user,model:'claude-sonnet-4-6',max_tokens:900})
+    });
+    if(!r.ok){let m=`HTTP ${r.status}`;try{const e=await r.json();m=e.error||m}catch(_){}throw new Error(m);}
+    return (await r.json()).content;
+  }
+  if(combatProvider==='openrouter'||combatProvider==='orfree'){
+    const model=combatProvider==='orfree'
+      ?((document.getElementById('cor-model')?.value.trim())||'google/gemini-2.0-flash-exp:free')
+      :((document.getElementById('cor-model')?.value.trim())||combatOrModel);
     const h={'Content-Type':'application/json','Authorization':`Bearer ${ak}`,
       'HTTP-Referer':'https://github.com/The-Manhattan-Project','X-Title':'The Manhattan Project'};
     const r=await fetch('https://openrouter.ai/api/v1/chat/completions',{
@@ -2249,15 +2262,33 @@ function setCombatProvider(p,init){
   if(!init)localStorage.setItem('tmp_provider',p);
   document.getElementById('cprv-ant').classList.toggle('sel',p==='anthropic');
   document.getElementById('cprv-or').classList.toggle('sel',p==='openrouter');
+  document.getElementById('cprv-local').classList.toggle('sel',p==='local');
+  document.getElementById('cprv-orfree').classList.toggle('sel',p==='orfree');
   const mdl=document.getElementById('cor-model');
   const cak=document.getElementById('cak');
-  if(mdl)mdl.style.display=p==='openrouter'?'':'none';
-  if(p==='openrouter'){
+  const freeNote=document.getElementById('cfree-note');
+  if(p==='local'){
+    if(mdl)mdl.style.display='none';
+    if(cak){cak.style.display='none';}
+    document.getElementById('cak-conf').style.display='none';
+    if(freeNote)freeNote.style.display='none';
+  }else if(p==='orfree'){
+    if(mdl){mdl.style.display='';if(!mdl.value)mdl.placeholder='google/gemini-2.0-flash-exp:free';}
+    if(freeNote)freeNote.style.display='';
+    if(cak)cak.placeholder='OpenRouter Key (sk-or-...)';
+    const ok=localStorage.getItem('tmp_or_key');
+    if(ok){cak.value=ok;cak.style.display='none';document.getElementById('cak-conf').style.display='block';}
+    else{cak.value='';cak.style.display='';document.getElementById('cak-conf').style.display='none';}
+  }else if(p==='openrouter'){
+    if(mdl){mdl.style.display='';if(mdl.placeholder==='google/gemini-2.0-flash-exp:free')mdl.placeholder='anthropic/claude-sonnet-4-6';}
+    if(freeNote)freeNote.style.display='none';
     if(cak)cak.placeholder='OpenRouter Key (sk-or-...)';
     const ok=localStorage.getItem('tmp_or_key');
     if(ok){cak.value=ok;cak.style.display='none';document.getElementById('cak-conf').style.display='block';}
     else{cak.value='';cak.style.display='';document.getElementById('cak-conf').style.display='none';}
   }else{
+    if(mdl)mdl.style.display='none';
+    if(freeNote)freeNote.style.display='none';
     if(cak)cak.placeholder='Anthropic API Key (sk-ant-...)';
     const ak=localStorage.getItem('tmp_combat_key');
     if(ak){cak.value=ak;cak.style.display='none';document.getElementById('cak-conf').style.display='block';}
@@ -2265,7 +2296,7 @@ function setCombatProvider(p,init){
   }
 }
 function clearCombatKey(){
-  if(combatProvider==='openrouter')localStorage.removeItem('tmp_or_key');
+  if(combatProvider==='openrouter'||combatProvider==='orfree')localStorage.removeItem('tmp_or_key');
   else localStorage.removeItem('tmp_combat_key');
   const cak=document.getElementById('cak');
   cak.value='';cak.style.display='';
@@ -2275,7 +2306,7 @@ setCombatProvider(combatProvider,true);
 const savedCombatMdl=localStorage.getItem('tmp_or_model');
 if(savedCombatMdl){combatOrModel=savedCombatMdl;const mi=document.getElementById('cor-model');if(mi)mi.value=savedCombatMdl;}
 document.getElementById('cak').addEventListener('input',e=>{
-  if(combatProvider==='openrouter')localStorage.setItem('tmp_or_key',e.target.value);
+  if(combatProvider==='openrouter'||combatProvider==='orfree')localStorage.setItem('tmp_or_key',e.target.value);
   else localStorage.setItem('tmp_combat_key',e.target.value);
 });
 document.getElementById('cor-model')?.addEventListener('input',e=>{

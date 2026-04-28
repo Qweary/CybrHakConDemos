@@ -983,6 +983,12 @@ Region blindness is documented as a known failure mode (30+ AWS regions) with th
     <div class="prv-row">
       <button class="prvbtn sel" id="prv-ant" onclick="setForgeProvider('anthropic')">ANTHROPIC</button>
       <button class="prvbtn" id="prv-or" onclick="setForgeProvider('openrouter')">OPENROUTER</button>
+    </div>
+    <div class="prv-row" style="margin-top:2px">
+      <button class="prvbtn" id="prv-local" onclick="setForgeProvider('local')" title="Local relay — run relay.py first">[ LOCAL ]</button>
+      <button class="prvbtn" id="prv-orfree" onclick="setForgeProvider('orfree')" title="OpenRouter free tier — no credits needed">OR FREE</button>
+    </div>
+    <div id="orfree-notice" style="display:none;font-size:8.5px;color:var(--b);letter-spacing:1px;padding:2px 0">⚠ FREE TIER — output quality lower than Claude</div>
     </div></div>
     <div id="ak-row"><label id="ak-lbl">API KEY</label><input type="password" id="ak" placeholder="sk-ant-..."/><div class="kh" id="ak-hint">Blank = running inside Claude.ai</div></div>
     <div id="ak-conf" style="display:none"><div class="kconf">KEY CONFIGURED <span class="kc-clear" onclick="clearForgeKey()" title="Clear saved key">×</span></div></div>
@@ -1674,7 +1680,27 @@ async function callOpenRouter(sys,user,ak){
   if(!r.ok){let m=`HTTP ${r.status}`;try{const e=await r.json();m=e.error?.message||e.message||m}catch(_){}throw new Error(m);}
   return (await r.json()).choices[0].message.content;
 }
+async function callLocal(sys,user){
+  const r=await fetch('http://localhost:3001/v1/chat',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({system:sys,user,model:'claude-sonnet-4-6',max_tokens:1800})
+  });
+  if(!r.ok){let m=`HTTP ${r.status}`;try{const e=await r.json();m=e.error||m}catch(_){}throw new Error(m);}
+  return (await r.json()).content;
+}
 async function call(sys,user,ak){
+  if(forgeProvider==='local')return callLocal(sys,user);
+  if(forgeProvider==='orfree'){
+    const model=(document.getElementById('or-model-inp')?.value.trim())||'google/gemini-2.0-flash-exp:free';
+    const h={'Content-Type':'application/json','Authorization':`Bearer ${ak}`,
+      'HTTP-Referer':'https://github.com/The-Manhattan-Project','X-Title':'The Manhattan Project'};
+    const r=await fetch('https://openrouter.ai/api/v1/chat/completions',{
+      method:'POST',headers:h,
+      body:JSON.stringify({model,max_tokens:1800,messages:[{role:'system',content:sys},{role:'user',content:user}]})
+    });
+    if(!r.ok){let m=`HTTP ${r.status}`;try{const e=await r.json();m=e.error?.message||e.message||m}catch(_){}throw new Error(m);}
+    return (await r.json()).choices[0].message.content;
+  }
   return forgeProvider==='openrouter'?callOpenRouter(sys,user,ak):callAnthropic(sys,user,ak);
 }
 
@@ -1878,13 +1904,34 @@ function setForgeProvider(p,init){
   if(!init)localStorage.setItem('tmp_provider',p);
   document.getElementById('prv-ant').classList.toggle('sel',p==='anthropic');
   document.getElementById('prv-or').classList.toggle('sel',p==='openrouter');
+  document.getElementById('prv-local').classList.toggle('sel',p==='local');
+  document.getElementById('prv-orfree').classList.toggle('sel',p==='orfree');
   const lbl=document.getElementById('ak-lbl');
   const hint=document.getElementById('ak-hint');
   const orRow=document.getElementById('or-model-row');
-  if(p==='openrouter'){
+  const notice=document.getElementById('orfree-notice');
+  if(p==='local'){
+    document.getElementById('ak-row').style.display='none';
+    document.getElementById('ak-conf').style.display='none';
+    if(orRow)orRow.style.display='none';
+    if(notice)notice.style.display='none';
+  }else if(p==='orfree'){
+    if(lbl)lbl.textContent='OPENROUTER KEY';
+    if(hint)hint.textContent='openrouter.ai — free account, no CC required';
+    if(orRow)orRow.style.display='';
+    const mi=document.getElementById('or-model-inp');
+    if(mi&&!mi.value)mi.placeholder='google/gemini-2.0-flash-exp:free';
+    if(notice)notice.style.display='';
+    const ok=localStorage.getItem('tmp_or_key');
+    if(ok){document.getElementById('ak').value=ok;document.getElementById('ak-row').style.display='none';document.getElementById('ak-conf').style.display='block';}
+    else{document.getElementById('ak').value='';document.getElementById('ak-row').style.display='';document.getElementById('ak-conf').style.display='none';}
+  }else if(p==='openrouter'){
     if(lbl)lbl.textContent='OPENROUTER KEY';
     if(hint)hint.textContent='openrouter.ai — your api key';
     if(orRow)orRow.style.display='';
+    const mi=document.getElementById('or-model-inp');
+    if(mi&&mi.placeholder==='google/gemini-2.0-flash-exp:free')mi.placeholder='anthropic/claude-sonnet-4-6';
+    if(notice)notice.style.display='none';
     const ok=localStorage.getItem('tmp_or_key');
     if(ok){document.getElementById('ak').value=ok;document.getElementById('ak-row').style.display='none';document.getElementById('ak-conf').style.display='block';}
     else{document.getElementById('ak').value='';document.getElementById('ak-row').style.display='';document.getElementById('ak-conf').style.display='none';}
@@ -1892,13 +1939,14 @@ function setForgeProvider(p,init){
     if(lbl)lbl.textContent='API KEY';
     if(hint)hint.textContent='Blank = running inside Claude.ai';
     if(orRow)orRow.style.display='none';
+    if(notice)notice.style.display='none';
     const ak=localStorage.getItem('tmp3_key');
     if(ak){document.getElementById('ak').value=ak;document.getElementById('ak-row').style.display='none';document.getElementById('ak-conf').style.display='block';}
     else{document.getElementById('ak').value='';document.getElementById('ak-row').style.display='';document.getElementById('ak-conf').style.display='none';}
   }
 }
 function clearForgeKey(){
-  if(forgeProvider==='openrouter')localStorage.removeItem('tmp_or_key');
+  if(forgeProvider==='openrouter'||forgeProvider==='orfree')localStorage.removeItem('tmp_or_key');
   else localStorage.removeItem('tmp3_key');
   document.getElementById('ak').value='';
   document.getElementById('ak-row').style.display='';
@@ -1908,7 +1956,7 @@ setForgeProvider(forgeProvider,true);
 const savedForgeMdl=localStorage.getItem('tmp_or_model');
 if(savedForgeMdl){forgeOrModel=savedForgeMdl;const mi=document.getElementById('or-model-inp');if(mi)mi.value=savedForgeMdl;}
 document.getElementById('ak').addEventListener('input',e=>{
-  if(forgeProvider==='openrouter')localStorage.setItem('tmp_or_key',e.target.value);
+  if(forgeProvider==='openrouter'||forgeProvider==='orfree')localStorage.setItem('tmp_or_key',e.target.value);
   else localStorage.setItem('tmp3_key',e.target.value);
 });
 document.getElementById('or-model-inp')?.addEventListener('input',e=>{

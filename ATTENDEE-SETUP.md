@@ -10,13 +10,43 @@ You only need to do this once. Your key is stored in your browser's localStorage
 
 **No** — if you want to observe. Every demo has a **DEMO MODE** that runs pre-scripted content with no network calls, no key, and no cost. Click `[ ◉ DEMO MODE ]` at the bottom of any demo.
 
-**Yes** — if you want to run live AI calls (required for LAB-1, LAB-2, LAB-3).
+**Yes** — if you want to run live AI calls (required for LAB-1, LAB-2, LAB-3). Pick one of the three live options below.
 
 ---
 
-## Step 1: Get an OpenRouter Key
+## Option A: Zero-cost — OpenRouter Free Tier
 
-OpenRouter is a vendor-neutral API gateway. It gives you access to Claude, GPT-4, Gemini, and others through a single key and a single billing account.
+No credit card. Free account at openrouter.ai. Models are lower quality than Claude (the free default is `google/gemini-2.0-flash-exp:free`) but are sufficient to see the swarm workflow in action.
+
+1. Go to **https://openrouter.ai** and create a free account (Google sign-in works)
+2. Navigate to **Keys** → **Create Key** — name it anything
+3. Copy the key (starts with `sk-or-v1-...`)
+4. In any demo, click **[ OR FREE ]** in the provider selector
+5. Paste your key when prompted — it saves to localStorage
+6. Click `[ LAUNCH FORGE ]` — no credits are consumed
+
+**Note:** Output quality is noticeably lower than Claude. Expect shorter, less structured agent outputs. Good for seeing the workflow; use an OpenRouter paid key or the relay for a proper demo.
+
+---
+
+## Option B: Operator Relay (if you have `ANTHROPIC_API_KEY`)
+
+If the presenter (or you) has an Anthropic API key set in the shell, the local relay forwards demo requests to it — no key pasting in the browser required.
+
+1. The presenter runs `python3 relay.py` from the repo root before the session starts
+2. You open any demo and click **[ LOCAL ]**
+3. No key field appears — the relay supplies the key automatically
+4. Click `[ LAUNCH FORGE ]` — calls go to `http://localhost:3001/v1/chat`
+
+See **RELAY-SETUP.md** for relay installation and troubleshooting.
+
+---
+
+## Option C: OpenRouter (Paid — Best Quality)
+
+Full Claude Sonnet 4.6 quality via OpenRouter. ~$0.10–0.18 for the full workshop.
+
+#OpenRouter is a vendor-neutral API gateway. It gives you access to Claude, GPT-4, Gemini, and others through a single key and a single billing account.
 
 1. Go to **https://openrouter.ai**
 2. Click **Sign In** → create an account (email or Google)
@@ -28,7 +58,7 @@ OpenRouter is a vendor-neutral API gateway. It gives you access to Claude, GPT-4
 
 ---
 
-## Step 2: Open a Demo
+### Step 2: Open a Demo
 
 Open `demos/tmp-forge-live.html` directly in your browser. You can use `file://` paths (double-click the file) or serve it locally:
 
@@ -43,7 +73,7 @@ python3 -m http.server 8080
 
 ---
 
-## Step 3: Select OpenRouter and Paste Your Key
+### Step 3: Select OpenRouter and Paste Your Key
 
 1. In any demo, find the provider selector at the top — click **OPENROUTER** (it will highlight)
 2. A text field appears below it — paste your key (`sk-or-v1-...`)
@@ -54,7 +84,7 @@ python3 -m http.server 8080
 
 ---
 
-## Step 4: First Run
+### Step 4: First Run
 
 1. In `tmp-forge-live.html`, select the **RED** preset
 2. Click **[ LAUNCH FORGE ]**
