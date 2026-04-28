@@ -442,6 +442,9 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
   <div class="bsep"></div>
   <button class="prv-mini sel" id="eprv-ant" onclick="setEvolveProvider('anthropic')">ANT</button>
   <button class="prv-mini" id="eprv-or" onclick="setEvolveProvider('openrouter')">OR</button>
+  <button class="prv-mini" id="eprv-local" onclick="setEvolveProvider('local')" title="Local relay — run relay.py first">LOCAL</button>
+  <button class="prv-mini" id="eprv-orfree" onclick="setEvolveProvider('orfree')" title="OpenRouter free tier — no credits needed">OR FREE</button>
+  <span id="efree-note" style="display:none;font-size:8px;color:#4fc3f7;letter-spacing:1px;font-family:'Share Tech Mono',monospace">⚠ FREE TIER</span>
   <input class="or-mdl" type="text" id="eor-model" list="eor-models" placeholder="anthropic/claude-sonnet-4-6"/>
   <datalist id="eor-models">
     <option value="anthropic/claude-sonnet-4-6">Claude Sonnet 4.6</option>
@@ -1049,15 +1052,33 @@ function setEvolveProvider(p, init) {
   if (!init) localStorage.setItem('tmp_provider', p);
   document.getElementById('eprv-ant').classList.toggle('sel', p === 'anthropic');
   document.getElementById('eprv-or').classList.toggle('sel', p === 'openrouter');
+  document.getElementById('eprv-local').classList.toggle('sel', p === 'local');
+  document.getElementById('eprv-orfree').classList.toggle('sel', p === 'orfree');
   const mdl = document.getElementById('eor-model');
   const eak = document.getElementById('eak');
-  if (mdl) mdl.style.display = p === 'openrouter' ? '' : 'none';
-  if (p === 'openrouter') {
+  const freeNote = document.getElementById('efree-note');
+  if (p === 'local') {
+    if (mdl) mdl.style.display = 'none';
+    if (eak) eak.style.display = 'none';
+    document.getElementById('eak-conf').style.display = 'none';
+    if (freeNote) freeNote.style.display = 'none';
+  } else if (p === 'orfree') {
+    if (mdl) { mdl.style.display = ''; if (!mdl.value) mdl.placeholder = 'google/gemini-2.0-flash-exp:free'; }
+    if (freeNote) freeNote.style.display = '';
+    if (eak) eak.placeholder = 'OpenRouter Key (sk-or-...)';
+    const ok = localStorage.getItem('tmp_or_key');
+    if (ok) { eak.value = ok; eak.style.display = 'none'; document.getElementById('eak-conf').style.display = 'block'; }
+    else { eak.value = ''; eak.style.display = ''; document.getElementById('eak-conf').style.display = 'none'; }
+  } else if (p === 'openrouter') {
+    if (mdl) { mdl.style.display = ''; if (mdl.placeholder === 'google/gemini-2.0-flash-exp:free') mdl.placeholder = 'anthropic/claude-sonnet-4-6'; }
+    if (freeNote) freeNote.style.display = 'none';
     if (eak) eak.placeholder = 'OpenRouter Key (sk-or-...)';
     const ok = localStorage.getItem('tmp_or_key');
     if (ok) { eak.value = ok; eak.style.display = 'none'; document.getElementById('eak-conf').style.display = 'block'; }
     else { eak.value = ''; eak.style.display = ''; document.getElementById('eak-conf').style.display = 'none'; }
   } else {
+    if (mdl) mdl.style.display = 'none';
+    if (freeNote) freeNote.style.display = 'none';
     if (eak) eak.placeholder = 'Anthropic API Key (sk-ant-...)';
     const ak = localStorage.getItem('tmp_evolve_key');
     if (ak) { eak.value = ak; eak.style.display = 'none'; document.getElementById('eak-conf').style.display = 'block'; }
@@ -1066,7 +1087,7 @@ function setEvolveProvider(p, init) {
 }
 
 function clearEvolveKey() {
-  if (evolveProvider === 'openrouter') localStorage.removeItem('tmp_or_key');
+  if (evolveProvider === 'openrouter' || evolveProvider === 'orfree') localStorage.removeItem('tmp_or_key');
   else localStorage.removeItem('tmp_evolve_key');
   const eak = document.getElementById('eak');
   eak.value = ''; eak.style.display = '';
@@ -1074,8 +1095,18 @@ function clearEvolveKey() {
 }
 
 async function evolveCallAPI(sys, user, ak) {
-  if (evolveProvider === 'openrouter') {
-    const model = (document.getElementById('eor-model')?.value.trim()) || evolveOrModel;
+  if (evolveProvider === 'local') {
+    const r = await fetch('http://localhost:3001/v1/chat', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({system: sys, user, model: 'claude-sonnet-4-6', max_tokens: 1400})
+    });
+    if (!r.ok) { let m = `HTTP ${r.status}`; try { const e = await r.json(); m = e.error || m; } catch (_) {} throw new Error(m); }
+    return (await r.json()).content;
+  }
+  if (evolveProvider === 'openrouter' || evolveProvider === 'orfree') {
+    const model = evolveProvider === 'orfree'
+      ? ((document.getElementById('eor-model')?.value.trim()) || 'google/gemini-2.0-flash-exp:free')
+      : ((document.getElementById('eor-model')?.value.trim()) || evolveOrModel);
     const h = {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${ak}`,
@@ -1819,7 +1850,7 @@ function initEvolve() {
   if (savedMdl) { evolveOrModel = savedMdl; const mi = document.getElementById('eor-model'); if (mi) mi.value = savedMdl; }
 
   document.getElementById('eak').addEventListener('input', e => {
-    if (evolveProvider === 'openrouter') localStorage.setItem('tmp_or_key', e.target.value);
+    if (evolveProvider === 'openrouter' || evolveProvider === 'orfree') localStorage.setItem('tmp_or_key', e.target.value);
     else localStorage.setItem('tmp_evolve_key', e.target.value);
   });
   document.getElementById('eor-model')?.addEventListener('input', e => {
