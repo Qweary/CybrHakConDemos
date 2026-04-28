@@ -1658,7 +1658,7 @@ async function runImprovementCycle() {
     const arbKey = evolveMode === 'custom' ? 'de-arbiter-custom' : `de-arbiter-${evolvePreset}`;
     if (demoMode) {
       await new Promise(r => setTimeout(r, 700));
-      arbiterOutput = gx(arbKey);
+      arbiterOutput = gx(arbKey) || gx('de-arbiter-red');
     } else {
       try {
         arbiterOutput = await evolveCallAPI(SYS_ARBITER, buildArbiterPrompt(), ak);
@@ -1684,7 +1684,7 @@ async function runImprovementCycle() {
     const sculKey = evolveMode === 'custom' ? 'de-sculptor-custom' : `de-sculptor-${evolvePreset}`;
     if (demoMode) {
       await new Promise(r => setTimeout(r, 900));
-      sculptorOutput = gx(sculKey);
+      sculptorOutput = gx(sculKey) || gx('de-sculptor-red');
     } else {
       try {
         sculptorOutput = await evolveCallAPI(SYS_SCULPTOR, buildSculptorPrompt(weakestAgentName, weakestAgentOriginalPrompt, arbiterOutput), ak);
@@ -1708,7 +1708,7 @@ async function runImprovementCycle() {
     const rerunKey = evolveMode === 'custom' ? 'de-rerun-custom' : `de-rerun-${evolvePreset}`;
     if (demoMode) {
       await new Promise(r => setTimeout(r, 800));
-      rerunOutput = gx(rerunKey);
+      rerunOutput = gx(rerunKey) || gx('de-rerun-red');
     } else {
       try {
         rerunOutput = await evolveCallAPI(SYS_RERUN, buildRerunPrompt(weakestAgentName, refinedPrompt, exerciseTranscript, scoreBefore), ak);
