@@ -987,8 +987,10 @@ Region blindness is documented as a known failure mode (30+ AWS regions) with th
     <div class="prv-row" style="margin-top:2px">
       <button class="prvbtn" id="prv-local" onclick="setForgeProvider('local')" title="Local relay — run relay.py first">[ LOCAL ]</button>
       <button class="prvbtn" id="prv-orfree" onclick="setForgeProvider('orfree')" title="OpenRouter free tier — no credits needed">OR FREE</button>
+      <button class="prvbtn" id="prv-ollama" onclick="setForgeProvider('ollama')" title="Ollama — fully local, offline capable">[ OLLAMA ]</button>
     </div>
     <div id="orfree-notice" style="display:none;font-size:8.5px;color:var(--b);letter-spacing:1px;padding:2px 0">⚠ FREE TIER — output quality lower than Claude</div>
+    <div id="ollama-notice" style="display:none;font-size:8.5px;color:#4fc3f7;letter-spacing:1px;padding:2px 0">⚡ LOCAL — offline capable, model quality varies</div>
     </div></div>
     <div id="ak-row"><label id="ak-lbl">API KEY</label><input type="password" id="ak" placeholder="sk-ant-..."/><div class="kh" id="ak-hint">Blank = running inside Claude.ai</div></div>
     <div id="ak-conf" style="display:none"><div class="kconf">KEY CONFIGURED <span class="kc-clear" onclick="clearForgeKey()" title="Clear saved key">×</span></div></div>
@@ -1004,6 +1006,10 @@ Region blindness is documented as a known failure mode (30+ AWS regions) with th
         <option value="meta-llama/llama-3.3-70b-instruct">Llama 3.3 70B Instruct</option>
         <option value="mistralai/mistral-large">Mistral Large</option>
       </datalist>
+    </div>
+    <div id="ollama-model-row" style="display:none">
+      <label>OLLAMA MODEL</label>
+      <input class="or-model-inp" type="text" id="ollama-model-inp" placeholder="llama3.2"/>
     </div>
     <div class="demo-note" id="demo-note">◉ DEMO MODE — NO API KEY REQUIRED</div>
   </div></div>
@@ -1688,8 +1694,18 @@ async function callLocal(sys,user){
   if(!r.ok){let m=`HTTP ${r.status}`;try{const e=await r.json();m=e.error||m}catch(_){}throw new Error(m);}
   return (await r.json()).content;
 }
+async function callOllama(sys,user){
+  const model=(document.getElementById('ollama-model-inp')?.value.trim())||localStorage.getItem('tmp_ollama_model')||'llama3.2';
+  const r=await fetch('http://localhost:11434/v1/chat/completions',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model,max_tokens:1800,messages:[{role:'system',content:sys},{role:'user',content:user}]})
+  });
+  if(!r.ok){let m=`HTTP ${r.status}`;try{const e=await r.json();m=e.error?.message||e.message||m}catch(_){}throw new Error(m);}
+  return (await r.json()).choices[0].message.content;
+}
 async function call(sys,user,ak){
   if(forgeProvider==='local')return callLocal(sys,user);
+  if(forgeProvider==='ollama')return callOllama(sys,user);
   if(forgeProvider==='orfree'){
     const model=(document.getElementById('or-model-inp')?.value.trim())||'google/gemini-2.0-flash-exp:free';
     const h={'Content-Type':'application/json','Authorization':`Bearer ${ak}`,
@@ -1906,22 +1922,39 @@ function setForgeProvider(p,init){
   document.getElementById('prv-or').classList.toggle('sel',p==='openrouter');
   document.getElementById('prv-local').classList.toggle('sel',p==='local');
   document.getElementById('prv-orfree').classList.toggle('sel',p==='orfree');
+  document.getElementById('prv-ollama').classList.toggle('sel',p==='ollama');
   const lbl=document.getElementById('ak-lbl');
   const hint=document.getElementById('ak-hint');
   const orRow=document.getElementById('or-model-row');
+  const ollamaRow=document.getElementById('ollama-model-row');
   const notice=document.getElementById('orfree-notice');
+  const ollamaNotice=document.getElementById('ollama-notice');
   if(p==='local'){
     document.getElementById('ak-row').style.display='none';
     document.getElementById('ak-conf').style.display='none';
     if(orRow)orRow.style.display='none';
+    if(ollamaRow)ollamaRow.style.display='none';
     if(notice)notice.style.display='none';
+    if(ollamaNotice)ollamaNotice.style.display='none';
+  }else if(p==='ollama'){
+    document.getElementById('ak-row').style.display='none';
+    document.getElementById('ak-conf').style.display='none';
+    if(orRow)orRow.style.display='none';
+    if(ollamaRow)ollamaRow.style.display='';
+    if(notice)notice.style.display='none';
+    if(ollamaNotice)ollamaNotice.style.display='';
+    const saved=localStorage.getItem('tmp_ollama_model');
+    const mi=document.getElementById('ollama-model-inp');
+    if(mi&&saved)mi.value=saved;
   }else if(p==='orfree'){
     if(lbl)lbl.textContent='OPENROUTER KEY';
     if(hint)hint.textContent='openrouter.ai — free account, no CC required';
     if(orRow)orRow.style.display='';
+    if(ollamaRow)ollamaRow.style.display='none';
     const mi=document.getElementById('or-model-inp');
     if(mi&&!mi.value)mi.placeholder='google/gemini-2.0-flash-exp:free';
     if(notice)notice.style.display='';
+    if(ollamaNotice)ollamaNotice.style.display='none';
     const ok=localStorage.getItem('tmp_or_key');
     if(ok){document.getElementById('ak').value=ok;document.getElementById('ak-row').style.display='none';document.getElementById('ak-conf').style.display='block';}
     else{document.getElementById('ak').value='';document.getElementById('ak-row').style.display='';document.getElementById('ak-conf').style.display='none';}
@@ -1929,9 +1962,11 @@ function setForgeProvider(p,init){
     if(lbl)lbl.textContent='OPENROUTER KEY';
     if(hint)hint.textContent='openrouter.ai — your api key';
     if(orRow)orRow.style.display='';
+    if(ollamaRow)ollamaRow.style.display='none';
     const mi=document.getElementById('or-model-inp');
     if(mi&&mi.placeholder==='google/gemini-2.0-flash-exp:free')mi.placeholder='anthropic/claude-sonnet-4-6';
     if(notice)notice.style.display='none';
+    if(ollamaNotice)ollamaNotice.style.display='none';
     const ok=localStorage.getItem('tmp_or_key');
     if(ok){document.getElementById('ak').value=ok;document.getElementById('ak-row').style.display='none';document.getElementById('ak-conf').style.display='block';}
     else{document.getElementById('ak').value='';document.getElementById('ak-row').style.display='';document.getElementById('ak-conf').style.display='none';}
@@ -1939,7 +1974,9 @@ function setForgeProvider(p,init){
     if(lbl)lbl.textContent='API KEY';
     if(hint)hint.textContent='Blank = running inside Claude.ai';
     if(orRow)orRow.style.display='none';
+    if(ollamaRow)ollamaRow.style.display='none';
     if(notice)notice.style.display='none';
+    if(ollamaNotice)ollamaNotice.style.display='none';
     const ak=localStorage.getItem('tmp3_key');
     if(ak){document.getElementById('ak').value=ak;document.getElementById('ak-row').style.display='none';document.getElementById('ak-conf').style.display='block';}
     else{document.getElementById('ak').value='';document.getElementById('ak-row').style.display='';document.getElementById('ak-conf').style.display='none';}
@@ -1947,7 +1984,7 @@ function setForgeProvider(p,init){
 }
 function clearForgeKey(){
   if(forgeProvider==='openrouter'||forgeProvider==='orfree')localStorage.removeItem('tmp_or_key');
-  else localStorage.removeItem('tmp3_key');
+  else if(forgeProvider!=='local'&&forgeProvider!=='ollama')localStorage.removeItem('tmp3_key');
   document.getElementById('ak').value='';
   document.getElementById('ak-row').style.display='';
   document.getElementById('ak-conf').style.display='none';
@@ -1961,6 +1998,9 @@ document.getElementById('ak').addEventListener('input',e=>{
 });
 document.getElementById('or-model-inp')?.addEventListener('input',e=>{
   forgeOrModel=e.target.value;localStorage.setItem('tmp_or_model',forgeOrModel);
+});
+document.getElementById('ollama-model-inp')?.addEventListener('input',e=>{
+  localStorage.setItem('tmp_ollama_model',e.target.value);
 });
 
 function toggleDemoMode(){

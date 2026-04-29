@@ -14,6 +14,20 @@ You only need to do this once. Your key is stored in your browser's localStorage
 
 ---
 
+## Option D: Ollama — Fully Local, Offline
+
+No API key. No internet required after setup. Runs open-weight models (llama3.2, mistral, phi3) entirely on your machine.
+
+1. Install Ollama and pull a model — see **OLLAMA-SETUP.md** for full instructions
+2. Run `ollama serve` in a terminal
+3. In any demo, click **[ OLLAMA ]** in the provider selector
+4. A model name field appears — type `llama3.2` (or your preferred model)
+5. Click `[ LAUNCH FORGE ]` — calls go to `http://localhost:11434/v1/chat/completions`
+
+**Note:** Output quality is lower than Claude or GPT-4. Expect shorter, less structured agent outputs. Good for offline demo and comparison runs.
+
+---
+
 ## Option A: Zero-cost — OpenRouter Free Tier
 
 No credit card. Free account at openrouter.ai. Models are lower quality than Claude (the free default is `google/gemini-2.0-flash-exp:free`) but are sufficient to see the swarm workflow in action.
@@ -33,7 +47,7 @@ No credit card. Free account at openrouter.ai. Models are lower quality than Cla
 
 If the presenter (or you) has an Anthropic API key set in the shell, the local relay forwards demo requests to it — no key pasting in the browser required.
 
-1. The presenter runs `python3 relay.py` from the repo root before the session starts
+1. The presenter runs `python3 relay.py` from the `ai-village-workshop/` directory before the session starts
 2. You open any demo and click **[ LOCAL ]**
 3. No key field appears — the relay supplies the key automatically
 4. Click `[ LAUNCH FORGE ]` — calls go to `http://localhost:3001/v1/chat`

@@ -1,6 +1,6 @@
 # LAB-2 — Combat: Red vs. Blue AI Exercise
 
-**Time: ~45 minutes | Requires: OpenRouter key for live mode; DEMO MODE is free**
+**Time: ~45 minutes | Select your provider and confirm your key is loaded (see ATTENDEE-SETUP.md for all options); DEMO MODE is free**
 
 ---
 
@@ -23,7 +23,7 @@ The two scenarios are deliberately different in what they attack:
 
 Open `demos/tmp-combat-live.html`. At the top, confirm **IRONCLAD** is selected (the button should be highlighted). Enable **[ ⏸ STEP MODE ]** if you want to read each phase before advancing.
 
-For live mode: confirm OPENROUTER is selected and your key is loaded, then click **[ LAUNCH EXERCISE ]**.  
+For live mode: confirm your provider is selected and your key is loaded (see ATTENDEE-SETUP.md), then click **[ LAUNCH EXERCISE ]**.  
 For Demo Mode: click **[ ◉ DEMO MODE ]** first, then **[ LAUNCH EXERCISE ]**.
 
 ### What to Watch
