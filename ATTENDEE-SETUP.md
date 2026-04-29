@@ -60,7 +60,7 @@ See **RELAY-SETUP.md** for relay installation and troubleshooting.
 
 Full Claude Sonnet 4.6 quality via OpenRouter. ~$0.10–0.18 for the full workshop.
 
-#OpenRouter is a vendor-neutral API gateway. It gives you access to Claude, GPT-4, Gemini, and others through a single key and a single billing account.
+OpenRouter is a vendor-neutral API gateway. It gives you access to Claude, GPT-4, Gemini, and others through a single key and a single billing account.
 
 1. Go to **https://openrouter.ai**
 2. Click **Sign In** → create an account (email or Google)
@@ -87,14 +87,14 @@ python3 -m http.server 8080
 
 ---
 
-### Step 3: Select OpenRouter and Paste Your Key
+### Step 3: Select Your Provider and Paste Your Key
 
-1. In any demo, find the provider selector at the top — click **OPENROUTER** (it will highlight)
+1. In any demo, find the provider selector at the top — click the button matching your chosen option (**OR FREE**, **OPENROUTER**, etc.) and it will highlight
 2. A text field appears below it — paste your key (`sk-or-v1-...`)
 3. The key is saved to localStorage immediately as you type — no confirmation button needed
-4. The model field will show `anthropic/claude-sonnet-4-6` — leave it as-is
+4. If a model field appears, leave it as-is (`anthropic/claude-sonnet-4-6` for OPENROUTER; `google/gemini-2.0-flash-exp:free` for OR FREE)
 
-**The key is stored only in your browser.** It never leaves your machine except in direct API calls to openrouter.ai.
+**The key is stored only in your browser.** It never leaves your machine except in direct API calls to the provider you selected.
 
 ---
 

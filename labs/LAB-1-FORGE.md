@@ -8,16 +8,19 @@
 
 You're going to describe something you actually do — a real workflow, a real security function, a real operational domain — and watch the framework design a multi-agent AI system for it from scratch.
 
-The FORGE demo runs six phases:
+The FORGE demo runs a 9-phase pipeline:
 
 | Phase | Agent | What Happens |
 |---|---|---|
 | P1 | Oppenheimer (Director) | Analyzes your domain, identifies the workflow stages |
+| P1b | Lattice | Vector Readiness Assessment — does this domain benefit from a knowledge store? |
 | P2 | Domain Advisor | Designs the micro-specialization map — which agents, what each one does |
+| P2b | T2→Lattice | Translates the advisor's library spec into a vector collection design |
+| **P2c** | **Operator Gate** | **⬥ Interactive pause — read the T2 + Lattice output and click [ ✓ APPROVE ] to continue** |
 | P3 | Curie (Research) | Identifies current tooling and techniques for your domain |
-| P4 | Fermi (Fabrication) | Builds each agent: name, role, system prompt, tool requirements |
-| P5 | Geiger (QA Gate) | Validates the agents for domain accuracy and structural completeness |
-| P6 | Packaging | Produces the final swarm package with README and deployment instructions |
+| P3b | Fermi (Fabrication) | Builds each agent: name, role, system prompt, tool requirements |
+| P4 | Geiger + Bohr (QA) | Validates agents for domain accuracy, structural completeness, and design principles |
+| P5 | Packaging | Produces the final swarm package with README and deployment instructions |
 
 ---
 
@@ -47,7 +50,11 @@ You don't have to use security examples. This works for any domain.
 
 ### Step 3: Launch and Observe
 
-Click **[ LAUNCH FORGE ]**. Watch each phase run. Key things to notice:
+Click **[ LAUNCH FORGE ]**. Watch each phase run.
+
+> **Phase 2c — Operator Gate:** The pipeline pauses here and shows you the T2 Advisor's micro-specialization map and Lattice's vector collection design. Read them, then click **[ APPROVE — PROCEED TO FABRICATION ]** (or modify the spec first, or skip the vector layer). This is the only interactive pause in the pipeline.
+
+Key things to notice:
 
 - How does Oppenheimer decompose your description into workflow stages?
 - What names does Fermi give the agents? Do they feel right for your domain?
