@@ -226,7 +226,9 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
   <button class="prv-mini" id="cprv-or" onclick="setCombatProvider('openrouter')" title="Use OpenRouter (vendor-agnostic)">OR</button>
   <button class="prv-mini" id="cprv-local" onclick="setCombatProvider('local')" title="Local relay — run relay.py first">LOCAL</button>
   <button class="prv-mini" id="cprv-orfree" onclick="setCombatProvider('orfree')" title="OpenRouter free tier — no credits needed">OR FREE</button>
+  <button class="prv-mini" id="cprv-ollama" onclick="setCombatProvider('ollama')" title="Ollama — fully local, offline capable">OLLAMA</button>
   <span id="cfree-note" style="display:none;font-size:8px;color:#4fc3f7;letter-spacing:1px;font-family:'Share Tech Mono',monospace">⚠ FREE TIER</span>
+  <span id="collama-note" style="display:none;font-size:8px;color:#4fc3f7;letter-spacing:1px;font-family:'Share Tech Mono',monospace">⚡ LOCAL</span>
   <input class="or-mdl" type="text" id="cor-model" list="cor-models" placeholder="anthropic/claude-sonnet-4-6"/>
   <datalist id="cor-models">
     <option value="anthropic/claude-sonnet-4-6">Claude Sonnet 4.6</option>
@@ -237,6 +239,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
     <option value="meta-llama/llama-3.3-70b-instruct">Llama 3.3 70B</option>
     <option value="mistralai/mistral-large">Mistral Large</option>
   </datalist>
+  <input class="or-mdl" type="text" id="cor-ollama-model" placeholder="llama3.2" style="display:none"/>
   <div class="bsep"></div>
   <input type="password" class="apifield" id="cak" placeholder="Anthropic API Key (sk-ant-...)"/>
   <div id="cak-conf" style="display:none"><div class="kconf-btm">KEY CONFIGURED <span class="kc-clear" onclick="clearCombatKey()" title="Clear saved key">×</span></div></div>
@@ -2019,6 +2022,15 @@ async function callAPI(sys,user,ak){
     if(!r.ok){let m=`HTTP ${r.status}`;try{const e=await r.json();m=e.error||m}catch(_){}throw new Error(m);}
     return (await r.json()).content;
   }
+  if(combatProvider==='ollama'){
+    const model=(document.getElementById('cor-ollama-model')?.value.trim())||localStorage.getItem('tmp_ollama_model')||'llama3.2';
+    const r=await fetch('http://localhost:11434/v1/chat/completions',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model,max_tokens:900,messages:[{role:'system',content:sys},{role:'user',content:user}]})
+    });
+    if(!r.ok){let m=`HTTP ${r.status}`;try{const e=await r.json();m=e.error?.message||e.message||m}catch(_){}throw new Error(m);}
+    return (await r.json()).choices[0].message.content;
+  }
   if(combatProvider==='openrouter'||combatProvider==='orfree'){
     const model=combatProvider==='orfree'
       ?((document.getElementById('cor-model')?.value.trim())||'google/gemini-2.0-flash-exp:free')
@@ -2264,31 +2276,49 @@ function setCombatProvider(p,init){
   document.getElementById('cprv-or').classList.toggle('sel',p==='openrouter');
   document.getElementById('cprv-local').classList.toggle('sel',p==='local');
   document.getElementById('cprv-orfree').classList.toggle('sel',p==='orfree');
+  document.getElementById('cprv-ollama').classList.toggle('sel',p==='ollama');
   const mdl=document.getElementById('cor-model');
+  const ollamaMdl=document.getElementById('cor-ollama-model');
   const cak=document.getElementById('cak');
   const freeNote=document.getElementById('cfree-note');
+  const ollamaNote=document.getElementById('collama-note');
   if(p==='local'){
     if(mdl)mdl.style.display='none';
+    if(ollamaMdl)ollamaMdl.style.display='none';
     if(cak){cak.style.display='none';}
     document.getElementById('cak-conf').style.display='none';
     if(freeNote)freeNote.style.display='none';
+    if(ollamaNote)ollamaNote.style.display='none';
+  }else if(p==='ollama'){
+    if(mdl)mdl.style.display='none';
+    if(ollamaMdl){ollamaMdl.style.display='';const saved=localStorage.getItem('tmp_ollama_model');if(saved)ollamaMdl.value=saved;}
+    if(cak)cak.style.display='none';
+    document.getElementById('cak-conf').style.display='none';
+    if(freeNote)freeNote.style.display='none';
+    if(ollamaNote)ollamaNote.style.display='';
   }else if(p==='orfree'){
     if(mdl){mdl.style.display='';if(!mdl.value)mdl.placeholder='google/gemini-2.0-flash-exp:free';}
+    if(ollamaMdl)ollamaMdl.style.display='none';
     if(freeNote)freeNote.style.display='';
+    if(ollamaNote)ollamaNote.style.display='none';
     if(cak)cak.placeholder='OpenRouter Key (sk-or-...)';
     const ok=localStorage.getItem('tmp_or_key');
     if(ok){cak.value=ok;cak.style.display='none';document.getElementById('cak-conf').style.display='block';}
     else{cak.value='';cak.style.display='';document.getElementById('cak-conf').style.display='none';}
   }else if(p==='openrouter'){
     if(mdl){mdl.style.display='';if(mdl.placeholder==='google/gemini-2.0-flash-exp:free')mdl.placeholder='anthropic/claude-sonnet-4-6';}
+    if(ollamaMdl)ollamaMdl.style.display='none';
     if(freeNote)freeNote.style.display='none';
+    if(ollamaNote)ollamaNote.style.display='none';
     if(cak)cak.placeholder='OpenRouter Key (sk-or-...)';
     const ok=localStorage.getItem('tmp_or_key');
     if(ok){cak.value=ok;cak.style.display='none';document.getElementById('cak-conf').style.display='block';}
     else{cak.value='';cak.style.display='';document.getElementById('cak-conf').style.display='none';}
   }else{
     if(mdl)mdl.style.display='none';
+    if(ollamaMdl)ollamaMdl.style.display='none';
     if(freeNote)freeNote.style.display='none';
+    if(ollamaNote)ollamaNote.style.display='none';
     if(cak)cak.placeholder='Anthropic API Key (sk-ant-...)';
     const ak=localStorage.getItem('tmp_combat_key');
     if(ak){cak.value=ak;cak.style.display='none';document.getElementById('cak-conf').style.display='block';}
@@ -2311,6 +2341,9 @@ document.getElementById('cak').addEventListener('input',e=>{
 });
 document.getElementById('cor-model')?.addEventListener('input',e=>{
   combatOrModel=e.target.value;localStorage.setItem('tmp_or_model',combatOrModel);
+});
+document.getElementById('cor-ollama-model')?.addEventListener('input',e=>{
+  localStorage.setItem('tmp_ollama_model',e.target.value);
 });
 
 // ─── Evolve demo bidirectional import ───

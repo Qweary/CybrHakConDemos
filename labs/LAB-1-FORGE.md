@@ -1,6 +1,6 @@
 # LAB-1 — Forge Your Own Swarm
 
-**Time: ~30 minutes | Requires: OpenRouter key (see ATTENDEE-SETUP.md)**
+**Time: ~30 minutes | Select your provider and confirm your key is loaded (see ATTENDEE-SETUP.md for all options)**
 
 ---
 
@@ -25,7 +25,7 @@ The FORGE demo runs six phases:
 
 ### Step 1: Open the Demo
 
-Open `demos/tmp-forge-live.html`. Select **OPENROUTER** and confirm your key is loaded. Enable **[ ⏸ STEP MODE ]** if you want to pause between phases and read each one before continuing.
+Open `demos/tmp-forge-live.html`. Select your provider and confirm your key is loaded (see ATTENDEE-SETUP.md). Enable **[ ⏸ STEP MODE ]** if you want to pause between phases and read each one before continuing.
 
 ### Step 2: Write Your Brief
 

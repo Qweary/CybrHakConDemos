@@ -444,7 +444,9 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
   <button class="prv-mini" id="eprv-or" onclick="setEvolveProvider('openrouter')">OR</button>
   <button class="prv-mini" id="eprv-local" onclick="setEvolveProvider('local')" title="Local relay — run relay.py first">LOCAL</button>
   <button class="prv-mini" id="eprv-orfree" onclick="setEvolveProvider('orfree')" title="OpenRouter free tier — no credits needed">OR FREE</button>
+  <button class="prv-mini" id="eprv-ollama" onclick="setEvolveProvider('ollama')" title="Ollama — fully local, offline capable">OLLAMA</button>
   <span id="efree-note" style="display:none;font-size:8px;color:#4fc3f7;letter-spacing:1px;font-family:'Share Tech Mono',monospace">⚠ FREE TIER</span>
+  <span id="eollama-note" style="display:none;font-size:8px;color:#4fc3f7;letter-spacing:1px;font-family:'Share Tech Mono',monospace">⚡ LOCAL</span>
   <input class="or-mdl" type="text" id="eor-model" list="eor-models" placeholder="anthropic/claude-sonnet-4-6"/>
   <datalist id="eor-models">
     <option value="anthropic/claude-sonnet-4-6">Claude Sonnet 4.6</option>
@@ -455,6 +457,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
     <option value="meta-llama/llama-3.3-70b-instruct">Llama 3.3 70B</option>
     <option value="mistralai/mistral-large">Mistral Large</option>
   </datalist>
+  <input class="or-mdl" type="text" id="eor-ollama-model" placeholder="llama3.2" style="display:none"/>
   <div class="bsep"></div>
   <input type="password" class="apifield" id="eak" placeholder="Anthropic API Key (sk-ant-...)"/>
   <div id="eak-conf" style="display:none"><div class="kconf-btm">KEY CONFIGURED <span class="kc-clear" onclick="clearEvolveKey()" title="Clear saved key">×</span></div></div>
@@ -1054,31 +1057,49 @@ function setEvolveProvider(p, init) {
   document.getElementById('eprv-or').classList.toggle('sel', p === 'openrouter');
   document.getElementById('eprv-local').classList.toggle('sel', p === 'local');
   document.getElementById('eprv-orfree').classList.toggle('sel', p === 'orfree');
+  document.getElementById('eprv-ollama').classList.toggle('sel', p === 'ollama');
   const mdl = document.getElementById('eor-model');
+  const ollamaMdl = document.getElementById('eor-ollama-model');
   const eak = document.getElementById('eak');
   const freeNote = document.getElementById('efree-note');
+  const ollamaNote = document.getElementById('eollama-note');
   if (p === 'local') {
     if (mdl) mdl.style.display = 'none';
+    if (ollamaMdl) ollamaMdl.style.display = 'none';
     if (eak) eak.style.display = 'none';
     document.getElementById('eak-conf').style.display = 'none';
     if (freeNote) freeNote.style.display = 'none';
+    if (ollamaNote) ollamaNote.style.display = 'none';
+  } else if (p === 'ollama') {
+    if (mdl) mdl.style.display = 'none';
+    if (ollamaMdl) { ollamaMdl.style.display = ''; const saved = localStorage.getItem('tmp_ollama_model'); if (saved) ollamaMdl.value = saved; }
+    if (eak) eak.style.display = 'none';
+    document.getElementById('eak-conf').style.display = 'none';
+    if (freeNote) freeNote.style.display = 'none';
+    if (ollamaNote) ollamaNote.style.display = '';
   } else if (p === 'orfree') {
     if (mdl) { mdl.style.display = ''; if (!mdl.value) mdl.placeholder = 'google/gemini-2.0-flash-exp:free'; }
+    if (ollamaMdl) ollamaMdl.style.display = 'none';
     if (freeNote) freeNote.style.display = '';
+    if (ollamaNote) ollamaNote.style.display = 'none';
     if (eak) eak.placeholder = 'OpenRouter Key (sk-or-...)';
     const ok = localStorage.getItem('tmp_or_key');
     if (ok) { eak.value = ok; eak.style.display = 'none'; document.getElementById('eak-conf').style.display = 'block'; }
     else { eak.value = ''; eak.style.display = ''; document.getElementById('eak-conf').style.display = 'none'; }
   } else if (p === 'openrouter') {
     if (mdl) { mdl.style.display = ''; if (mdl.placeholder === 'google/gemini-2.0-flash-exp:free') mdl.placeholder = 'anthropic/claude-sonnet-4-6'; }
+    if (ollamaMdl) ollamaMdl.style.display = 'none';
     if (freeNote) freeNote.style.display = 'none';
+    if (ollamaNote) ollamaNote.style.display = 'none';
     if (eak) eak.placeholder = 'OpenRouter Key (sk-or-...)';
     const ok = localStorage.getItem('tmp_or_key');
     if (ok) { eak.value = ok; eak.style.display = 'none'; document.getElementById('eak-conf').style.display = 'block'; }
     else { eak.value = ''; eak.style.display = ''; document.getElementById('eak-conf').style.display = 'none'; }
   } else {
     if (mdl) mdl.style.display = 'none';
+    if (ollamaMdl) ollamaMdl.style.display = 'none';
     if (freeNote) freeNote.style.display = 'none';
+    if (ollamaNote) ollamaNote.style.display = 'none';
     if (eak) eak.placeholder = 'Anthropic API Key (sk-ant-...)';
     const ak = localStorage.getItem('tmp_evolve_key');
     if (ak) { eak.value = ak; eak.style.display = 'none'; document.getElementById('eak-conf').style.display = 'block'; }
@@ -1102,6 +1123,15 @@ async function evolveCallAPI(sys, user, ak) {
     });
     if (!r.ok) { let m = `HTTP ${r.status}`; try { const e = await r.json(); m = e.error || m; } catch (_) {} throw new Error(m); }
     return (await r.json()).content;
+  }
+  if (evolveProvider === 'ollama') {
+    const model = (document.getElementById('eor-ollama-model')?.value.trim()) || localStorage.getItem('tmp_ollama_model') || 'llama3.2';
+    const r = await fetch('http://localhost:11434/v1/chat/completions', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ model, max_tokens: 1400, messages: [{ role: 'system', content: sys }, { role: 'user', content: user }] })
+    });
+    if (!r.ok) { let m = `HTTP ${r.status}`; try { const e = await r.json(); m = e.error?.message || e.message || m; } catch (_) {} throw new Error(m); }
+    return (await r.json()).choices[0].message.content;
   }
   if (evolveProvider === 'openrouter' || evolveProvider === 'orfree') {
     const model = evolveProvider === 'orfree'
@@ -1856,6 +1886,9 @@ function initEvolve() {
   document.getElementById('eor-model')?.addEventListener('input', e => {
     evolveOrModel = e.target.value;
     localStorage.setItem('tmp_or_model', evolveOrModel);
+  });
+  document.getElementById('eor-ollama-model')?.addEventListener('input', e => {
+    localStorage.setItem('tmp_ollama_model', e.target.value);
   });
 
   setPhase(0);

@@ -52,7 +52,7 @@ You want to understand how this works and extend it.
 - Agent system prompts are embedded as JavaScript constants (`SYS_ARBITER`, `SYS_SCULPTOR`, `SYS_PHANTOM_RED_RECON`, etc.)
 - The coordination model is a sequential state-passing pattern: each agent receives the prior agent's output as context
 - The full framework that generates these swarms lives at: `https://github.com/Qweary/The-Manhattan-Project`
-- Consult `../demos/CONFERENCE-DEMO-README.md` for complete technical documentation of all three demos
+- See the GitHub repo for full technical documentation.
 
 ---
 
@@ -61,7 +61,11 @@ You want to understand how this works and extend it.
 ```
 ai-village-workshop/
 ├── README.md             (this file)
-├── ATTENDEE-SETUP.md     (API key setup and first run)
+├── ATTENDEE-SETUP.md     (API key setup — all four provider options)
+├── RELAY-SETUP.md        (local relay — no key pasting in the browser)
+├── OLLAMA-SETUP.md       (fully local, offline Ollama setup)
+├── WORKSHOP-GUIDE.md     (paste into claude.ai for contextual help)
+├── relay.py              (local relay server — python3 relay.py)
 ├── demos/
 │   ├── tmp-forge-live.html
 │   ├── tmp-combat-live.html
@@ -82,6 +86,10 @@ Recommended model: `anthropic/claude-sonnet-4-6` via OpenRouter.
 
 ---
 
-## Questions
+## Getting Help
 
-Talk to the presenter during the session. After the conference, open an issue at the GitHub link above.
+**During the session:** Talk to the presenter.
+
+**Using an AI assistant:** Open `WORKSHOP-GUIDE.md` and paste its contents into claude.ai (or any chat LLM) before asking your question. The guide gives the AI full context about all three demos, provider options, error messages, and lab flow — so you'll get accurate, specific answers instead of generic troubleshooting advice.
+
+**After the conference:** Open an issue at the GitHub link above.

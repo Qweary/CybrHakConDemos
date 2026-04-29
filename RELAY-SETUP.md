@@ -36,7 +36,7 @@ echo $ANTHROPIC_API_KEY
 
 ## Step 3: Run the Relay
 
-From the repo root (or the `ai-village-workshop/` directory — either works since relay.py is at the root):
+From the `ai-village-workshop/` directory:
 
 ```bash
 python3 relay.py
