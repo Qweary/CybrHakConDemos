@@ -50,7 +50,7 @@ You don't have to use security examples. This works for any domain.
 
 ### Step 3: Launch and Observe
 
-Click **[ LAUNCH FORGE ]**. Watch each phase run.
+Click **[ ⚛ INITIATE FISSION ]** (the button is labeled **[ ▶ RUN DEMO ]** if you have DEMO MODE turned on). Watch each phase run.
 
 > **Phase 2c — Operator Gate:** The pipeline pauses here and shows you the T2 Advisor's micro-specialization map and Lattice's vector collection design. Read them, then click **[ APPROVE — PROCEED TO FABRICATION ]** (or modify the spec first, or skip the vector layer). This is the only interactive pause in the pipeline.
 

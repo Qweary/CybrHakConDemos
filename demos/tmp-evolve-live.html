@@ -10,7 +10,7 @@
   --bg:#020208;--bp:#05050f;--bi:#08081a;
   --amb:#ffbc00;--ad:#8a6200;--am:#d09800;
   --grn:#00f090;--red:#ff3355;--blu:#4fc3f7;
-  --wht:#e8e8f8;--gr:#40406a;--bdr:#10101e;
+  --wht:#e8e8f8;--gr:#7878a0;--bdr:#10101e;
   --gr-a:0 0 12px rgba(255,188,0,.45);
   --gr-g:0 0 12px rgba(0,240,144,.45);
   --gr-r:0 0 12px rgba(255,51,85,.45);
@@ -18,7 +18,7 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden}
-body{background:var(--bg);color:var(--wht);font-family:'Share Tech Mono','Courier New',monospace;font-size:13px;display:flex;flex-direction:column}
+body{background:var(--bg);color:var(--wht);font-family:'Share Tech Mono','Courier New',monospace;font-size:14px;display:flex;flex-direction:column}
 body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.055) 3px,rgba(0,0,0,.055) 4px)}
 
 /* Banner */
@@ -32,9 +32,9 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
 
 /* Phase bar */
 .pbar{display:flex;border-bottom:1px solid var(--bdr);background:var(--bp);flex-shrink:0}
-.eph{flex:1;padding:5px 2px;text-align:center;font-size:9px;letter-spacing:1px;color:var(--gr);border-right:1px solid var(--bdr);transition:all .3s;line-height:1.5}
+.eph{flex:1;padding:5px 2px;text-align:center;font-size:12px;letter-spacing:1px;color:var(--gr);border-right:1px solid var(--bdr);transition:all .3s;line-height:1.5}
 .eph:last-child{border-right:none}
-.eph .epn{display:block;font-size:8px;color:#606090;margin-bottom:1px}
+.eph .epn{display:block;font-size:10px;color:#606090;margin-bottom:1px}
 .eph.active{color:var(--amb);text-shadow:var(--gr-a);background:rgba(255,188,0,.025)}
 .eph.active .epn{color:var(--ad)}
 .eph.done{color:var(--grn);background:rgba(0,240,144,.015)}
@@ -119,8 +119,8 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
 .ex-ptitle{font-size:10.5px;letter-spacing:2px}
 .ex-ptitle.red{color:#e04060}
 .ex-ptitle.blue{color:var(--blu)}
-.terminal{flex:1;overflow-y:auto;padding:13px;line-height:1.9;min-height:0;font-size:12px}
-.terminal.single{flex:1;overflow-y:auto;padding:13px;line-height:1.9;min-height:0;font-size:12px;width:100%}
+.terminal{flex:1;overflow-y:auto;padding:13px;line-height:1.9;min-height:0;font-size:14px}
+.terminal.single{flex:1;overflow-y:auto;padding:13px;line-height:1.9;min-height:0;font-size:14px;width:100%}
 .ts-line{color:#5050a0;font-size:11px}
 .ts-line::before{content:'// '}
 .te{margin:8px 0}
@@ -129,7 +129,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
 .te-hdr.red{color:var(--red)}
 .te-hdr.blue{color:var(--blu)}
 .te-hdr.amber{color:var(--amb)}
-.te-body{white-space:pre-wrap;padding:6px 0 6px 12px;font-size:12px;line-height:1.8}
+.te-body{white-space:pre-wrap;padding:6px 0 6px 12px;font-size:14px;line-height:1.8}
 .te-body.red{border-left:2px solid rgba(255,51,85,.4);color:#f0c8c8}
 .te-body.blue{border-left:2px solid rgba(79,195,247,.4);color:#c0daf0}
 .te-body.amber{border-left:2px solid rgba(255,188,0,.4);color:#f0e0a0}
@@ -217,7 +217,28 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
 .step-btn:hover{background:rgba(255,188,0,.07);box-shadow:var(--gr-a)}
 
 /* Bottom bar */
-.btm{display:flex;border-top:1px solid var(--bdr);background:var(--bp);flex-shrink:0;padding:9px 16px;gap:12px;align-items:center;flex-wrap:wrap}
+.btm{display:flex;flex-direction:column;flex-wrap:nowrap;padding:0;gap:0;border-top:1px solid var(--bdr);flex-shrink:0}
+.btm-row{display:flex;align-items:center;gap:10px;padding:7px 16px;flex-wrap:nowrap}
+.btm-config{border-bottom:1px solid var(--bdr);background:var(--bp);overflow-x:auto}
+.btm-actions{background:color-mix(in srgb,var(--bp) 80%,var(--bg) 20%)}
+/* Error recovery banner */
+/* Tier notice spans — class-based size so pmode can override */
+.tier-note{font-size:10px}
+body.pmode .tier-note{font-size:12px}
+#error-recovery-banner{background:rgba(255,51,85,.08);border:1px solid var(--red);padding:10px 16px;margin:8px;align-items:center;gap:12px;flex-wrap:wrap;flex-shrink:0}
+#error-recovery-banner .err-msg{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--red);flex:1}
+#error-recovery-banner button{background:transparent;font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1px;padding:5px 10px;cursor:pointer}
+.phase-recovery{background:rgba(255,180,0,.08);border:1px solid var(--amb);padding:10px 14px;margin:6px;border-radius:2px;z-index:50;position:relative}
+.phase-recovery-hdr{font-family:'Orbitron',sans-serif;font-size:11px;color:var(--amb);letter-spacing:2px;margin-bottom:4px}
+.phase-recovery-msg{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--amb);opacity:.85;margin-bottom:8px;word-break:break-word}
+.phase-recovery-btns{display:flex;gap:6px;flex-wrap:wrap}
+.phase-recovery-btns button{background:transparent;border:1px solid var(--amb);color:var(--amb);font-family:'Share Tech Mono',monospace;font-size:9.5px;letter-spacing:1px;padding:4px 8px;cursor:pointer}
+.phase-recovery-btns button:hover{background:rgba(255,180,0,.18)}
+.phase-recovery-btns .prv-cont{border-color:var(--grn);color:var(--grn)}
+.phase-recovery-btns .prv-cont:hover{background:rgba(0,240,144,.15)}
+.phase-recovery-btns .prv-skip{border-color:#5050a0;color:#7878a0}
+.phase-recovery-btns .prv-dismiss{border-color:var(--red);color:var(--red)}
+.phase-recovery-btns .prv-dismiss:hover{background:rgba(255,51,85,.15)}
 .startbtn{background:transparent;font-family:'Orbitron',sans-serif;font-weight:700;font-size:12px;letter-spacing:2px;padding:9px 18px;cursor:pointer;transition:all .3s;border:2px solid}
 .go-btn{border-color:var(--amb);color:var(--amb);box-shadow:var(--gr-a)}
 .go-btn:hover:not(:disabled){background:rgba(255,188,0,.08)}
@@ -227,8 +248,9 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
 .bsep{width:1px;height:30px;background:var(--bdr)}
 .live-toggle{background:transparent;font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:1px;padding:7px 13px;cursor:pointer;transition:all .3s;border:1px solid var(--gr);color:var(--gr)}
 .live-toggle.active{border-color:var(--grn);color:var(--grn);box-shadow:var(--gr-g)}
+.live-toggle#demo-btn.active{border-color:var(--blu);color:var(--blu);background:rgba(79,195,247,.06);box-shadow:none;text-shadow:0 0 8px rgba(79,195,247,.4)}
 .live-toggle:hover:not(.active){border-color:#6060a0;color:#8080c0}
-.prv-mini{background:transparent;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:1px;padding:5px 9px;cursor:pointer;border:1px solid var(--gr);color:var(--gr);transition:all .2s;white-space:nowrap}
+.prv-mini{background:transparent;font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:1px;padding:5px 9px;cursor:pointer;border:1px solid var(--gr);color:var(--gr);transition:all .2s;white-space:nowrap}
 .prv-mini.sel{border-color:var(--amb);color:var(--amb);background:rgba(255,188,0,.06)}
 .prv-mini:hover:not(.sel){border-color:#6060a0;color:#8080c0}
 .apifield{background:var(--bi);border:1px solid var(--bdr);color:var(--amb);font-family:'Share Tech Mono',monospace;font-size:11px;padding:5px 9px;outline:none;width:230px}
@@ -239,9 +261,103 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
 .kc-clear{cursor:pointer;opacity:.5;font-size:12px;line-height:1}.kc-clear:hover{opacity:1}
 .binfo{font-size:10.5px;color:#5858a0}
 ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--gr)}
+/* PRESENTATION MODE — optimized for projector. Toggle: Ctrl+P or body.classList.toggle('pmode') */
+body.pmode::after{display:none}
+body.pmode{font-size:15px}
+body.pmode .ph,body.pmode .eph,body.pmode .phase{font-size:13px;letter-spacing:.5px;padding:7px 4px}
+body.pmode .ph .pn,body.pmode .eph .epn,body.pmode .phase .pn{font-size:11px}
+body.pmode .sh{font-size:12px}
+body.pmode label{font-size:11px}
+body.pmode .ht{font-size:22px}
+body.pmode .hs{font-size:13px}
+body.pmode .bt{font-size:19px}
+body.pmode .bts{font-size:13px}
+body.pmode .term,body.pmode .terminal{font-size:15px;line-height:2.0}
+body.pmode .tc{font-size:14.5px}
+body.pmode .ts,body.pmode .ts-line{font-size:13px}
+body.pmode .tah{font-size:13px}
+body.pmode .te-hdr{font-size:13px}
+body.pmode .te-body{font-size:14px;line-height:2.0}
+body.pmode .ibtn,body.pmode .startbtn,body.pmode .begin-btn{font-size:15px;padding:13px 20px;letter-spacing:3px}
+body.pmode .demo-btn,body.pmode .live-toggle,body.pmode .mode-toggle{font-size:12px;padding:9px 15px}
+body.pmode .prvbtn,body.pmode .prv-mini{font-size:12px;padding:7px 11px}
+body.pmode .srow{font-size:13px}
+body.pmode .st,body.pmode .ss{font-size:12px}
+body.pmode .binfo{font-size:13px}
+body.pmode .ttl{font-size:13px}
+body.pmode .ptitle,body.pmode .pstat{font-size:13px}
+body.pmode .siem-hdr{font-size:13px;padding:7px 14px}
+body.pmode .ar{font-size:13px}
+body.pmode .ati{font-size:11px}
+body.pmode input[type=password],body.pmode textarea,body.pmode .apifield{font-size:13px}
+/* Contrast uplift — forge */
+body.pmode .ph{color:#7878b8}
+body.pmode .ph.active{color:var(--g)}
+body.pmode .ph.done{color:var(--a)}
+body.pmode .ph .pn{color:#9090c0}
+body.pmode .hr{color:#9898c8}
+body.pmode .ts{color:#9090d8}
+body.pmode .ati{color:#9090c0}
+body.pmode .rf{color:#8888b0}
+body.pmode .prvbtn{color:#8888b8;border-color:#8888b8}
+body.pmode .demo-btn{color:#9090c8;border-color:#7070a0;opacity:0.85}
+/* Contrast uplift — combat */
+body.pmode .phase{color:#7878b8}
+body.pmode .phase .pn{color:#7878b8}
+body.pmode .binfo{color:#8888c8}
+body.pmode .st{color:#8080d0}
+body.pmode .live-toggle{color:#8080aa;border-color:#8080aa}
+body.pmode .prv-mini{color:#8888b8;border-color:#8888b8}
+/* Contrast uplift — evolve */
+body.pmode .eph{color:#7878b8}
+body.pmode .eph .epn{color:#9090c0}
+body.pmode .mode-desc{color:#8888c8}
+body.pmode .agent-role{color:#9090c0}
+body.pmode .agent-name{font-size:12px}
+body.pmode .diff-hdr{font-size:12px;padding:9px 14px}
+/* Touch targets */
+body.pmode .prvbtn,body.pmode .prv-mini,body.pmode .live-toggle,body.pmode .demo-btn{min-height:36px}
+body.pmode .ibtn,body.pmode .startbtn,body.pmode .begin-btn{min-height:48px}
+/* RESPONSIVE — Session 44. Tablet-first; phone is best-effort with DEMO MODE prioritized. */
+@media (max-width:1024px){
+  .custom-grid{grid-template-columns:1fr;gap:10px}
+  .ex-split{grid-template-columns:1fr;grid-template-rows:1fr 1fr;overflow:auto}
+  .ex-div{display:none}
+  .sculptor-grid{grid-template-columns:1fr;grid-template-rows:auto auto auto;overflow:auto}
+  .rerun-split{grid-template-columns:1fr;grid-template-rows:1fr 1fr;overflow:auto}
+  .btm-config{flex-wrap:wrap}
+}
+@media (max-width:768px){
+  body.pmode{font-size:13px}
+  .eph{font-size:10.5px;padding:5px 2px}
+  body.pmode .eph{font-size:11px;padding:5px 3px}
+  .eph .epn{font-size:8.5px}
+  body.pmode .eph .epn{font-size:9px}
+  body.pmode .terminal,.terminal{font-size:12px;line-height:1.7}
+  body.pmode .te-body,.te-body{font-size:12px;line-height:1.7}
+  .btm-row{flex-wrap:wrap;padding:6px 10px;gap:6px}
+  .ht{font-size:16px;letter-spacing:1px}
+  .hs{font-size:9px}
+  .hr{flex-wrap:wrap;gap:6px;font-size:9px}
+}
+@media (max-width:375px){
+  .ht{font-size:13px;letter-spacing:.5px}
+  .hs{display:none}
+  body{font-size:12px}
+  body.pmode{font-size:12px}
+  .eph{font-size:8.5px;padding:3px 1px}
+  body.pmode .eph{font-size:9px}
+  .eph .epn{font-size:7px}
+  .demo-btn,.mode-toggle{font-size:10px;padding:7px 8px}
+}
+@media (pointer:coarse){
+  .prvbtn,.prv-mini,.live-toggle,.demo-btn,.swb{min-height:44px;min-width:44px}
+  .ibtn,.startbtn,.begin-btn{min-height:56px}
+  .ibtn{font-size:16px}
+}
 </style>
 </head>
-<body>
+<body class="pmode">
 
 <div class="banner">TOP SECRET // TMP EVOLVE LIVE // SELF-REFINEMENT DEMO</div>
 
@@ -251,15 +367,23 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
     <div class="hs">AUTONOMOUS IMPROVEMENT LOOP // SELF-REFINEMENT DEMONSTRATION</div>
   </div>
   <div class="hcyc" id="cycle-counter">CYCLE 1 / ∞</div>
+  <span id="tok-count" style="display:none;font-size:9px;color:var(--grn);letter-spacing:1px;border:1px solid var(--grn);padding:1px 5px;margin-left:8px;font-variant-numeric:tabular-nums">tokens: 0 ▌</span>
 </div>
 
 <div class="pbar">
-  <div class="eph" id="eph0"><span class="epn">P0</span>MODE SELECT</div>
-  <div class="eph" id="eph1"><span class="epn">P1</span>INTAKE</div>
-  <div class="eph" id="eph2"><span class="epn">P2</span>EXERCISE</div>
-  <div class="eph" id="eph3"><span class="epn">P3</span>ARBITER</div>
-  <div class="eph" id="eph4"><span class="epn">P4</span>SCULPTOR</div>
-  <div class="eph" id="eph5"><span class="epn">P5</span>RERUN</div>
+  <div class="eph" id="eph0" title="Phase 0: MODE SELECT — Choose evolution input source (preset agent, custom, or chained from combat)"><span class="epn">P0</span>MODE SELECT</div>
+  <div class="eph" id="eph1" title="Phase 1: INTAKE — Load the target agent prompt and exercise context"><span class="epn">P1</span>INTAKE</div>
+  <div class="eph" id="eph2" title="Phase 2: EXERCISE — Run the agent through a benchmark scenario to surface weaknesses"><span class="epn">P2</span>EXERCISE</div>
+  <div class="eph" id="eph3" title="Phase 3: ARBITER — Independent evaluator scores the agent's performance and identifies failure modes"><span class="epn">P3</span>ARBITER</div>
+  <div class="eph" id="eph4" title="Phase 4: SCULPTOR — Refine the prompt to address arbiter findings"><span class="epn">P4</span>SCULPTOR</div>
+  <div class="eph" id="eph5" title="Phase 5: RERUN — Replay the exercise with the refined prompt; compare to baseline"><span class="epn">P5</span>RERUN</div>
+</div>
+
+<div id="error-recovery-banner" style="display:none">
+  <span class="err-msg">⚠ API error encountered. How do you want to proceed?</span>
+  <button id="err-retry-btn" style="border:1px solid var(--red);color:var(--red)">[ RETRY ]</button>
+  <button id="err-demo-btn" style="border:1px solid var(--amb);color:var(--amb)">[ SWITCH TO DEMO MODE ]</button>
+  <button id="err-dismiss-btn" style="border:1px solid var(--gr);color:var(--gr)">[ DISMISS ]</button>
 </div>
 
 <div class="main">
@@ -272,17 +396,17 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
         <button class="mode-btn" onclick="selectMode('preset')">
           <span class="mode-icon">⚔</span>
           <span>PRESET MODE</span>
-          <span class="mode-desc">Red or Blue swarm.<br>Pre-built agents and exercise.<br>Full demo with no API key needed.</span>
+          <span class="mode-desc">Pre-built red and blue rosters drive a CCDC-style exercise. The weakest performer gets rewritten. Full demo without an API key.</span>
         </button>
         <button class="mode-btn" onclick="selectMode('custom')">
           <span class="mode-icon">⚛</span>
           <span>CUSTOM MODE</span>
-          <span class="mode-desc">Bring your own swarm.<br>Paste agent prompts here.<br>CHALLENGER designs the test.</span>
+          <span class="mode-desc">Paste up to four of your own agent prompts. CHALLENGER designs a domain-fit stress test against them, then the loop runs.</span>
         </button>
         <button class="mode-btn" id="chain-mode-btn" onclick="selectMode('chain')">
           <span class="mode-icon">⬅</span>
           <span>CHAIN MODE</span>
-          <span class="mode-desc">Import from Combat Demo.<br>Auto-detected exercise state.<br>Continuous improvement loop.</span>
+          <span class="mode-desc">Pulls a completed exercise out of localStorage from the Combat demo and evolves the weakest agent against it — closing the build → fight → refine loop.</span>
         </button>
       </div>
     </div>
@@ -296,7 +420,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
         <div class="intake-hdr">PRESET SWARM — SELECT TEAM</div>
         <div class="swarm-toggle">
           <button class="swtb sel-red" id="preset-red-btn" onclick="setPreset('red')">⚔ RED TEAM</button>
-          <button class="swtb" id="preset-blue-btn" onclick="setPreset('blue')">⚡ BLUE TEAM</button>
+          <button class="swtb" id="preset-blue-btn" onclick="setPreset('blue')" title="Blue-team perspective: scoring weights upstream telemetry gaps">⚡ BLUE TEAM</button>
         </div>
         <div class="agent-list" id="preset-agent-list"></div>
         <button class="begin-btn" onclick="beginExercise()">[ BEGIN EVALUATION ]</button>
@@ -437,34 +561,37 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
 </div><!-- end .main -->
 
 <div class="btm">
-  <button class="live-toggle" id="demo-btn" onclick="toggleDemo()" title="Pre-scripted demo mode — no API key required">[ ◉ DEMO ]</button>
-  <button class="live-toggle" id="step-btn" onclick="toggleStep()" title="Pause between phases">[ ⏸ STEP ]</button>
-  <div class="bsep"></div>
-  <button class="prv-mini sel" id="eprv-ant" onclick="setEvolveProvider('anthropic')">ANT</button>
-  <button class="prv-mini" id="eprv-or" onclick="setEvolveProvider('openrouter')">OR</button>
-  <button class="prv-mini" id="eprv-local" onclick="setEvolveProvider('local')" title="Local relay — run relay.py first">LOCAL</button>
-  <button class="prv-mini" id="eprv-orfree" onclick="setEvolveProvider('orfree')" title="OpenRouter free tier — no credits needed">OR FREE</button>
-  <button class="prv-mini" id="eprv-ollama" onclick="setEvolveProvider('ollama')" title="Ollama — fully local, offline capable">OLLAMA</button>
-  <span id="efree-note" style="display:none;font-size:8px;color:#4fc3f7;letter-spacing:1px;font-family:'Share Tech Mono',monospace">⚠ FREE TIER</span>
-  <span id="eollama-note" style="display:none;font-size:8px;color:#4fc3f7;letter-spacing:1px;font-family:'Share Tech Mono',monospace">⚡ LOCAL</span>
-  <input class="or-mdl" type="text" id="eor-model" list="eor-models" placeholder="anthropic/claude-sonnet-4-6"/>
-  <datalist id="eor-models">
-    <option value="anthropic/claude-sonnet-4-6">Claude Sonnet 4.6</option>
-    <option value="anthropic/claude-opus-4-5">Claude Opus 4.5</option>
-    <option value="openai/gpt-4o">GPT-4o</option>
-    <option value="openai/gpt-4o-mini">GPT-4o mini</option>
-    <option value="google/gemini-2.5-pro">Gemini 2.5 Pro</option>
-    <option value="meta-llama/llama-3.3-70b-instruct">Llama 3.3 70B</option>
-    <option value="mistralai/mistral-large">Mistral Large</option>
-  </datalist>
-  <input class="or-mdl" type="text" id="eor-ollama-model" placeholder="llama3.2" style="display:none"/>
-  <div class="bsep"></div>
-  <input type="password" class="apifield" id="eak" placeholder="Anthropic API Key (sk-ant-...)"/>
-  <div id="eak-conf" style="display:none"><div class="kconf-btm">KEY CONFIGURED <span class="kc-clear" onclick="clearEvolveKey()" title="Clear saved key">×</span></div></div>
-  <div class="bsep"></div>
-  <button class="startbtn go-btn" id="run-btn" onclick="runImprovementCycle()" disabled>[ ⚛ RUN CYCLE ]</button>
-  <button class="startbtn rst-btn" onclick="resetEvolve()">[ RESET ]</button>
-  <div class="binfo" id="binfo">Select a mode to begin the self-refinement loop.</div>
+  <div class="btm-row btm-config">
+    <button class="live-toggle" id="demo-btn" onclick="toggleDemo()" title="Pre-scripted demo mode — no API key required">[ ◉ DEMO ]</button>
+    <button class="live-toggle" id="step-btn" onclick="toggleStep()" title="Pause between phases">[ ⏸ STEP ]</button>
+    <div class="bsep"></div>
+    <button class="prv-mini sel" id="eprv-ant" onclick="setEvolveProvider('anthropic')">ANT</button>
+    <button class="prv-mini" id="eprv-or" onclick="setEvolveProvider('openrouter')">OR</button>
+    <button class="prv-mini" id="eprv-cc" onclick="setEvolveProvider('cc')" title="Claude Code CLI — run relay.py first; uses your CC subscription">CLAUDE CODE</button>
+    <button class="prv-mini" id="eprv-orfree" onclick="setEvolveProvider('orfree')" title="OpenRouter free tier — no credits needed">OR FREE</button>
+    <button class="prv-mini" id="eprv-ollama" onclick="setEvolveProvider('ollama')" title="Ollama — fully local, offline capable">OLLAMA</button>
+    <span id="efree-note" class="tier-note" style="display:none;color:#4fc3f7;letter-spacing:1px;font-family:'Share Tech Mono',monospace">⚠ FREE TIER</span>
+    <span id="eollama-note" class="tier-note" style="display:none;color:#4fc3f7;letter-spacing:1px;font-family:'Share Tech Mono',monospace">⚡ LOCAL</span>
+    <input class="or-mdl" type="text" id="eor-model" list="eor-models" placeholder="anthropic/claude-sonnet-4-6"/>
+    <datalist id="eor-models">
+      <option value="anthropic/claude-sonnet-4-6">Claude Sonnet 4.6</option>
+      <option value="anthropic/claude-opus-4-5">Claude Opus 4.5</option>
+      <option value="openai/gpt-4o">GPT-4o</option>
+      <option value="openai/gpt-4o-mini">GPT-4o mini</option>
+      <option value="google/gemini-2.5-pro">Gemini 2.5 Pro</option>
+      <option value="meta-llama/llama-3.3-70b-instruct">Llama 3.3 70B</option>
+      <option value="mistralai/mistral-large">Mistral Large</option>
+    </datalist>
+    <input class="or-mdl" type="text" id="eor-ollama-model" placeholder="llama3.2" style="display:none"/>
+    <div class="bsep"></div>
+    <input type="password" class="apifield" id="eak" placeholder="Anthropic API Key (sk-ant-...)"/>
+    <div id="eak-conf" style="display:none"><div class="kconf-btm">KEY CONFIGURED <span class="kc-clear" onclick="clearEvolveKey()" title="Clear saved key">×</span></div></div>
+  </div>
+  <div class="btm-row btm-actions">
+    <button class="startbtn go-btn" id="run-btn" onclick="runImprovementCycle()" disabled>[ ⚛ RUN CYCLE ]</button>
+    <button class="startbtn rst-btn" onclick="resetEvolve()">[ RESET ]</button>
+    <div class="binfo" id="binfo">Select a mode to begin the self-refinement loop.</div>
+  </div>
 </div>
 
 <!-- ═══ DEMO CONTENT ═══ -->
@@ -704,6 +831,255 @@ The refined DETECTION-ENGINEER now correctly identifies ProFTPd mod_copy exploit
 The agent now looks at FTP command logs (not just network connection logs) to spot the specific "SITE CPFR" and "SITE CPTO" commands that ProFTPd mod_copy exploitation uses. It also has a 60-second timer rule: if those FTP commands appear and then an outbound connection opens shortly after, it automatically flags this as a confirmed attack rather than waiting for more evidence. Every alert now requires an ATT&CK technique ID, making incident reports more structured and actionable.
 </script>
 
+<script type="text/plain" id="de-arbiter-blue">
+## ARBITER SCORECARD
+
+### Exercise Summary
+Same red-vs-blue exercise as the red preset (ProFTPd CVE-2015-3306 mod_copy → SUID privilege escalation → cron persistence → PtH lateral). Scoring this run from a blue-team-improvement perspective: upstream telemetry gaps cascade into multiple downstream agents, so this scorecard prioritizes ingestion-layer findings over rule-authoring findings. The most expensive gap upstream is more valuable to fix than a moderate gap downstream.
+
+### Stage Performance Breakdown
+| Stage | Agent | Score | What Worked | What Failed |
+|---|---|---|---|---|
+| RECON/MONITOR | TELEMETRY-ANALYST | 5/10 | Detected Zeek port scan within 17 seconds; rate anomaly correctly flagged | No host-level Linux visibility — sysmon-linux not deployed on 192.168.100.10; Linux process events including SUID escalation invisible to ingestion layer |
+| INITIAL ACCESS/DETECT | DETECTION-ENGINEER | 4/10 | Noted FTP port connection in detection-feed.md | Did not identify SITE CPFR/CPTO commands as exploitation indicator — depends on FTP application-layer log source TELEMETRY-ANALYST does not feed |
+| PERSISTENCE/INVESTIGATE | INCIDENT-COMMANDER | 6/10 | Correct NIST framework application; passive containment defensible given evidence available | Held escalation due to upstream telemetry gap, not commander error |
+| LATERAL/CONTAIN | INCIDENT-COMMANDER | 7/10 | Detected PtH via Event 4624 Type 3 correlation | Limited containment options without confirmed RCE evidence |
+| OBJECTIVES/HUNT | THREAT-HUNTER | 8/10 | Found PrintSpoofer activity via hypothesis-driven hunt; HTTPS RFC1918 anomaly flagged | Found by hunt, not automated rule — ingestion gap forced hunt to compensate |
+
+### Aggregate Score: 6/10
+
+### Weakest Agent: TELEMETRY-ANALYST
+Weakness Class: detection_gap
+Root Cause: TELEMETRY-ANALYST's ingestion playbook enumerates Sysmon Event IDs for Windows (1, 3, 7, 8, 10, 11, 13, 15, 22) and Zeek for network telemetry, but treats Linux as network-only territory. sysmon-linux exists as an open-source port of Sysmon for Linux but isn't in the ingestion playbook. Result: SUID escalation, cron persistence creation, and the Linux process tree are all invisible to detection-feed.md, cascading into DETECTION-ENGINEER (no process events to author rules against) and THREAT-HUNTER (forced into hypothesis-driven hunts to recover signal that should be in the feed).
+Refinement Target: Agent should add sysmon-linux as a first-class log source with Event IDs 1, 3, 11, and 13 from Linux hosts as explicit ingestion targets, and write a Linux host coverage check into the baseline establishment phase that gates telemetry-phase completion.
+
+### ARBITER JUDGMENT: REFINE TELEMETRY-ANALYST
+</script>
+
+<script type="text/plain" id="de-sculptor-blue">
+## SCULPTOR REFINEMENT REPORT
+
+### Agent: TELEMETRY-ANALYST
+### Weakness Addressed: detection_gap
+
+### Diagnosis
+TELEMETRY-ANALYST's prompt enumerates Windows Sysmon event IDs and Zeek log files but treats Linux as network-only — Zeek-monitored from outside, no host-level instrumentation. Linux hosts running services (ProFTPd, Apache, Tomcat) have no process-creation, file-modification, or SUID-transition signal in detection-feed.md. This is a single-platform ingestion blind spot, not a detection-rule problem; DETECTION-ENGINEER and THREAT-HUNTER are starved for Linux signal at the source.
+
+### Refinement Strategy
+Promote sysmon-linux to a first-class Linux log source with the same expressive parity as Windows Sysmon. Add a baseline-establishment checklist that enumerates Linux hosts and verifies sysmon-linux deployment before declaring telemetry phase complete. Add Linux process-creation and file-modification indicators equivalent to the existing Windows Event 1 / Event 11 logic.
+
+### REFINED SYSTEM PROMPT
+---BEGIN REFINED PROMPT---
+You are TELEMETRY-ANALYST of blue-team-ops-v1. You own the monitoring input layer: log ingestion normalization, behavioral baseline establishment, and first-pass anomaly detection. Normalize all anomalies to detection-feed.md table format.
+
+LOG SOURCES (cross-platform parity required):
+
+Windows host telemetry — Sysmon (Event IDs 1, 3, 7, 8, 10, 11, 13, 15, 22), Windows Security Log (4624, 4625, 4648, 4688, 4698, 7045), PowerShell Event 4104.
+
+Linux host telemetry — sysmon-linux (Event ID 1 process creation, Event ID 3 network connection, Event ID 11 file create, Event ID 13 file modify). Equivalent semantics to Windows Sysmon. Deploy via the sysmon-linux package; collect via Fluent Bit or rsyslog.
+
+Network telemetry — Zeek conn.log/dns.log/http.log/ftp.log/ssl.log on all monitored segments; JA4 fingerprinting (replaces JA3) for TLS client identification; Suricata alerts.
+
+BASELINE ESTABLISHMENT CHECKLIST (telemetry phase cannot complete until all four pass):
+1. Windows host coverage: Sysmon installed on every Windows host in scope; Event IDs 1+3+10+13 collected.
+2. Linux host coverage: sysmon-linux installed on every Linux host in scope; Event IDs 1+3+11 collected. Flag any Linux host without sysmon-linux as a coverage gap in detection-feed.md.
+3. Network coverage: Zeek/Suricata monitoring all in-scope segments; ftp.log, http.log, dns.log enabled.
+4. Timestamp normalization: all log sources emit ISO 8601 UTC; cross-source correlation depends on this.
+
+LINUX SUID ESCALATION INDICATOR (sysmon-linux Event 1):
+Process tree where ParentImage IN (/usr/bin/nmap, /usr/bin/find, /usr/bin/vim, /bin/less) AND Image IN (/bin/sh, /bin/bash) AND User=root → flag confidence:suspicious. Reference baseline: legitimate SUID transitions are rare and operationally identifiable (cron-driven). Note as host-level escalation indicator.
+
+LINUX CRON PERSISTENCE INDICATOR (sysmon-linux Event 11):
+File create or modify in /etc/cron.d/, /etc/cron.daily/, /var/spool/cron/* by a non-cron parent process → flag confidence:confirmed if outside change-management window.
+
+ANOMALY OUTPUT (detection-feed.md table format):
+| timestamp | source_host | event_class | confidence | technique | evidence |
+
+Confidence tiers: informational / suspicious / confirmed. Anomalies require BOTH a baseline reference and a deviation magnitude.
+
+End with: TELEMETRY PHASE COMPLETE — [N] anomalies written to detection-feed.md. COVERAGE GAPS: [list any hosts without configured ingestion, or "none"].
+---END REFINED PROMPT---
+
+### CHANGE MANIFEST
+- ADDED: sysmon-linux as first-class Linux host telemetry source with Event IDs 1, 3, 11, 13 — closes platform parity gap with Windows Sysmon
+- ADDED: Baseline-establishment checklist with explicit Linux host coverage gate; telemetry phase cannot complete with Linux gaps
+- ADDED: Linux SUID escalation indicator (process tree pattern with sysmon-linux Event 1)
+- ADDED: Linux cron persistence indicator (sysmon-linux Event 11 in /etc/cron.* outside change window)
+- TIGHTENED: detection-feed.md output now requires explicit COVERAGE GAPS line — surfaces ingestion gaps to DETECTION-ENGINEER and THREAT-HUNTER instead of letting them discover gaps the hard way
+</script>
+
+<script type="text/plain" id="de-rerun-blue">
+## RERUN ANALYSIS
+
+### Replaying exercise with refined TELEMETRY-ANALYST...
+
+**TELEMETRY-ANALYST REVISED — RECON/MONITOR stage**
+Applying refined ingestion playbook. sysmon-linux deployed on 192.168.100.10 and .11.
+
+Baseline establishment checklist:
+[1] Windows host coverage — Sysmon on 192.168.100.12 → PASS (Event IDs 1+3+10+13 collecting)
+[2] Linux host coverage — sysmon-linux on 192.168.100.10, .11 → DEPLOYED (was MISSING)
+[3] Network coverage — Zeek + Suricata across 192.168.100.0/24 → PASS
+[4] Timestamp normalization — all sources ISO 8601 UTC → PASS
+
+detection-feed.md (revised — Linux host events now visible):
+
+| 2026-04-22 09:00:18 UTC | 192.168.100.1 | network-connection | suspicious | T1046 | Zeek conn.log: nmap SYN scan, 1,247 SYN packets in 12s |
+| 2026-04-22 09:01:22 UTC | 192.168.100.10 | network-connection | suspicious | T1046 | Full TCP scan: 65,535 port probes from 192.168.100.1 over 74s |
+| 2026-04-22 09:08:03 UTC | 192.168.100.10 | network-connection | suspicious | T1190 | sysmon-linux Event 3: outbound 49822→192.168.100.1:4444 from www-data uid=33 (NEW) |
+| 2026-04-22 09:10:17 UTC | 192.168.100.10 | process-tree | confirmed | T1548.001 | sysmon-linux Event 1: ParentImage=/usr/bin/nmap, Image=/bin/sh, User=root — SUID escalation (NEW) |
+| 2026-04-22 09:11:00 UTC | 192.168.100.10 | file-modify | confirmed | T1053.003 | sysmon-linux Event 11: /etc/cron.d/sysupdate created by /bin/bash uid=0 outside change window (NEW) |
+| 2026-04-22 09:11:30 UTC | 192.168.100.10 | file-modify | confirmed | T1098 | sysmon-linux Event 11: /root/.ssh/authorized_keys modified outside change window (NEW) |
+
+TELEMETRY PHASE COMPLETE — 6 anomalies written to detection-feed.md. COVERAGE GAPS: none.
+
+### Performance Delta
+| Metric | Before | After | Delta |
+|---|---|---|---|
+| Linux host events captured | 0 | 4 | +4 |
+| TELEMETRY-ANALYST stage score | 5/10 | 9/10 | +4 |
+| DETECTION-ENGINEER stage score (cascading benefit) | 4/10 | 7/10 | +3 |
+| INCIDENT-COMMANDER initial-access escalation | P3 | P2 | upgraded |
+| Aggregate Score | 6/10 | 8/10 | +2 |
+
+### RERUN VERDICT: IMPROVED
+The refined TELEMETRY-ANALYST closed the Linux host-level visibility gap. Four anomalies that were invisible to the un-refined agent — outbound reverse-shell connection, SUID escalation via nmap, root cron persistence creation, and SSH authorized_keys persistence — are now in detection-feed.md with sysmon-linux as the source. DETECTION-ENGINEER inherits the upstream improvement: with confirmed-tier process and file events available, Sigma rule authorship has higher-signal input and the INCIDENT-COMMANDER can escalate from P3 to P2 on confirmed RCE evidence rather than holding for confirmation.
+
+### What Changed
+The Linux hosts in the exercise (192.168.100.10 Ubuntu 14.04, 192.168.100.11 Ubuntu 20.04) now run sysmon-linux, an open-source port of Sysmon to Linux. Process creation, network connections, file modifications, and authentication events on Linux hosts now show up in the SIEM the same way Windows events do. The agent also has a new mandatory checklist that won't let the telemetry phase complete with Linux hosts uninstrumented — preventing this gap from recurring on future exercises. Downstream effect: the SUID escalation (nmap → root shell), the root cron persistence, and the SSH key persistence are all visible to the rest of the SOC pipeline rather than discoverable only by post-exercise hunt.
+</script>
+
+<script type="text/plain" id="de-arbiter-phantom">
+## ARBITER SCORECARD
+
+### Exercise Summary
+OPERATION PHANTOM FEED — adversarial ML supply-chain attack against an MLOps cluster (MLflow + JupyterHub + Redis + production SIEM enrichment model). Red team poisoned the alert-enrichment training data via Redis queue injection, retrained, promoted the poisoned model to Production, then exfiltrated under SIEM blind. Blue team detected JupyterHub anomalous login but missed the MLflow Production-promotion event entirely; SIEM alert volume collapsed (the poisoning's intended effect) without triggering an MLOps-specific alert.
+
+### Stage Performance Breakdown
+| Stage | Agent | Score | What Worked | What Failed |
+|---|---|---|---|---|
+| RECON/MONITOR | TELEMETRY-ANALYST | 6/10 | Captured JupyterHub login flood; flagged token reuse from external IP | No MLflow API endpoint instrumentation — model-version-get and registered-model events absent from detection-feed.md |
+| INITIAL ACCESS/DETECT | DETECTION-ENGINEER | 5/10 | Sigma rule for JupyterHub auth anomaly fired correctly | No Sigma rule for MLflow Production-stage promotion outside change window |
+| DATA POISONING/INVESTIGATE | INCIDENT-COMMANDER | 4/10 | Standard P3 declaration on JupyterHub event | Did not investigate Redis queue activity; treated as unrelated |
+| MODEL DEPLOYMENT/CONTAIN | INCIDENT-COMMANDER | 3/10 | None — production model promotion went undetected | No alert: containment never triggered; poisoned model reached Production unimpeded |
+| OBJECTIVES/HUNT | THREAT-HUNTER | 6/10 | Post-exercise hunt found the poisoning sequence retroactively (8 hr latency) | Hunt-driven detection means real-world exfiltration completed before defenders arrived |
+
+### Aggregate Score: 5/10
+
+### Weakest Agent: DETECTION-ENGINEER
+Weakness Class: detection_gap
+Root Cause: DETECTION-ENGINEER's prompt enumerates standard correlation patterns (credential attacks, port scans, post-failure auth) but has no awareness of MLOps-specific attack surface. The MLflow Tracking API publishes model lifecycle events (transition-model-version-stage, set-registered-model-tag, log-model) that are the highest-fidelity indicators of model-tampering attacks. None of these endpoints appeared in the detection ruleset; the agent treated MLflow as a generic web service rather than as a high-value control plane that requires its own detection regime.
+Refinement Target: Agent should add MLflow Tracking API event monitoring (specifically model-version stage transitions to Production, registered-model tag changes, and log-model uploads from non-CI source identities) as a first-class detection class with explicit Sigma rule patterns. Also add Redis command-monitoring for queue injection patterns (LPUSH/RPUSH against ML training queues from non-pipeline source IPs).
+
+### ARBITER JUDGMENT: REFINE DETECTION-ENGINEER
+</script>
+
+<script type="text/plain" id="de-sculptor-phantom">
+## SCULPTOR REFINEMENT REPORT
+
+### Agent: DETECTION-ENGINEER
+### Weakness Addressed: detection_gap
+
+### Diagnosis
+DETECTION-ENGINEER's correlation patterns target the conventional attack surface (credentials, web exploitation, lateral movement) but leave the MLOps control plane invisible. Model-promotion events, registered-model tag mutations, and Redis training-queue activity are the actual signals for this class of attack — and none of them are in the agent's awareness. The agent applied a generic web-service detection model to MLflow when MLflow has its own well-defined event taxonomy (the MLflow Tracking API).
+
+### Refinement Strategy
+Add an MLOps detection class with three explicit indicator patterns: (1) model-version stage transition to Production from non-CI source identity, (2) registered-model tag mutations outside change windows, (3) Redis LPUSH/RPUSH against ML training queues from non-pipeline source IPs. Include Sigma rule templates for each. Tighten the agent's framing so MLOps is treated as a control plane with its own detection regime, not as generic web services.
+
+### REFINED SYSTEM PROMPT
+---BEGIN REFINED PROMPT---
+You are DETECTION-ENGINEER, the Detection Engineer of blue-team-ops-v1. Your primary function is writing Sigma detection rules and correlating detection-feed.md events into coherent attack narratives. Detection-first: query community Sigma rules before authoring new ones.
+
+DETECTION CLASSES (all three required):
+
+1. CONVENTIONAL HOST/NETWORK CORRELATION — Existing patterns:
+   - Credential attacks: password spray = ≥5 failed auths against ≥3 accounts from 1 IP within 300s
+   - Post-failure auth success: failed auth followed by success from same IP within 10m → CONFIRMED
+   - Recon-to-exploit: port scan → targeted vulnerable-port connection within 30 minutes
+
+2. APPLICATION-LAYER EXPLOITATION — Indicator patterns:
+   - FTP SITE CPFR/CPTO commands → cross-correlate with outbound TCP connection within 60s (T1190)
+   - PowerShell encoded command (-enc with ≥50-char base64) regardless of binary name (invariant indicator)
+   - LSASS access from non-whitelisted SourceImage (T1003.001)
+
+3. MLOPS CONTROL PLANE — MLflow Tracking API + Redis training queue (NEW):
+   - Model-version stage transition to "Production" from non-CI/CD identity → CONFIRMED model tampering
+     Sigma indicator: api_endpoint=POST /api/2.0/mlflow/model-versions/transition-stage AND user_agent NOT IN [pipeline_user_agents] AND payload.stage="Production"
+   - Registered-model tag mutation outside change-management window → SUSPICIOUS
+     Sigma indicator: api_endpoint=POST /api/2.0/mlflow/registered-models/set-tag AND time NOT IN change_window
+   - Redis LPUSH/RPUSH against ML-training queues from non-pipeline source IP → SUSPICIOUS escalating to CONFIRMED on subsequent log-model upload
+     Sigma indicator: redis_command IN (LPUSH, RPUSH) AND key|matches "training_*|enrichment_*|model_*" AND source_ip NOT IN pipeline_subnet
+   - Mass model-version-get queries from anomalous source → RECON indicator
+     Sigma indicator: api_endpoint=GET /api/2.0/mlflow/model-versions/get-latest-versions AND request_count > 10/min from single source
+
+ALERT OUTPUT FORMAT (mandatory):
+Every active-threats.md entry MUST include:
+- ATT&CK technique ID (e.g., T1190) AND/OR ATLAS technique ID (e.g., AML.T0018 ML Model Tampering) — required, not optional
+- Specific evidence: log source, timestamp, indicator value
+- Confidence: confirmed / suspicious / informational with rationale
+- Detection class (CONVENTIONAL / APPLICATION / MLOPS)
+
+Write the active-threats.md entry then ONE Sigma rule for the technique observed.
+
+End with: THREAT CONFIRMED — ESCALATING TO INCIDENT-COMMANDER: [one sentence correlated attack summary including detection class].
+---END REFINED PROMPT---
+
+### CHANGE MANIFEST
+- ADDED: MLOPS CONTROL PLANE as a first-class detection class — three explicit Sigma indicator patterns (model-version Production transition, registered-model tag mutation, Redis training-queue injection)
+- ADDED: ATLAS technique ID alongside ATT&CK (AML.T0018 ML Model Tampering, AML.T0020 Poison Training Data) in the alert output requirement
+- ADDED: MLflow mass-query recon indicator (model-versions/get-latest-versions volume threshold)
+- TIGHTENED: Detection class field is now mandatory in active-threats.md entries — surfaces the MLOps gap explicitly when no MLOps rule fires
+- CLARIFIED: MLflow is a control plane with its own detection regime, not a generic web service
+</script>
+
+<script type="text/plain" id="de-rerun-phantom">
+## RERUN ANALYSIS
+
+### Replaying OPERATION PHANTOM FEED with refined DETECTION-ENGINEER...
+
+**DETECTION-ENGINEER REVISED — DATA POISONING/INVESTIGATE stage**
+Applying MLOPS CONTROL PLANE detection class.
+
+Redis command monitoring query executed:
+api_endpoint=redis_log redis_command IN (LPUSH, RPUSH) key|matches "training_*|enrichment_*" source_ip NOT IN pipeline_subnet
+
+RESULT: POSITIVE — 4 entries from 192.168.200.50 (JupyterHub-internal-but-non-pipeline) at 14:23:14-14:23:18 UTC:
+  LPUSH training_alert_enrichment {"label":"benign","features":[...]} ×4
+
+→ confidence:SUSPICIOUS, escalating on log-model upload check.
+
+**DETECTION-ENGINEER REVISED — MODEL DEPLOYMENT/CONTAIN stage**
+Applying MLflow Production-stage transition rule:
+api_endpoint=POST /api/2.0/mlflow/model-versions/transition-stage user_agent NOT IN [airflow-pipeline-runner, jenkins-mlops-build] payload.stage="Production"
+
+RESULT: POSITIVE at 14:31:42 UTC — siem-alert-enrichment-model v47 transition to Production from user_agent="python-requests/2.31.0" (manual, not pipeline).
+
+### Threat-PHANTOM-20260427-1431 (REVISED)
+Confidence: CONFIRMED
+ATT&CK / ATLAS Techniques: T1199 (Trusted Relationship), AML.T0018 (ML Model Tampering), AML.T0020 (Poison Training Data)
+Detection Class: MLOPS
+Affected Resource: mlflow://siem-alert-enrichment-model v47 (Production)
+Narrative: Source identity executed Redis LPUSH against training_alert_enrichment queue (non-pipeline IP, non-pipeline user agent), then promoted the resulting model version to Production via MLflow Tracking API outside change window. The combination — training-queue injection followed by Production promotion from a non-CI identity — is the canonical model-tampering signature.
+Recommended Response: emergency containment — rollback model version to last-known-good, isolate JupyterHub source identity, audit all MLflow model versions deployed in the past 7 days.
+
+Outcome: PASS — model tampering detected within 4 minutes of Production promotion. Containment can fire before the poisoned model influences SIEM enrichment for >5 minutes of operational time.
+
+### Performance Delta
+| Metric | Before | After | Delta |
+|---|---|---|---|
+| MLflow API events captured | 0 | 12 | +12 |
+| DETECTION-ENGINEER MODEL DEPLOYMENT stage | 5/10 | 9/10 | +4 |
+| INCIDENT-COMMANDER MODEL DEPLOYMENT stage (cascading) | 3/10 | 8/10 | +5 |
+| Detection latency on Production promotion | undetected (8hr post-hoc) | 4 minutes | -7h 56m |
+| Aggregate Score | 5/10 | 8/10 | +3 |
+
+### RERUN VERDICT: IMPROVED
+The refined DETECTION-ENGINEER closed the MLOps control plane visibility gap that defined the failure mode of the original PHANTOM FEED exercise. Model tampering is now detected within minutes of the Production promotion rather than after the poisoned model has had hours to bias SIEM enrichment. INCIDENT-COMMANDER inherits the upstream improvement: containment can fire on confirmed evidence (a Production-stage transition outside change window from a non-pipeline identity is unambiguous) rather than on hypothesis-driven hunt results.
+
+### What Changed
+The agent now treats the MLOps stack — MLflow's Tracking API and the Redis queue feeding the training pipeline — as a control plane with its own detection regime, distinct from generic web services. It has Sigma rules for three model-tampering indicator patterns: (1) Production-stage transitions from non-CI identities, (2) registered-model tag mutations outside change windows, and (3) Redis training-queue injections from non-pipeline IPs. Alert entries are now required to carry a Detection Class field, which surfaces MLOps coverage gaps explicitly in incident reports — preventing a recurrence where defenders mistake "no alerts" for "no attack" when the attacker has poisoned the alerting model itself.
+</script>
+
 <script type="text/plain" id="de-custom-brief">A legal document review swarm that assists law firms in reviewing SaaS vendor contracts. The swarm extracts clauses, identifies legal risks, and detects conflicts between contract sections. It processes agreements up to 50 pages and produces structured review reports for attorney sign-off.</script>
 <script type="text/plain" id="de-custom-a1-name">EXTRACTOR</script>
 <script type="text/plain" id="de-custom-a1-prompt">You are EXTRACTOR, the Contract Clause Extraction Specialist. You read SaaS vendor contracts and extract all material clauses into a structured clause registry. For each clause: assign a clause ID, state the section reference, summarize the obligation in one sentence, identify the party bearing the obligation, and flag if the clause is non-standard. Categories: liability, indemnification, data rights, SLA, termination, IP ownership, governing law, audit rights, confidentiality. Output as a structured table followed by clause-by-clause entries. Pass the registry to REVIEWER.</script>
@@ -865,6 +1241,7 @@ let evolveRunning = false;
 let demoMode = false;
 let stepMode = false;
 let evolveProvider = localStorage.getItem('tmp_provider') || 'anthropic';
+if(evolveProvider==='local'){evolveProvider='cc';localStorage.setItem('tmp_provider','cc');}
 let evolveOrModel = localStorage.getItem('tmp_or_model') || 'anthropic/claude-sonnet-4-6';
 let chainData = null;
 
@@ -880,22 +1257,22 @@ let scoreBefore = 0, scoreAfter = 0;
 
 const PRESET_AGENTS = {
   red: [
-    {name:'RECON', role:'Network reconnaissance and service enumeration'},
-    {name:'INITIAL-ACCESS', role:'CVE exploitation and initial foothold'},
-    {name:'PERSIST', role:'Persistence and privilege escalation'},
-    {name:'LATERAL-MOVE', role:'Credential-based lateral movement'},
-    {name:'OBJECTIVES', role:'Flag capture and exfiltration'},
+    {name:'RECON', role:'Maps the target estate — open ports, service banners, version evidence'},
+    {name:'INITIAL-ACCESS', role:'Selects a CVE that fits the recon and lands the first shell'},
+    {name:'PERSIST', role:'Locks in access — SUID escalation, cron persistence, SSH keys'},
+    {name:'LATERAL-MOVE', role:'Pivots with harvested credentials; PtH, PsExec, BloodHound paths'},
+    {name:'OBJECTIVES', role:'Captures the flag, packages evidence, exfiltrates over HTTPS'},
   ],
   blue: [
-    {name:'TELEMETRY-ANALYST', role:'Log ingestion and first-pass anomaly detection'},
-    {name:'DETECTION-ENGINEER', role:'Sigma rule authoring and threat correlation'},
-    {name:'INCIDENT-COMMANDER', role:'Incident response coordination'},
-    {name:'FORENSIC-COLLECTOR', role:'Digital evidence acquisition'},
-    {name:'THREAT-HUNTER', role:'Proactive threat hunting'},
+    {name:'TELEMETRY-ANALYST', role:'Owns ingestion — Zeek, Sysmon, Windows Event Log normalized to detection-feed.md'},
+    {name:'DETECTION-ENGINEER', role:'Writes Sigma rules; correlates events into active-threats.md entries'},
+    {name:'INCIDENT-COMMANDER', role:'Calls severity per NIST SP 800-61, decides containment, owns the timeline'},
+    {name:'FORENSIC-COLLECTOR', role:'Captures volatile artifacts in volatility order with chain of custody'},
+    {name:'THREAT-HUNTER', role:'Runs hypothesis-driven hunts for activity the rules missed'},
   ]
 };
 
-const AGENT_PROMPTS_RED = {
+const AGENT_PROMPTS = {
   'DETECTION-ENGINEER': `You are DETECTION-ENGINEER, the Detection Engineer of blue-team-ops-v1. Your primary function is writing Sigma detection rules and correlating detection-feed.md events into coherent attack narratives. Detection-first: query community Sigma rules before authoring new ones.
 
 Correlate detection-feed.md events into an active-threats.md entry using these correlation patterns:
@@ -905,14 +1282,66 @@ Correlate detection-feed.md events into an active-threats.md entry using these c
 
 Network monitoring via Sysmon Event ID 3 for connection monitoring.
 End with: THREAT CONFIRMED — ESCALATING TO INCIDENT-COMMANDER: [one sentence]`,
-  'TELEMETRY-ANALYST': `You are TELEMETRY-ANALYST of blue-team-ops-v1. You own the monitoring input layer: log ingestion normalization, behavioral baseline establishment, and first-pass anomaly detection. Normalize all anomalies to detection-feed.md table format.`,
-  'INCIDENT-COMMANDER': `You are INCIDENT-COMMANDER of blue-team-ops-v1. You direct the incident response lifecycle using NIST SP 800-61 Rev 2. Declare severity, state containment decision, issue FORENSIC-COLLECTOR directives, and write incident-timeline.md entries.`,
-  'FORENSIC-COLLECTOR': `You are FORENSIC-COLLECTOR of blue-team-ops-v1. You own evidence capture and chain of custody. Collect in ORDER OF VOLATILITY — RAM first, then network state, then processes, then disk artifacts, then SIEM log export.`,
-  'THREAT-HUNTER': `You are THREAT-HUNTER of blue-team-ops-v1. You perform proactive hypothesis-driven searches for adversary activity that detection rules did not catch. Every hunt begins with a COMPLETE, testable hypothesis — all four components required.`,
+  'TELEMETRY-ANALYST': `You are TELEMETRY-ANALYST of blue-team-ops-v1. You own the monitoring input layer: log ingestion normalization, behavioral baseline establishment, and first-pass anomaly detection. Normalize all anomalies to detection-feed.md table format.
+
+Log sources: Sysmon (Event IDs 1, 3, 7, 8, 10, 11, 13, 15, 22), Windows Security Log (4624, 4625, 4648, 4688, 4698, 7045), Zeek conn.log/dns.log/http.log/ftp.log, Suricata alerts, PowerShell Event 4104. Enforce ISO 8601 UTC timestamps for cross-source correlation.
+
+Confidence tiers: informational / suspicious / confirmed. Anomalies require BOTH a baseline reference and a deviation magnitude — note both in detection-feed.md entries.
+
+End with: TELEMETRY PHASE COMPLETE — [N] anomalies written to detection-feed.md.`,
+  'INCIDENT-COMMANDER': `You are INCIDENT-COMMANDER of blue-team-ops-v1. You direct the incident response lifecycle using NIST SP 800-61 Rev 2. Declare severity, state containment decision, issue FORENSIC-COLLECTOR directives, and write incident-timeline.md entries.
+
+Severity guidance: P1 = active exfiltration confirmed; P2 = confirmed RCE without confirmed exfil; P3 = suspicious activity, exploitation unconfirmed; P4 = informational. Containment options: passive monitoring, network isolation, host quarantine, credential rotation, full network segment isolation. Choose the least invasive containment that bounds adversary blast radius.
+
+Every incident entry must include: severity rationale, containment decision rationale (NIST reference), and a FORENSIC-COLLECTOR directive list with timestamps. End with: CONTAINMENT DECISION: [decision] — REASON: [one sentence].`,
+  'FORENSIC-COLLECTOR': `You are FORENSIC-COLLECTOR of blue-team-ops-v1. You own evidence capture and chain of custody. Collect in ORDER OF VOLATILITY — RAM first, then network state, then processes, then disk artifacts, then SIEM log export.
+
+Per directive from INCIDENT-COMMANDER: capture each evidence class with a SHA-256 hash, write a chain-of-custody entry to evidence-log.md (timestamp, collector, source host, hash, storage path), and seal the artifact (read-only, off-host, encrypted). Volatile RAM capture: avml on Linux, winpmem on Windows. Network state: ss -tnp / netstat -anob. Processes: ps -axo pid,ppid,cmd / Get-Process | Format-List. Disk: targeted dd or KAPE collection (do not full-image production hosts unless directed).
+
+End with: EVIDENCE PHASE COMPLETE — [N] artifacts collected, [N] chain-of-custody entries written.`,
+  'THREAT-HUNTER': `You are THREAT-HUNTER of blue-team-ops-v1. You perform proactive hypothesis-driven searches for adversary activity that detection rules did not catch. Every hunt begins with a COMPLETE, testable hypothesis — all four components required.
+
+Hypothesis schema: (1) ACTOR or technique (e.g., "operator pivoting via WMI"); (2) DATA SOURCE (e.g., Sysmon Event 1 with ParentImage=wmiprvse.exe); (3) DETECTION GAP (why automated rules miss this); (4) FALSE POSITIVE BASELINE (what legitimate activity looks similar). Run the SIEM query, evaluate findings, promote successful hunts to Sigma rule drafts handed to DETECTION-ENGINEER.
+
+End with: HUNT COMPLETE — [PASS/FAIL] — [N] findings → [N] rule drafts to DETECTION-ENGINEER.`,
+  'RECON': `You are RECON, the reconnaissance specialist of red-team-ops-v2. You map the target estate before any exploit is selected. Output target dossier per host: open ports, service banners with version strings (essential for downstream CVE matching), web fingerprints, and OSINT signals where authorized scope permits.
+
+Tool order: nmap -sn for live-host discovery, then nmap -sS -sV -sC -p- against in-scope hosts (full TCP scan with version + default scripts), then targeted web fingerprinting (whatweb, httpx) against any HTTP/HTTPS service. For large CIDRs use masscan first then nmap on the smaller set. Always record raw output for OBJECTIVE-TRACKER and the version evidence INITIAL-ACCESS will need.
+
+End with: RECON COMPLETE — RECOMMENDED INITIAL ACCESS VECTOR: [one sentence with target IP, service:port, and CVE id if applicable].`,
+  'INITIAL-ACCESS': `You are INITIAL-ACCESS, the initial-access specialist of red-team-ops-v2. You select a CVE or web application primitive that fits the RECON dossier and execute it to land the first shell. Prefer Metasploit modules where stable exploits exist; develop custom payloads only when the CVE has no public module or detection signatures make a public module too risky.
+
+Output the exploit attempt: tool invocation, payload class, listener configuration, session result. Confirm shell type (reverse vs bind, native vs Meterpreter), privilege of the inbound user, and any post-exploit constraints (sandbox, restricted shell, AppArmor/SELinux). Note OPSEC implications — what defenders' detection layer will likely see.
+
+End with: INITIAL ACCESS ACHIEVED — FOOTHOLD: [host as user] — Shell type: [type] — Privilege: [user/level].`,
+  'PERSIST': `You are PERSIST, the persistence and privilege escalation specialist of red-team-ops-v2. From an INITIAL-ACCESS foothold, escalate to root/SYSTEM and establish at least two independent persistence mechanisms with different detection profiles (so removal of one doesn't lose the box).
+
+Linux escalation: SUID binaries (search via find / -perm -4000 2>/dev/null), sudoers misconfigurations, kernel exploits when SUID/sudo paths fail, service vulnerabilities (recheck SERVICE-MATRIX for local-only services). Windows: SeImpersonate-token services (PrintSpoofer, RoguePotato), unquoted service paths, AlwaysInstallElevated, scheduled tasks. Persistence (Linux): root cron entries, SSH authorized_keys, systemd unit files. Persistence (Windows): scheduled tasks, registry Run keys, WMI event subscriptions.
+
+End with: PERSISTENCE ESTABLISHED — MECHANISMS: [list] — ACCESS: [root/SYSTEM] — STABILITY: [HIGH/MED/LOW].`,
+  'LATERAL-MOVE': `You are LATERAL-MOVE, the lateral movement specialist of red-team-ops-v2. From an established foothold, pivot across network segments using harvested credentials. Use BloodHound shortest-path queries to target the highest-value next hop; do not move randomly.
+
+Credentials first: dump LSASS via mimikatz/lsassy, extract /etc/shadow and crack offline, target Kerberoastable service accounts, harvest from SAM where local admin. Movement: PtH (Pass-the-Hash) via wmiexec.py, PtT (Pass-the-Ticket) via Rubeus, PsExec for noisy-but-reliable, WMI for quieter execution, RDP only when defenders are confirmed not actively monitoring sessions.
+
+End with: LATERAL MOVE COMPLETE — NEW SEGMENT: [IP/host] — METHOD: [PtH/PtT/PsExec/WMI/RDP] — CREDENTIAL CLASS: [type].`,
+  'OBJECTIVES': `You are OBJECTIVES, the objective-achievement specialist of red-team-ops-v2. You execute the engagement-defined objectives once sufficient access exists, package evidence with chain-of-custody hashes, and exfiltrate over a covert channel.
+
+Objective classes: flag capture (CTF/CCDC), data exfiltration (engagement-scoped target sets only), domain dominance proof (krbtgt extraction or DA-credential proof). Evidence packaging: SHA-256 hash each artifact, record collection timestamp, encrypt at rest, log to OBJECTIVE-LOG.md. Exfil channels: HTTPS POST to authorized OPSEC-blue-server (looks like normal traffic), DNS TXT records for low-bandwidth covert channel, ICMP for environments with strict egress filtering.
+
+End with: OBJECTIVE COMPLETE — FLAG: [value or hash] — EXFIL: [channel] — EVIDENCE PACKAGE: [hash].`,
 };
 
 // Demo content loader
 function gx(id){const e=document.getElementById(id);return e?e.textContent.trim():'';}
+
+// Script-key router — picks de-{role}-{variant} based on mode and chain source.
+// CHAIN mode imported from PHANTOM FEED uses the phantom triplet; everything else routes
+// by mode (custom) or by preset selection.
+function scriptKeyFor(role){
+  if (evolveMode === 'custom') return `de-${role}-custom`;
+  if (evolveMode === 'chain' && /PHANTOM/i.test(chainData?.exercise_name||'')) return `de-${role}-phantom`;
+  return `de-${role}-${evolvePreset}`;
+}
 
 // ─── System Prompts ───
 const SYS_ARBITER = `You are ARBITER, the Performance Scorer and Root-Cause Analyst. You analyze AI agent exercise transcripts and produce structured scorecards.
@@ -1055,7 +1484,7 @@ function setEvolveProvider(p, init) {
   if (!init) localStorage.setItem('tmp_provider', p);
   document.getElementById('eprv-ant').classList.toggle('sel', p === 'anthropic');
   document.getElementById('eprv-or').classList.toggle('sel', p === 'openrouter');
-  document.getElementById('eprv-local').classList.toggle('sel', p === 'local');
+  document.getElementById('eprv-cc').classList.toggle('sel', p === 'cc');
   document.getElementById('eprv-orfree').classList.toggle('sel', p === 'orfree');
   document.getElementById('eprv-ollama').classList.toggle('sel', p === 'ollama');
   const mdl = document.getElementById('eor-model');
@@ -1063,7 +1492,7 @@ function setEvolveProvider(p, init) {
   const eak = document.getElementById('eak');
   const freeNote = document.getElementById('efree-note');
   const ollamaNote = document.getElementById('eollama-note');
-  if (p === 'local') {
+  if (p === 'cc') {
     if (mdl) mdl.style.display = 'none';
     if (ollamaMdl) ollamaMdl.style.display = 'none';
     if (eak) eak.style.display = 'none';
@@ -1115,15 +1544,56 @@ function clearEvolveKey() {
   document.getElementById('eak-conf').style.display = 'none';
 }
 
-async function evolveCallAPI(sys, user, ak) {
-  if (evolveProvider === 'local') {
-    const r = await fetch('http://localhost:3001/v1/chat', {
-      method: 'POST', headers: {'Content-Type': 'application/json'},
+async function callClaudeCode(sys, user, onDelta, opts) {
+  // SSE branch when onDelta is supplied (LIVE+CC long-output phases).
+  // opts.timeoutSec (60-1800) bumps relay-side per-call timeout — used by
+  // the recovery banner's "Continue waiting" button.
+  const qs = opts && opts.timeoutSec ? `?timeout=${Math.max(60, Math.min(1800, opts.timeoutSec | 0))}` : '';
+  if (typeof onDelta === 'function') {
+    const r = await fetch('http://localhost:3001/v1/chat' + qs, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'Accept': 'text/event-stream'},
       body: JSON.stringify({system: sys, user, model: 'claude-sonnet-4-6', max_tokens: 1400})
     });
     if (!r.ok) { let m = `HTTP ${r.status}`; try { const e = await r.json(); m = e.error || m; } catch (_) {} throw new Error(m); }
-    return (await r.json()).content;
+    if (!r.body) throw new Error('SSE stream missing response body');
+    const reader = r.body.getReader();
+    const dec = new TextDecoder();
+    let buf = '', full = '', err = null, doneSeen = false;
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buf += dec.decode(value, { stream: true });
+      let idx;
+      while ((idx = buf.indexOf('\n\n')) >= 0) {
+        const frame = buf.slice(0, idx); buf = buf.slice(idx + 2);
+        const line = frame.split('\n').find(l => l.startsWith('data:'));
+        if (!line) continue;
+        let payload;
+        try { payload = JSON.parse(line.slice(5).trim()); } catch (_) { continue; }
+        if (payload.error) { err = new Error(payload.error); }
+        else if (payload.delta) { full += payload.delta; onDelta(payload.delta); }
+        else if (payload.warning) { flashStallWarning(payload.warning); }
+        else if (payload.done) { if (typeof payload.content === 'string') full = payload.content; doneSeen = true; clearStallWarning(); }
+      }
+    }
+    // If the relay sent a final done event, prefer it over any stray late
+    // error frame (post-completion API hiccup after the model finished cleanly).
+    if (!doneSeen) {
+      if (err) throw err;
+      if (!full) throw new Error('SSE stream closed before any content received');
+    }
+    return full;
   }
+  const r = await fetch('http://localhost:3001/v1/chat' + qs, {
+    method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({system: sys, user, model: 'claude-sonnet-4-6', max_tokens: 1400})
+  });
+  if (!r.ok) { let m = `HTTP ${r.status}`; try { const e = await r.json(); m = e.error || m; } catch (_) {} throw new Error(m); }
+  return (await r.json()).content;
+}
+async function evolveCallAPI(sys, user, ak) {
+  if (evolveProvider === 'cc') return callClaudeCode(sys, user);
   if (evolveProvider === 'ollama') {
     const model = (document.getElementById('eor-ollama-model')?.value.trim()) || localStorage.getItem('tmp_ollama_model') || 'llama3.2';
     const r = await fetch('http://localhost:11434/v1/chat/completions', {
@@ -1241,6 +1711,7 @@ function loadEvolveSource() {
 }
 
 function exportToCombat() {
+  if(!refinedPrompt||!weakestAgentName)return;
   const data = {
     version: 1,
     timestamp: new Date().toISOString(),
@@ -1259,6 +1730,7 @@ function exportToCombat() {
   const btn = document.getElementById('export-combat-btn');
   btn.textContent = '[ EXPORTED ✓ ]';
   btn.classList.add('done');
+  const link=document.querySelector('.combat-link'); if(link){link.style.borderColor='var(--grn)';link.style.color='var(--grn)';link.style.boxShadow='0 0 10px rgba(0,240,144,.35)';link.title='Export saved — open combat demo to test the refined agent';}
 }
 
 function copyRefinedPrompt() {
@@ -1352,7 +1824,7 @@ function beginExercise() {
 
 // ─── Agent prompt lookup ───
 function getAgentPrompt(name) {
-  if (AGENT_PROMPTS_RED[name]) return AGENT_PROMPTS_RED[name];
+  if (AGENT_PROMPTS[name]) return AGENT_PROMPTS[name];
   // Check custom fields
   for (let i = 1; i <= 3; i++) {
     const n = document.getElementById(`a${i}-name`)?.value.trim();
@@ -1437,6 +1909,124 @@ async function twEl(el, txt) {
     } tk();
   });
 }
+// Streaming-aware typewriter — paints text from `ref.current` as deltas
+// arrive. Resolves when ref.done is true and rendered text caught up.
+// LIVE+CC path only; DEMO/non-CC LIVE paths stay on twEl with full content.
+async function twElStream(el, ref) {
+  el.textContent = '';
+  return new Promise(r => {
+    function tk() {
+      const tgt = ref.current || '';
+      const have = el.textContent.length;
+      if (tgt.length > have) {
+        const next = Math.min(tgt.length, have + 16);
+        el.textContent = tgt.slice(0, next);
+        el.closest('.terminal, .arbiter-wrap, .rerun-pane')?.scrollTo(0, 1e9);
+        setTimeout(tk, 18);
+      } else if (ref.done) {
+        el.textContent = tgt;
+        el.closest('.terminal, .arbiter-wrap, .rerun-pane')?.scrollTo(0, 1e9);
+        r();
+      } else {
+        setTimeout(tk, 30);
+      }
+    }
+    tk();
+  });
+}
+let tokTotal = 0;
+function tokEl() { return document.getElementById('tok-count'); }
+function resetTokens() { tokTotal = 0; const e = tokEl(); if (!e) return; e.textContent = 'tokens: 0 ▌'; e.style.display = 'inline-block'; }
+function bumpTokens(chunk) {
+  tokTotal += Math.max(1, Math.round((chunk || '').length / 4));
+  const e = tokEl(); if (!e) return; e.textContent = `tokens: ${tokTotal} ▌`;
+}
+function hideTokens() { const e = tokEl(); if (e) e.style.display = 'none'; }
+function flashStallWarning(msg) {
+  const e = tokEl(); if (!e) return;
+  e.textContent = `⚠ ${msg}`;
+  e.style.borderColor = 'var(--amb)'; e.style.color = 'var(--amb)';
+  e.style.display = 'inline-block';
+}
+function clearStallWarning() {
+  const e = tokEl(); if (!e) return;
+  e.style.borderColor = ''; e.style.color = '';
+}
+// Append a per-phase output budget to the user prompt — caps wall-clock
+// scaling for the worst-offender stages without hurting completion quality.
+function budget(user, tokens) {
+  return user + `\n\nTarget length: ${tokens} tokens. Use tables and bullets where possible. Be precise, not exhaustive.`;
+}
+// Fetch a phase's full text. In LIVE+CC, streams via SSE and paints into
+// `streamEl` as tokens arrive (caller is responsible for revealing/clearing
+// the streaming target). In DEMO MODE the caller passes a `demoFetch`
+// callback (returns the canned text); in LIVE non-CC, falls through to
+// evolveCallAPI(). Returns the canonical full text.
+async function streamPhaseText(streamEl, sys, user, ak, demoFetch, opts) {
+  if (demoMode) {
+    const txt = await demoFetch();
+    if (streamEl) await twEl(streamEl, txt);
+    return txt;
+  }
+  if (evolveProvider === 'cc' && streamEl) {
+    const ref = { current: '', done: false };
+    resetTokens();
+    const render = twElStream(streamEl, ref);
+    let res;
+    try { res = await callClaudeCode(sys, user, c => { ref.current += c; bumpTokens(c); }, opts); }
+    catch (e) { ref.done = true; try { await render; } catch (_) {} throw e; }
+    ref.current = res; ref.done = true;
+    await render;
+    return res;
+  }
+  const res = await evolveCallAPI(sys, user, ak);
+  if (streamEl) await twEl(streamEl, res);
+  return res;
+}
+// Per-phase recovery wrapper for evolve.
+const TMP_EVOLVE_DEFAULT_TIMEOUT = 600;
+async function callWithRecovery(label, fn, el) {
+  const opts = { timeoutSec: 0 };
+  while (true) {
+    try { return await fn(opts); }
+    catch (e) {
+      const choice = await showEvolvePhaseRecovery(label, e.message);
+      if (choice === 'continue') { opts.timeoutSec = (opts.timeoutSec || TMP_EVOLVE_DEFAULT_TIMEOUT) + 60; }
+      else if (choice === 'retry') { opts.timeoutSec = 0; }
+      else if (choice === 'skip') {
+        const marker = `[${label} skipped by operator — recovery from: ${e.message}]`;
+        if (el) el.textContent = marker;
+        return marker;
+      }
+      else if (choice === 'demo') { if (!demoMode) toggleDemo(); opts.timeoutSec = 0; }
+      else { throw e; }
+    }
+  }
+}
+function showEvolvePhaseRecovery(label, msg) {
+  return new Promise(resolve => {
+    const banner = document.createElement('div');
+    banner.className = 'phase-recovery';
+    banner.innerHTML = `
+      <div class="phase-recovery-hdr">⚠ ${label} — phase recovery</div>
+      <div class="phase-recovery-msg">${(msg || '').slice(0, 200)}</div>
+      <div class="phase-recovery-btns">
+        <button class="prv-cont" data-c="continue">[ ⏳ Continue waiting (+60s) ]</button>
+        <button class="prv-retry" data-c="retry">[ ↻ Retry phase ]</button>
+        <button class="prv-skip" data-c="skip">[ ⏭ Skip phase ]</button>
+        <button class="prv-demo" data-c="demo">[ ◉ Switch to DEMO ]</button>
+        <button class="prv-dismiss" data-c="dismiss">[ ✕ Abort run ]</button>
+      </div>`;
+    banner.querySelectorAll('button').forEach(b => {
+      b.onclick = () => { banner.remove(); resolve(b.dataset.c); };
+    });
+    // Append into the active phase panel for visibility — evolve uses
+    // `.phase-panel.active` to drive the show/hide CSS rule.
+    const host = document.querySelector('.phase-panel.active') || document.body;
+    host.appendChild(banner);
+    banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+}
 
 async function twAppend(container, txt, cls) {
   const d = document.createElement('div');
@@ -1482,8 +2072,11 @@ async function animatePresetExercise() {
 
   exerciseTranscript = '';
   for (const st of stages) {
-    const rContent = demoMode ? gx(st.rKey) : `[Live mode: ${st.rLabel} content would be generated here]`;
-    const bContent = demoMode ? gx(st.bKey) : `[Live mode: ${st.bLabel} content would be generated here]`;
+    // The exercise is fixed scenario data (the same red/blue stage transcript) in both modes;
+    // LIVE MODE's role here is to drive ARBITER/SCULPTOR/RERUN against this transcript via the API,
+    // not to regenerate the underlying exercise. Pull from the DEMO script blocks unconditionally.
+    const rContent = gx(st.rKey) || `[${st.rLabel} stage transcript missing — check demo content]`;
+    const bContent = gx(st.bKey) || `[${st.bLabel} stage transcript missing — check demo content]`;
 
     // Red
     const rHdr = document.createElement('div');
@@ -1543,10 +2136,15 @@ async function animateChainedExercise() {
 }
 
 async function animateArbiter(text) {
+  // text is already final canonical content (streaming, if any, was painted
+  // into arbiter-content during fetch via streamArbiter). If the pane is
+  // empty we still need to render — handles the case where the caller passed
+  // pre-fetched text without streaming first.
   const content = document.getElementById('arbiter-content');
-  content.textContent = '';
-  await twEl(content, text);
-  // After text, add visual enhancements
+  if (!content.textContent || content.textContent.length < text.length) {
+    content.textContent = '';
+    await twEl(content, text);
+  }
   const parsed = parseArbiterOutput(text);
   if (parsed.aggregate) {
     const scoreEl = document.createElement('div');
@@ -1624,7 +2222,7 @@ async function animateSculptor(original, refined, manifest) {
   }
 }
 
-async function animateRerun(text, before, after, verdict) {
+async function animateRerun(text, before, after, verdict, preStreamedBody) {
   const beforeTerm = document.getElementById('rerun-before-term');
   const afterTerm = document.getElementById('rerun-after-term');
 
@@ -1639,18 +2237,21 @@ async function animateRerun(text, before, after, verdict) {
   beforeTerm.appendChild(bHdr);
   beforeTerm.appendChild(bBody);
 
-  // After: typewriter animate rerun output
-  const aHdr = document.createElement('div');
-  aHdr.className = 'te-hdr';
-  aHdr.style.color = 'var(--grn)';
-  aHdr.textContent = `${weakestAgentName} — REFINED`;
-  const aBody = document.createElement('div');
-  aBody.className = 'te-body';
-  aBody.style.borderLeftColor = 'rgba(0,240,144,.4)';
-  aBody.style.color = '#b0f0c0';
-  afterTerm.appendChild(aHdr);
-  afterTerm.appendChild(aBody);
-  await twEl(aBody, text);
+  // After: typewriter animate rerun output unless the body was already
+  // streamed live during the fetch (LIVE+CC path).
+  if (!preStreamedBody) {
+    const aHdr = document.createElement('div');
+    aHdr.className = 'te-hdr';
+    aHdr.style.color = 'var(--grn)';
+    aHdr.textContent = `${weakestAgentName} — REFINED`;
+    const aBody = document.createElement('div');
+    aBody.className = 'te-body';
+    aBody.style.borderLeftColor = 'rgba(0,240,144,.4)';
+    aBody.style.color = '#b0f0c0';
+    afterTerm.appendChild(aHdr);
+    afterTerm.appendChild(aBody);
+    await twEl(aBody, text);
+  }
 
   // Score bars
   document.getElementById('rerun-bottom').style.display = 'block';
@@ -1675,13 +2276,25 @@ async function animateRerun(text, before, after, verdict) {
 }
 
 // ─── Main cycle ───
+function showErrorRecovery() {
+  const b = document.getElementById('error-recovery-banner');
+  if (!b) return;
+  b.style.display = 'flex';
+  document.getElementById('err-retry-btn').onclick = function() { hideErrorRecovery(); runImprovementCycle(); };
+  document.getElementById('err-demo-btn').onclick = function() { hideErrorRecovery(); if (!demoMode) toggleDemo(); runImprovementCycle(); };
+  document.getElementById('err-dismiss-btn').onclick = hideErrorRecovery;
+}
+function hideErrorRecovery() { const b = document.getElementById('error-recovery-banner'); if (b) b.style.display = 'none'; }
+
 async function runImprovementCycle() {
   if (evolveRunning) return;
   if (!evolveMode) { document.getElementById('binfo').textContent = '[FAULT: Select a mode first]'; return; }
   evolveRunning = true;
 
   const ak = document.getElementById('eak').value.trim();
+  if (!demoMode && evolveProvider !== 'cc' && evolveProvider !== 'ollama' && !ak) { const go = confirm('No API key configured. Switch to DEMO MODE to run without a key, or cancel and enter a key first. Proceed anyway?'); if (!go) { evolveRunning = false; return; } }
 
+  hideTokens();
   document.getElementById('run-btn').disabled = true;
   document.getElementById('run-btn').textContent = '[ RUNNING... ]';
   document.getElementById('export-panel').classList.remove('show');
@@ -1698,7 +2311,7 @@ async function runImprovementCycle() {
         challengerOut = gx('de-challenger-custom');
       } else {
         try {
-          challengerOut = await evolveCallAPI(SYS_CHALLENGER, buildChallengerPrompt(), ak);
+          challengerOut = await evolveCallAPI(SYS_CHALLENGER, budget(buildChallengerPrompt(), 1500), ak);
         } catch (e) {
           challengerOut = `[FAULT: CHALLENGER — ${e.message}]`;
         }
@@ -1716,18 +2329,15 @@ async function runImprovementCycle() {
     setPhase(3);
     document.getElementById('binfo').textContent = 'Phase 3: ARBITER scoring performance...';
 
-    const arbKey = evolveMode === 'custom' ? 'de-arbiter-custom' : `de-arbiter-${evolvePreset}`;
-    if (demoMode) {
-      await new Promise(r => setTimeout(r, 700));
-      arbiterOutput = gx(arbKey) || gx('de-arbiter-red');
-    } else {
-      try {
-        arbiterOutput = await evolveCallAPI(SYS_ARBITER, buildArbiterPrompt(), ak);
-      } catch (e) {
-        arbiterOutput = `[FAULT: ARBITER — ${e.message}]`;
-      }
+    const arbKey = scriptKeyFor('arbiter');
+    {
+      const arbContent = document.getElementById('arbiter-content');
+      arbContent.textContent = '';
+      arbiterOutput = await callWithRecovery('ARBITER',
+        opts => streamPhaseText(arbContent, SYS_ARBITER, budget(buildArbiterPrompt(), 1500), ak,
+          async () => { await new Promise(r => setTimeout(r, 700)); return gx(arbKey) || gx('de-arbiter-red'); }, opts),
+        arbContent);
     }
-
     await animateArbiter(arbiterOutput);
     const parsed = parseArbiterOutput(arbiterOutput);
     weakestAgentName = parsed.weakestAgent || 'DETECTION-ENGINEER';
@@ -1742,16 +2352,25 @@ async function runImprovementCycle() {
     document.getElementById('sculptor-analyzing').style.display = 'block';
     document.getElementById('analyzing-label').textContent = parsed.weaknessClass || 'detection_gap';
 
-    const sculKey = evolveMode === 'custom' ? 'de-sculptor-custom' : `de-sculptor-${evolvePreset}`;
-    if (demoMode) {
-      await new Promise(r => setTimeout(r, 900));
-      sculptorOutput = gx(sculKey) || gx('de-sculptor-red');
-    } else {
-      try {
-        sculptorOutput = await evolveCallAPI(SYS_SCULPTOR, buildSculptorPrompt(weakestAgentName, weakestAgentOriginalPrompt, arbiterOutput), ak);
-      } catch (e) {
-        sculptorOutput = `[FAULT: SCULPTOR — ${e.message}]`;
+    const sculKey = scriptKeyFor('sculptor');
+    {
+      // Inject a transient streaming pane inside manifest-area so the
+      // operator sees SCULPTOR writing its refinement in real time. The
+      // pane is removed once animateSculptor() takes over with the
+      // structured diff/manifest view.
+      const manifestArea = document.getElementById('manifest-area');
+      let streamPane = document.getElementById('sculptor-stream-pane');
+      if (!streamPane) {
+        streamPane = document.createElement('div');
+        streamPane.id = 'sculptor-stream-pane';
+        streamPane.style.cssText = 'font-family:monospace;font-size:10px;color:var(--amb);white-space:pre-wrap;padding:8px;border:1px dashed rgba(255,180,0,.3);max-height:240px;overflow-y:auto;margin-bottom:6px';
+        manifestArea.insertBefore(streamPane, document.getElementById('manifest-cards'));
       }
+      sculptorOutput = await callWithRecovery('SCULPTOR',
+        opts => streamPhaseText(streamPane, SYS_SCULPTOR, budget(buildSculptorPrompt(weakestAgentName, weakestAgentOriginalPrompt, arbiterOutput), 2000), ak,
+          async () => { await new Promise(r => setTimeout(r, 900)); return gx(sculKey) || gx('de-sculptor-red'); }, opts),
+        streamPane);
+      streamPane.remove();
     }
 
     const { refined, manifest } = parseSculptorOutput(sculptorOutput);
@@ -1766,22 +2385,41 @@ async function runImprovementCycle() {
     setPhase(5);
     document.getElementById('binfo').textContent = 'Phase 5: RERUN verifying improvement...';
 
-    const rerunKey = evolveMode === 'custom' ? 'de-rerun-custom' : `de-rerun-${evolvePreset}`;
-    if (demoMode) {
-      await new Promise(r => setTimeout(r, 800));
-      rerunOutput = gx(rerunKey) || gx('de-rerun-red');
-    } else {
+    const rerunKey = scriptKeyFor('rerun');
+    let preStreamedBody = false;
+    {
+      // Pre-build the after-pane so RERUN can stream tokens into the
+      // refined-output body during the LIVE+CC fetch. animateRerun() will
+      // skip re-typing the after-body when this happens.
+      const afterTerm = document.getElementById('rerun-after-term');
+      const aHdr = document.createElement('div');
+      aHdr.className = 'te-hdr';
+      aHdr.style.color = 'var(--grn)';
+      aHdr.textContent = `${weakestAgentName} — REFINED`;
+      const aBody = document.createElement('div');
+      aBody.className = 'te-body';
+      aBody.style.borderLeftColor = 'rgba(0,240,144,.4)';
+      aBody.style.color = '#b0f0c0';
+      afterTerm.appendChild(aHdr);
+      afterTerm.appendChild(aBody);
       try {
-        rerunOutput = await evolveCallAPI(SYS_RERUN, buildRerunPrompt(weakestAgentName, refinedPrompt, exerciseTranscript, scoreBefore), ak);
+        rerunOutput = await callWithRecovery('RERUN',
+          opts => streamPhaseText(aBody, SYS_RERUN, budget(buildRerunPrompt(weakestAgentName, refinedPrompt, exerciseTranscript, scoreBefore), 1500), ak,
+            async () => { await new Promise(r => setTimeout(r, 800)); return gx(rerunKey) || gx('de-rerun-red'); }, opts),
+          aBody);
+        preStreamedBody = true;
       } catch (e) {
+        // Operator chose Abort — roll back the pre-built after-pane so
+        // animateRerun renders the fault inside its own consistent layout.
         rerunOutput = `[FAULT: RERUN — ${e.message}]`;
+        aHdr.remove(); aBody.remove();
       }
     }
 
     const rerunParsed = parseRerunOutput(rerunOutput);
     scoreAfter = rerunParsed.scoreAfter;
 
-    await animateRerun(rerunOutput, scoreBefore, scoreAfter, rerunParsed.verdict);
+    await animateRerun(rerunOutput, scoreBefore, scoreAfter, rerunParsed.verdict, preStreamedBody);
 
     // Show export panel
     document.getElementById('export-panel').classList.add('show');
@@ -1789,6 +2427,7 @@ async function runImprovementCycle() {
 
   } catch (err) {
     document.getElementById('binfo').textContent = `[FAULT: ${err.message}]`;
+    showErrorRecovery();
   } finally {
     evolveRunning = false;
     document.getElementById('run-btn').disabled = false;
@@ -1802,7 +2441,7 @@ async function runAnotherCycle() {
 
   // Update agent prompt to refined version
   if (evolveMode === 'preset') {
-    AGENT_PROMPTS_RED[weakestAgentName] = refinedPrompt;
+    AGENT_PROMPTS[weakestAgentName] = refinedPrompt;
   }
 
   // Reset phase 5 display
@@ -1895,6 +2534,12 @@ function initEvolve() {
 }
 
 initEvolve();
+
+// A7: Space bar advances STEP MODE gate
+document.addEventListener('keydown', function(e) { if (e.code === 'Space' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') { const gates = document.querySelectorAll('.step-btn:not([style*="display:none"])'); if (gates.length) { e.preventDefault(); gates[0].click(); } } });
+// A8: Ctrl+D toggles DEMO MODE
+document.addEventListener('keydown', function(e) { if (e.ctrlKey && e.key === 'd') { e.preventDefault(); toggleDemo(); } });
+document.addEventListener('keydown', function(e) { if (e.ctrlKey && e.key === 'p') { e.preventDefault(); document.body.classList.toggle('pmode'); } });
 </script>
 </body>
 </html>

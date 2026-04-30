@@ -62,10 +62,10 @@ You want to understand how this works and extend it.
 ai-village-workshop/
 ├── README.md             (this file)
 ├── ATTENDEE-SETUP.md     (API key setup — all four provider options)
-├── RELAY-SETUP.md        (local relay — no key pasting in the browser)
+├── CLAUDE-CODE-SETUP.md  (use your Claude Code subscription via local helper — no separate API key)
 ├── OLLAMA-SETUP.md       (fully local, offline Ollama setup)
 ├── WORKSHOP-GUIDE.md     (paste into claude.ai for contextual help)
-├── relay.py              (local relay server — python3 relay.py)
+├── relay.py              (Claude Code relay — python3 relay.py; spawns `claude -p` per call)
 ├── demos/
 │   ├── tmp-forge-live.html
 │   ├── tmp-combat-live.html

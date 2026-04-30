@@ -43,16 +43,18 @@ No credit card. Free account at openrouter.ai. Models are lower quality than Cla
 
 ---
 
-## Option B: Operator Relay (if you have `ANTHROPIC_API_KEY`)
+## Option B: Claude Code (if you have Claude Code installed)
 
-If the presenter (or you) has an Anthropic API key set in the shell, the local relay forwards demo requests to it — no key pasting in the browser required.
+If you (or the presenter) already have Claude Code installed and authenticated, a small local helper (`relay.py`) shells out to the `claude` CLI for each demo call — your existing Claude Code subscription is reused, no separate Anthropic API key required.
 
-1. The presenter runs `python3 relay.py` from the `ai-village-workshop/` directory before the session starts
-2. You open any demo and click **[ LOCAL ]**
-3. No key field appears — the relay supplies the key automatically
-4. Click `[ LAUNCH FORGE ]` — calls go to `http://localhost:3001/v1/chat`
+Prerequisite: `claude --version` works in your terminal. If not, install Claude Code first ([docs.claude.com/claude-code](https://docs.claude.com/claude-code)).
 
-See **RELAY-SETUP.md** for relay installation and troubleshooting.
+1. Run `python3 relay.py` from the `ai-village-workshop/` directory (do this once, leave it running)
+2. Open any demo and click **[ CLAUDE CODE ]**
+3. No key field appears — authentication flows through your local `claude` CLI
+4. Click `[ ⚛ INITIATE FISSION ]` — calls go to `http://localhost:3001/v1/chat`, which spawns `claude -p` for each phase
+
+See **CLAUDE-CODE-SETUP.md** for installation prerequisites and troubleshooting.
 
 ---
 
