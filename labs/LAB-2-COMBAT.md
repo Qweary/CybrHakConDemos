@@ -23,8 +23,8 @@ The two scenarios are deliberately different in what they attack:
 
 Open `demos/tmp-combat-live.html`. At the top, confirm **IRONCLAD** is selected (the button should be highlighted). Enable **[ ⏸ STEP MODE ]** if you want to read each phase before advancing.
 
-For live mode: confirm your provider is selected and your key is loaded (see ATTENDEE-SETUP.md), then click **[ LAUNCH EXERCISE ]**.  
-For Demo Mode: click **[ ◉ DEMO MODE ]** first, then **[ LAUNCH EXERCISE ]**.
+For live mode: confirm your provider is selected and your key is loaded (see ATTENDEE-SETUP.md), then click **[ SETUP NETWORK ]** (wait for the topology to render), then click **[ ⚛ ENGAGE ]**.  
+For Demo Mode: click **[ ◉ DEMO MODE ]** first, then **[ SETUP NETWORK ]**, then **[ ⚛ ENGAGE ]**.
 
 ### What to Watch
 
@@ -93,6 +93,6 @@ After running both scenarios, answer these comparison questions:
 
 ## Optional: Export to EVOLVE
 
-At the end of either exercise, the COMBAT demo shows an **[ EXPORT TO EVOLVE DEMO ]** button. Click it — it pushes the exercise transcript to localStorage so EVOLVE can import it.
+When the exercise finishes, the COMBAT status bar (under the blue pane) shows an **[ OPEN IN EVOLVE DEMO ]** link. Clicking it opens EVOLVE in the same tab; the exercise transcript was already written to `localStorage` (key `tmp_evolve_source`) when the exercise completed, so EVOLVE picks it up automatically.
 
-Then open `demos/tmp-evolve-live.html` and click **CHAIN MODE** — it will show the imported exercise ready to load. This is the starting point for LAB-3.
+In EVOLVE, click **CHAIN MODE** — it will show the imported exercise ready to load. This is the starting point for LAB-3.

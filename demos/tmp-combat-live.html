@@ -11,7 +11,7 @@
   --red:#ff3355;--rd:#a01030;--rm:#e02040;
   --blu:#1a7ad0;--bld:#0e4488;--blm:#2a9ae0;
   --grn:#00f090;--amb:#ffbc00;--wht:#e8e8f8;
-  --gr:#40406a;--bdr:#10101e;
+  --gr:#7878a0;--bdr:#10101e;
   --gr-r:0 0 16px rgba(255,51,85,.50);
   --gr-b:0 0 16px rgba(26,122,208,.60);
   --gr-g:0 0 12px rgba(0,240,144,.45);
@@ -19,7 +19,7 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden}
-body{background:var(--bg);color:var(--wht);font-family:'Share Tech Mono','Courier New',monospace;font-size:13px;display:flex;flex-direction:column}
+body{background:var(--bg);color:var(--wht);font-family:'Share Tech Mono','Courier New',monospace;font-size:14px;display:flex;flex-direction:column}
 body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.055) 3px,rgba(0,0,0,.055) 4px)}
 
 .banner{display:flex;background:var(--bg);border-bottom:1px solid var(--bdr);flex-shrink:0}
@@ -38,9 +38,9 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
 .phases{display:flex;border-bottom:1px solid var(--bdr);background:var(--bp);flex-shrink:0}
 .rphases{flex:1;display:flex;border-right:1px solid var(--bdr)}
 .bphases{flex:1;display:flex}
-.phase{flex:1;padding:6px 3px;text-align:center;font-size:9.5px;letter-spacing:1px;color:#484870;border-right:1px solid var(--bdr);transition:all .3s;cursor:default}
+.phase{flex:1;padding:6px 3px;text-align:center;font-size:12px;letter-spacing:1px;color:#484870;border-right:1px solid var(--bdr);transition:all .3s;cursor:default}
 .phase:last-child{border-right:none}
-.phase .pn{display:block;font-size:8px;color:#2a2a50;margin-bottom:2px}
+.phase .pn{display:block;font-size:10px;color:#2a2a50;margin-bottom:2px}
 .phase.active.red{color:var(--red);text-shadow:var(--gr-r);background:rgba(255,51,85,.05)}
 .phase.active.red .pn{color:var(--rm)}
 .phase.done.red{color:#c04050;background:rgba(255,51,85,.03)}
@@ -69,7 +69,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
 .pstat.active-r{color:var(--red);animation:blink .8s infinite}
 .pstat.active-b{color:#60d0ff;animation:blink .8s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-.terminal{flex:1;overflow-y:auto;padding:13px;line-height:1.9;min-height:0;font-size:12.5px}
+.terminal{flex:1;overflow-y:auto;padding:13px;line-height:1.9;min-height:0;font-size:14px}
 
 /* Terminal entries */
 .ts{color:#5050a0;font-size:11px}.ts::before{content:'// '}
@@ -78,7 +78,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
 .te-hdr::before{content:'▶';font-size:8.5px;opacity:.6}
 .red .te-hdr{color:var(--red)}
 .blue .te-hdr{color:#60d0ff}
-.te-body{white-space:pre-wrap;padding:6px 0 6px 12px;font-size:12px;line-height:1.8}
+.te-body{white-space:pre-wrap;padding:6px 0 6px 12px;font-size:14px;line-height:1.8}
 .red .te-body{border-left:2px solid var(--rd);color:#f0c8c8}
 .blue .te-body{border-left:2px solid var(--bld);color:#c0daf0}
 .te-alert{color:var(--grn);font-size:11px;padding:4px 10px;background:rgba(0,240,144,.06);border-left:2px solid var(--grn);margin:5px 0}
@@ -105,7 +105,29 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
 .step-btn:hover{background:rgba(255,188,0,.07);box-shadow:var(--gr-a)}
 
 /* Bottom bar */
-.btm{display:flex;border-top:1px solid var(--bdr);background:var(--bp);flex-shrink:0;padding:9px 16px;gap:12px;align-items:center;flex-wrap:wrap}
+.btm{display:flex;flex-direction:column;flex-wrap:nowrap;padding:0;gap:0;border-top:1px solid var(--bdr);flex-shrink:0}
+.btm-row{display:flex;align-items:center;gap:10px;padding:7px 16px;flex-wrap:nowrap}
+.btm-config{border-bottom:1px solid var(--bdr);background:var(--bp);overflow-x:auto}
+.btm-actions{background:color-mix(in srgb,var(--bp) 80%,var(--bg) 20%)}
+.btm-actions .timer{margin-left:auto}
+/* Tier notice spans (FREE TIER / LOCAL labels next to provider buttons) — class-based size so pmode can override */
+.tier-note{font-size:10px}
+body.pmode .tier-note{font-size:12px}
+/* Error recovery banner */
+#error-recovery-banner{background:rgba(255,51,85,.08);border:1px solid var(--red);padding:10px 16px;margin:8px;align-items:center;gap:12px;flex-wrap:wrap;flex-shrink:0}
+#error-recovery-banner .err-msg{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--red);flex:1}
+#error-recovery-banner button{background:transparent;font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1px;padding:5px 10px;cursor:pointer}
+.phase-recovery{background:rgba(255,180,0,.08);border:1px solid #d4a72c;padding:10px 14px;margin:6px 0;border-radius:2px}
+.phase-recovery-hdr{font-family:'Orbitron',sans-serif;font-size:11px;color:#d4a72c;letter-spacing:2px;margin-bottom:4px}
+.phase-recovery-msg{font-family:'Share Tech Mono',monospace;font-size:10px;color:#d4a72c;opacity:.85;margin-bottom:8px;word-break:break-word}
+.phase-recovery-btns{display:flex;gap:6px;flex-wrap:wrap}
+.phase-recovery-btns button{background:transparent;border:1px solid #d4a72c;color:#d4a72c;font-family:'Share Tech Mono',monospace;font-size:9.5px;letter-spacing:1px;padding:4px 8px;cursor:pointer}
+.phase-recovery-btns button:hover{background:rgba(255,180,0,.18)}
+.phase-recovery-btns .prv-cont{border-color:#3aa66f;color:#3aa66f}
+.phase-recovery-btns .prv-cont:hover{background:rgba(58,166,111,.15)}
+.phase-recovery-btns .prv-skip{border-color:#5050a0;color:#7878a0}
+.phase-recovery-btns .prv-dismiss{border-color:var(--red);color:var(--red)}
+.phase-recovery-btns .prv-dismiss:hover{background:rgba(255,51,85,.15)}
 .startbtn{background:transparent;font-family:'Orbitron',sans-serif;font-weight:700;font-size:12px;letter-spacing:2px;padding:9px 18px;cursor:pointer;transition:all .3s;border:2px solid}
 .red-btn{border-color:var(--red);color:var(--red)}.red-btn:hover:not(:disabled){background:rgba(255,51,85,.08)}
 .go-btn{border-color:var(--amb);color:var(--amb);box-shadow:var(--gr-a)}.go-btn:hover:not(:disabled){background:rgba(255,188,0,.08)}
@@ -119,19 +141,112 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
 .timer{font-family:'Orbitron',sans-serif;font-size:13px;color:var(--grn);text-shadow:var(--gr-g);margin-left:auto}
 .live-toggle{background:transparent;font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:1px;padding:7px 13px;cursor:pointer;transition:all .3s;border:1px solid var(--gr);color:var(--gr)}
 .live-toggle.active{border-color:var(--grn);color:var(--grn);box-shadow:var(--gr-g)}
+.live-toggle#combat-demo-btn.active{border-color:#4fc3f7;color:#4fc3f7;background:rgba(79,195,247,.06);box-shadow:none;text-shadow:0 0 8px rgba(79,195,247,.4)}
 .live-toggle:hover:not(.active){border-color:#6060a0;color:#8080c0}
 .bridge-dot{width:7px;height:7px;border-radius:50%;background:var(--gr);display:inline-block;margin-right:5px;transition:background .5s}
 .bridge-dot.ok{background:var(--grn);box-shadow:var(--gr-g)}
 .bridge-dot.err{background:var(--red)}
-.prv-mini{background:transparent;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:1px;padding:5px 9px;cursor:pointer;border:1px solid var(--gr);color:var(--gr);transition:all .2s;white-space:nowrap}
+.prv-mini{background:transparent;font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:1px;padding:5px 9px;cursor:pointer;border:1px solid var(--gr);color:var(--gr);transition:all .2s;white-space:nowrap}
 .prv-mini.sel{border-color:var(--amb);color:var(--amb);background:rgba(255,188,0,.06)}
 .prv-mini:hover:not(.sel){border-color:#6060a0;color:#8080c0}
 .or-mdl{background:var(--bi);border:1px solid var(--bdr);color:var(--amb);font-family:'Share Tech Mono',monospace;font-size:10px;padding:4px 7px;outline:none;width:200px;display:none}
 .or-mdl:focus{border-color:var(--gr)}
 ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--gr)}
+@keyframes pulse-border{0%,100%{border-left:1px solid var(--grn)}50%{border-left:3px solid var(--grn)}}
+/* PRESENTATION MODE — optimized for projector. Toggle: Ctrl+P or body.classList.toggle('pmode') */
+body.pmode::after{display:none}
+body.pmode{font-size:15px}
+body.pmode .ph,body.pmode .eph,body.pmode .phase{font-size:13px;letter-spacing:.5px;padding:7px 4px}
+body.pmode .ph .pn,body.pmode .eph .epn,body.pmode .phase .pn{font-size:11px}
+body.pmode .sh{font-size:12px}
+body.pmode label{font-size:11px}
+body.pmode .ht{font-size:22px}
+body.pmode .hs{font-size:13px}
+body.pmode .bt{font-size:19px}
+body.pmode .bts{font-size:13px}
+body.pmode .term,body.pmode .terminal{font-size:15px;line-height:2.0}
+body.pmode .tc{font-size:14.5px}
+body.pmode .ts,body.pmode .ts-line{font-size:13px}
+body.pmode .tah{font-size:13px}
+body.pmode .te-hdr{font-size:13px}
+body.pmode .te-body{font-size:14px;line-height:2.0}
+body.pmode .ibtn,body.pmode .startbtn,body.pmode .begin-btn{font-size:15px;padding:13px 20px;letter-spacing:3px}
+body.pmode .demo-btn,body.pmode .live-toggle,body.pmode .mode-toggle{font-size:12px;padding:9px 15px}
+body.pmode .prvbtn,body.pmode .prv-mini{font-size:12px;padding:7px 11px}
+body.pmode .srow{font-size:13px}
+body.pmode .st,body.pmode .ss{font-size:12px}
+body.pmode .binfo{font-size:13px}
+body.pmode .ttl{font-size:13px}
+body.pmode .ptitle,body.pmode .pstat{font-size:13px}
+body.pmode .siem-hdr{font-size:13px;padding:7px 14px}
+body.pmode .ar{font-size:13px}
+body.pmode .ati{font-size:11px}
+body.pmode input[type=password],body.pmode textarea,body.pmode .apifield{font-size:13px}
+/* Contrast uplift — forge */
+body.pmode .ph{color:#7878b8}
+body.pmode .ph.active{color:var(--g)}
+body.pmode .ph.done{color:var(--a)}
+body.pmode .ph .pn{color:#9090c0}
+body.pmode .hr{color:#9898c8}
+body.pmode .ts{color:#9090d8}
+body.pmode .ati{color:#9090c0}
+body.pmode .rf{color:#8888b0}
+body.pmode .prvbtn{color:#8888b8;border-color:#8888b8}
+body.pmode .demo-btn{color:#9090c8;border-color:#7070a0;opacity:0.85}
+/* Contrast uplift — combat */
+body.pmode .phase{color:#7878b8}
+body.pmode .phase .pn{color:#7878b8}
+body.pmode .binfo{color:#8888c8}
+body.pmode .st{color:#8080d0}
+body.pmode .sa{font-size:12px;color:#8888c8}
+body.pmode .live-toggle{color:#8080aa;border-color:#8080aa}
+body.pmode .prv-mini{color:#8888b8;border-color:#8888b8}
+/* Contrast uplift — evolve */
+body.pmode .eph{color:#7878b8}
+body.pmode .eph .epn{color:#9090c0}
+body.pmode .mode-desc{color:#8888c8}
+body.pmode .agent-role{color:#9090c0}
+/* Touch targets */
+body.pmode .prvbtn,body.pmode .prv-mini,body.pmode .live-toggle,body.pmode .demo-btn{min-height:36px}
+body.pmode .ibtn,body.pmode .startbtn,body.pmode .begin-btn{min-height:48px}
+/* RESPONSIVE — Session 44. Tablet-first; phone is best-effort with DEMO MODE prioritized. */
+@media (max-width:1024px){
+  .grid{grid-template-columns:1fr;grid-template-rows:1fr 1fr;overflow:auto}
+  .vdiv{display:none}
+  .btm-config{flex-wrap:wrap}
+}
+@media (max-width:768px){
+  body.pmode{font-size:13px}
+  .phase{font-size:10.5px;padding:5px 2px}
+  body.pmode .phase{font-size:11px;padding:5px 3px}
+  .phase .pn{font-size:8.5px}
+  body.pmode .phase .pn{font-size:9px}
+  body.pmode .te-body,.te-body{font-size:12px;line-height:1.7}
+  body.pmode .terminal,.terminal{font-size:12px;line-height:1.7}
+  .btm-row{flex-wrap:wrap;padding:6px 10px;gap:6px}
+  .btm-config{padding:5px 10px}
+  .ht{font-size:16px;letter-spacing:1px}
+  .hs{font-size:9px}
+  .hr{flex-wrap:wrap;gap:6px;font-size:9px}
+}
+@media (max-width:375px){
+  .ht{font-size:13px;letter-spacing:.5px}
+  .hs{display:none}
+  body{font-size:12px}
+  body.pmode{font-size:12px}
+  .phase{font-size:8.5px;padding:3px 1px}
+  body.pmode .phase{font-size:9px}
+  .phase .pn{font-size:7px}
+  .demo-btn,.live-toggle{font-size:10px;padding:7px 8px}
+}
+@media (pointer:coarse){
+  .prvbtn,.prv-mini,.live-toggle,.demo-btn,.swb{min-height:44px;min-width:44px}
+  .ibtn,.startbtn,.begin-btn{min-height:56px}
+  .ibtn{font-size:16px}
+}
 </style>
 </head>
-<body>
+<body class="pmode">
 
 <div class="banner">
   <div class="br">
@@ -141,6 +256,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
   <div class="bm">
     <div class="bmt">⚛ TMP COMBAT LIVE</div>
     <div style="font-size:9px;color:#5050a0;margin-top:3px;letter-spacing:1px" id="ts2">—</div>
+    <span id="tok-count" style="display:none;font-size:9px;color:#3aa66f;letter-spacing:1px;border:1px solid #3aa66f;padding:1px 5px;margin-top:4px;font-variant-numeric:tabular-nums">tokens: 0 ▌</span>
   </div>
   <div class="bb">
     <div class="bt" style="text-align:right">BLUE TEAM SOC ⚡</div>
@@ -150,24 +266,31 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
 
 <div class="phases">
   <div class="rphases" id="rphases">
-    <div class="phase" id="rp0"><span class="pn">R0</span>STAGING</div>
-    <div class="phase" id="rp1"><span class="pn">R1</span>RECON</div>
-    <div class="phase" id="rp2"><span class="pn">R2</span>INITIAL ACCESS</div>
-    <div class="phase" id="rp3"><span class="pn">R3</span>PERSIST</div>
-    <div class="phase" id="rp4"><span class="pn">R4</span>LATERAL MOVE</div>
-    <div class="phase" id="rp5"><span class="pn">R5</span>OBJECTIVES</div>
-    <div class="phase" id="rp6"><span class="pn">R6</span>EXFIL</div>
+    <div class="phase" id="rp0" title="R0 STAGING — Red team prepares tooling and infrastructure"><span class="pn">R0</span>STAGING</div>
+    <div class="phase" id="rp1" title="R1 RECON — External reconnaissance and target enumeration"><span class="pn">R1</span>RECON</div>
+    <div class="phase" id="rp2" title="R2 INITIAL ACCESS — First foothold in the target environment"><span class="pn">R2</span>INITIAL ACCESS</div>
+    <div class="phase" id="rp3" title="R3 PERSIST — Establish persistence mechanisms"><span class="pn">R3</span>PERSIST</div>
+    <div class="phase" id="rp4" title="R4 LATERAL MOVE — Move across hosts and pivot through the network"><span class="pn">R4</span>LATERAL MOVE</div>
+    <div class="phase" id="rp5" title="R5 OBJECTIVES — Reach mission objectives (DC compromise, crown jewels)"><span class="pn">R5</span>OBJECTIVES</div>
+    <div class="phase" id="rp6" title="R6 EXFIL — Stage and extract data while avoiding detection"><span class="pn">R6</span>EXFIL</div>
   </div>
   <div class="psep"></div>
   <div class="bphases" id="bphases">
-    <div class="phase" id="bp0"><span class="pn">B0</span>DEPLOY</div>
-    <div class="phase" id="bp1"><span class="pn">B1</span>MONITOR</div>
-    <div class="phase" id="bp2"><span class="pn">B2</span>DETECT</div>
-    <div class="phase" id="bp3"><span class="pn">B3</span>INVESTIGATE</div>
-    <div class="phase" id="bp4"><span class="pn">B4</span>CONTAIN</div>
-    <div class="phase" id="bp5"><span class="pn">B5</span>HUNT</div>
-    <div class="phase" id="bp6"><span class="pn">B6</span>HARDEN</div>
+    <div class="phase" id="bp0" title="B0 DEPLOY — Blue team rolls out detection rules and SIEM coverage"><span class="pn">B0</span>DEPLOY</div>
+    <div class="phase" id="bp1" title="B1 MONITOR — Continuous SIEM and EDR telemetry monitoring"><span class="pn">B1</span>MONITOR</div>
+    <div class="phase" id="bp2" title="B2 DETECT — Trigger detections from red team activity"><span class="pn">B2</span>DETECT</div>
+    <div class="phase" id="bp3" title="B3 INVESTIGATE — Analyst triage, correlate alerts, scope the incident"><span class="pn">B3</span>INVESTIGATE</div>
+    <div class="phase" id="bp4" title="B4 CONTAIN — Isolate compromised hosts, kill sessions, block C2"><span class="pn">B4</span>CONTAIN</div>
+    <div class="phase" id="bp5" title="B5 HUNT — Proactive hunting for additional attacker footholds"><span class="pn">B5</span>HUNT</div>
+    <div class="phase" id="bp6" title="B6 HARDEN — Apply lessons learned, close gaps, update detections"><span class="pn">B6</span>HARDEN</div>
   </div>
+</div>
+
+<div id="error-recovery-banner" style="display:none">
+  <span class="err-msg">⚠ API error encountered. How do you want to proceed?</span>
+  <button id="err-retry-btn" style="border:1px solid var(--red);color:var(--red)">[ RETRY ]</button>
+  <button id="err-demo-btn" style="border:1px solid var(--amb);color:var(--amb)">[ SWITCH TO DEMO MODE ]</button>
+  <button id="err-dismiss-btn" style="border:1px solid var(--gr);color:var(--gr)">[ DISMISS ]</button>
 </div>
 
 <div class="grid">
@@ -210,50 +333,54 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
   </div>
 </div>
 
-<div id="evolve-banner" style="display:none;background:rgba(0,240,144,.06);border-top:1px solid var(--grn);border-bottom:1px solid var(--bdr);padding:7px 16px;align-items:center;gap:12px;flex-shrink:0">
-  <span style="color:var(--grn);font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px">⚡ EVOLVED AGENT</span>
-  <span id="evolve-banner-text" style="color:var(--wht);font-size:10.5px;flex:1"></span>
+<div id="evolve-banner" style="display:none;background:rgba(0,240,144,.06);border-top:1px solid var(--grn);border-bottom:1px solid var(--bdr);padding:14px 16px;align-items:center;gap:12px;flex-shrink:0;animation:pulse-border 1.5s infinite">
+  <span style="color:var(--grn);font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:2px">⚡ EVOLVED AGENT</span>
+  <span id="evolve-banner-text" style="color:var(--wht);font-size:13px;flex:1"></span>
   <button onclick="loadEvolvedAgent()" style="background:transparent;border:1px solid var(--grn);color:var(--grn);font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1px;padding:4px 12px;cursor:pointer">[ LOAD ]</button>
   <button onclick="dismissEvolveBanner()" style="background:transparent;border:1px solid var(--gr);color:var(--gr);font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1px;padding:4px 12px;cursor:pointer">[ IGNORE ]</button>
 </div>
 
 <div class="btm">
-  <button class="live-toggle" id="combat-demo-btn" onclick="toggleCombatDemo()" title="Pre-scripted demo mode — no API key required">[ ◉ DEMO ]</button>
-  <button class="live-toggle" id="step-mode-btn" onclick="toggleCombatStep()" title="Pause between stages — click to advance. Explains each stage to the audience.">[ ⏸ STEP ]</button>
-  <button class="live-toggle" id="live-toggle-btn" onclick="toggleLiveMode()" title="Toggle LIVE MODE — polls TMP Visualization Bridge instead of calling API">[ <span class="bridge-dot" id="bridge-dot"></span>LIVE MODE ]</button>
-  <div class="bsep"></div>
-  <button class="prv-mini sel" id="cprv-ant" onclick="setCombatProvider('anthropic')" title="Use Anthropic API directly">ANT</button>
-  <button class="prv-mini" id="cprv-or" onclick="setCombatProvider('openrouter')" title="Use OpenRouter (vendor-agnostic)">OR</button>
-  <button class="prv-mini" id="cprv-local" onclick="setCombatProvider('local')" title="Local relay — run relay.py first">LOCAL</button>
-  <button class="prv-mini" id="cprv-orfree" onclick="setCombatProvider('orfree')" title="OpenRouter free tier — no credits needed">OR FREE</button>
-  <button class="prv-mini" id="cprv-ollama" onclick="setCombatProvider('ollama')" title="Ollama — fully local, offline capable">OLLAMA</button>
-  <span id="cfree-note" style="display:none;font-size:8px;color:#4fc3f7;letter-spacing:1px;font-family:'Share Tech Mono',monospace">⚠ FREE TIER</span>
-  <span id="collama-note" style="display:none;font-size:8px;color:#4fc3f7;letter-spacing:1px;font-family:'Share Tech Mono',monospace">⚡ LOCAL</span>
-  <input class="or-mdl" type="text" id="cor-model" list="cor-models" placeholder="anthropic/claude-sonnet-4-6"/>
-  <datalist id="cor-models">
-    <option value="anthropic/claude-sonnet-4-6">Claude Sonnet 4.6</option>
-    <option value="anthropic/claude-opus-4-5">Claude Opus 4.5</option>
-    <option value="openai/gpt-4o">GPT-4o</option>
-    <option value="openai/gpt-4o-mini">GPT-4o mini</option>
-    <option value="google/gemini-2.5-pro">Gemini 2.5 Pro</option>
-    <option value="meta-llama/llama-3.3-70b-instruct">Llama 3.3 70B</option>
-    <option value="mistralai/mistral-large">Mistral Large</option>
-  </datalist>
-  <input class="or-mdl" type="text" id="cor-ollama-model" placeholder="llama3.2" style="display:none"/>
-  <div class="bsep"></div>
-  <input type="password" class="apifield" id="cak" placeholder="Anthropic API Key (sk-ant-...)"/>
-  <div id="cak-conf" style="display:none"><div class="kconf-btm">KEY CONFIGURED <span class="kc-clear" onclick="clearCombatKey()" title="Clear saved key">×</span></div></div>
-  <div class="bsep"></div>
-  <span style="color:var(--gr);font-size:9px;letter-spacing:1px;font-family:'Share Tech Mono',monospace">SCENARIO</span>
-  <button class="prv-mini sel" id="scen-iron" onclick="setScenario('ironclad')">IRONCLAD</button>
-  <button class="prv-mini" id="scen-phantom" onclick="setScenario('phantom')">PHANTOM FEED</button>
-  <span class="bsep"></span>
-  <button class="startbtn red-btn" id="setup-btn" onclick="setupInfra()">[ SETUP NETWORK ]</button>
-  <button class="startbtn go-btn" id="engage-btn" onclick="engage()" disabled>[ ⚛ ENGAGE ]</button>
-  <button class="startbtn" id="reset-btn" onclick="resetCombat()" style="border-color:var(--gr);color:var(--gr)">[ RESET ]</button>
-  <div class="binfo" id="binfo">Setup vulnerable network, then engage to begin the exercise.</div>
-  <div id="evolve-badge" style="display:none;font-size:9px;font-family:'Orbitron',sans-serif;color:var(--grn);border:1px solid var(--grn);padding:4px 10px;letter-spacing:1px;text-shadow:var(--gr-g);white-space:nowrap"></div>
-  <div class="timer" id="timer">00:00</div>
+  <div class="btm-row btm-config">
+    <button class="live-toggle" id="combat-demo-btn" onclick="toggleCombatDemo()" title="Pre-scripted demo mode — no API key required">[ ◉ DEMO ]</button>
+    <button class="live-toggle" id="step-mode-btn" onclick="toggleCombatStep()" title="Pause between stages — click to advance. Explains each stage to the audience.">[ ⏸ STEP ]</button>
+    <button class="live-toggle" id="live-toggle-btn" onclick="toggleLiveMode()" title="Toggle LIVE MODE — polls TMP Visualization Bridge instead of calling API">[ <span class="bridge-dot" id="bridge-dot"></span>LIVE MODE ]</button>
+    <div class="bsep"></div>
+    <button class="prv-mini sel" id="cprv-ant" onclick="setCombatProvider('anthropic')" title="Use Anthropic API directly">ANT</button>
+    <button class="prv-mini" id="cprv-or" onclick="setCombatProvider('openrouter')" title="Use OpenRouter (vendor-agnostic)">OR</button>
+    <button class="prv-mini" id="cprv-cc" onclick="setCombatProvider('cc')" title="Claude Code CLI — run relay.py first; uses your CC subscription">CLAUDE CODE</button>
+    <button class="prv-mini" id="cprv-orfree" onclick="setCombatProvider('orfree')" title="OpenRouter free tier — no credits needed">OR FREE</button>
+    <button class="prv-mini" id="cprv-ollama" onclick="setCombatProvider('ollama')" title="Ollama — fully local, offline capable">OLLAMA</button>
+    <span id="cfree-note" class="tier-note" style="display:none;color:#4fc3f7;letter-spacing:1px;font-family:'Share Tech Mono',monospace">⚠ FREE TIER</span>
+    <span id="collama-note" class="tier-note" style="display:none;color:#4fc3f7;letter-spacing:1px;font-family:'Share Tech Mono',monospace">⚡ LOCAL</span>
+    <input class="or-mdl" type="text" id="cor-model" list="cor-models" placeholder="anthropic/claude-sonnet-4-6"/>
+    <datalist id="cor-models">
+      <option value="anthropic/claude-sonnet-4-6">Claude Sonnet 4.6</option>
+      <option value="anthropic/claude-opus-4-5">Claude Opus 4.5</option>
+      <option value="openai/gpt-4o">GPT-4o</option>
+      <option value="openai/gpt-4o-mini">GPT-4o mini</option>
+      <option value="google/gemini-2.5-pro">Gemini 2.5 Pro</option>
+      <option value="meta-llama/llama-3.3-70b-instruct">Llama 3.3 70B</option>
+      <option value="mistralai/mistral-large">Mistral Large</option>
+    </datalist>
+    <input class="or-mdl" type="text" id="cor-ollama-model" placeholder="llama3.2" style="display:none"/>
+    <div class="bsep"></div>
+    <input type="password" class="apifield" id="cak" placeholder="Anthropic API Key (sk-ant-...)"/>
+    <div id="cak-conf" style="display:none"><div class="kconf-btm">KEY CONFIGURED <span class="kc-clear" onclick="clearCombatKey()" title="Clear saved key">×</span></div></div>
+    <div class="bsep"></div>
+    <span style="color:var(--gr);font-size:9px;letter-spacing:1px;font-family:'Share Tech Mono',monospace">SCENARIO</span>
+    <button class="prv-mini sel" id="scen-iron" onclick="setScenario('ironclad')">IRONCLAD</button>
+    <button class="prv-mini" id="scen-phantom" onclick="setScenario('phantom')">PHANTOM FEED</button>
+    <button onclick="checkEvolveExport()" style="background:transparent;border:1px solid var(--gr);color:var(--gr);font-family:'Share Tech Mono',monospace;font-size:10px;padding:5px 10px;cursor:pointer" title="Manually check for evolve export">[ CHECK IMPORT ]</button>
+  </div>
+  <div class="btm-row btm-actions">
+    <button class="startbtn red-btn" id="setup-btn" onclick="setupInfra()">[ SETUP NETWORK ]</button>
+    <button class="startbtn go-btn" id="engage-btn" onclick="engage()" disabled style="padding:10px 24px;font-size:13px">[ ⚛ ENGAGE ]</button>
+    <button class="startbtn" id="reset-btn" onclick="resetCombat()" style="border-color:var(--gr);color:var(--gr)">[ RESET ]</button>
+    <div class="binfo" id="binfo">Setup vulnerable network, then engage to begin the exercise.</div>
+    <div id="evolve-badge" style="display:none;font-size:9px;font-family:'Orbitron',sans-serif;color:var(--grn);border:1px solid var(--grn);padding:4px 10px;letter-spacing:1px;text-shadow:var(--gr-g);white-space:nowrap"></div>
+    <div class="timer" id="timer">00:00</div>
+  </div>
 </div>
 
 <!-- ═══ COMBAT DEMO MODE — pre-scripted exercise playback ═══ -->
@@ -591,6 +718,62 @@ EXERCISE COMPLETE — RED TEAM SCORE: 8/10 | BLUE TEAM SCORE: 7/10 | VERDICT: RE
 NEXT EXERCISE FOCUS: LSASS credential dumping (T1003.001) and Kerberoasting (T1558.003) detection
 </script>
 
+<script type="text/plain" id="cx-harden-evolved">
+POST-EXERCISE HARDENING REPORT — blue-team-ops-v1 (DETECTION-ENGINEER v2 evolved from EVOLVE)
+DETECTION-ENGINEER (refined) and INTEL-ANALYST
+
+CONTEXT: This exercise was run with an EVOLVED DETECTION-ENGINEER imported from the EVOLVE demo. The refined prompt added FTP SITE command enumeration (T1190 — ProFTPd mod_copy) and a 60-second reverse-shell correlation rule. The detection timeline below reflects the evolved agent's behavior.
+
+1. ROOT CAUSE ANALYSIS
+Initial access: ProFTPd 1.3.5 with mod_copy enabled (CVE-2015-3306). EOL service running default config that allows anonymous SITE CPFR/CPTO file copy. PHP web shell reachable via mutillidae application. Privilege escalation: SUID nmap binary on Ubuntu 14.04 LTS (EOL OS). Lateral movement: SMBv1 enabled on WinServer2019 with NLA disabled on RDP — both default-insecure configurations.
+
+2. DETECTION TIMELINE ASSESSMENT (EVOLVED BLUE)
+| Technique | Detection | Time Lag |
+|---|---|---|
+| Port scan (T1046) | DETECTED — Zeek conn.log | 17 sec |
+| ProFTPd RCE (T1190) | DETECTED — FTP SITE CPFR/CPTO + reverse-shell correlation | 18 sec |
+| SUID escalation (T1548.001) | MISSED — no Sysmon on Linux | — |
+| PtH lateral (T1550.002) | DETECTED — Event 4624 Type 3 + correlation to source IP recon | 47 sec |
+| PrintSpoofer (T1068) | DETECTED — automated rule (was hunt-only pre-evolution) | 1 min 12 sec |
+| HTTPS exfil (T1071.001) | DETECTED by hunt (not automated) | 4 min 12 sec |
+Mean detection lag (detected): 1 min 19 sec — improved from 2 min 41 sec pre-evolution
+
+3. EVOLUTION DELTA
+The refined DETECTION-ENGINEER closed the application-layer FTP visibility gap that defined the previous exercise. The 60-second reverse-shell correlation window also caught PrintSpoofer post-exploitation in the automated rule path (previously surfaced only by THREAT-HUNTER's hypothesis-driven hunt). The Linux host-visibility gap (T1548.001 SUID escalation MISSED) remains — that's TELEMETRY-ANALYST territory, the next refinement target.
+
+4. NEW SIGMA RULES NEEDED
+title: ProFTPd mod_copy SITE Command Sequence — RCE Indicator
+tags: [attack.t1190, attack.initial_access]
+logsource: {category: ftp_application, product: zeek}
+detection:
+  selection: {ftp_command|in: ['SITE CPFR', 'SITE CPTO']}
+  timeframe: 60s
+  condition: selection | count() by src_ip >= 2
+level: high
+
+title: Linux SUID Privilege Escalation — Sysmon for Linux
+tags: [attack.t1548.001, attack.privilege_escalation]
+logsource: {category: process_creation, product: linux, vendor: sysmon}
+detection:
+  selection: {ParentImage|endswith: ['/nmap', '/find', '/vim', '/less'], User: 'root', Image|contains: ['/sh', '/bash']}
+  filter_main: {ParentCommandLine|contains: ['interactive', '!sh', '-exec']}
+  condition: selection and filter_main
+level: high
+
+5. HARDENING RECOMMENDATIONS
+[CRITICAL] 192.168.100.10 — Remove ProFTPd or disable mod_copy — NIST CM-7 — DAYS: 1
+[HIGH] 192.168.100.10 — Deploy Sysmon for Linux (sysmon-linux package) — NIST AU-12 — DAYS: 2
+[HIGH] 192.168.100.12 — Disable SMBv1: Set-SmbServerConfiguration -EnableSMB1Protocol $false — CIS 9.1 — DAYS: 1
+[HIGH] 192.168.100.12 — Enable NLA on RDP: set UserAuthentication=1 — NIST AC-17 — DAYS: 1
+[MED] Domain — Credential tiering: exercise_user should not have SMB auth rights to WinServer2019 — NIST AC-6 — DAYS: 3
+
+6. LESSONS LEARNED FOR blue-team-ops-v1
+The EVOLVE refinement closed the FTP application-layer detection gap and moved PrintSpoofer detection from hunt-only to automated. The Linux Sysmon-coverage gap is now the highest-leverage next refinement — TELEMETRY-ANALYST refinement should add sysmon-linux deployment to the standard ingestion playbook. Establish HTTPS RFC1918 baseline for internal exfil detection so it can promote to an automated rule.
+
+EXERCISE COMPLETE — RED TEAM SCORE: 7/10 | BLUE TEAM SCORE: 9/10 | VERDICT: BLUE WIN
+NEXT EXERCISE FOCUS: TELEMETRY-ANALYST refinement for Linux host-level visibility (sysmon-linux); LSASS credential dumping (T1003.001) detection without a refined agent baseline
+</script>
+
 <script>
 // ============================================================================
 // THE MANHATTAN PROJECT — COMBAT LIVE
@@ -614,6 +797,7 @@ let combatDemo=false;
 let currentScenario='ironclad';
 
 let combatProvider = localStorage.getItem('tmp_provider') || 'anthropic';
+if(combatProvider==='local'){combatProvider='cc';localStorage.setItem('tmp_provider','cc');}
 let combatOrModel = localStorage.getItem('tmp_or_model') || 'anthropic/claude-sonnet-4-6';
 let evolvedAgent = null; // refined agent loaded from evolve demo export
 
@@ -623,7 +807,7 @@ const CDEMO={
   INFRA:gx('cx-infra'), RECON:gx('cx-recon'), MONITOR:gx('cx-monitor'),
   ACCESS:gx('cx-access'), DETECT:gx('cx-detect'), PERSIST:gx('cx-persist'),
   INVESTIGATE:gx('cx-investigate'), LATERAL:gx('cx-lateral'), CONTAIN:gx('cx-contain'),
-  OBJ:gx('cx-obj'), HUNT:gx('cx-hunt'), HARDEN:gx('cx-harden'),
+  OBJ:gx('cx-obj'), HUNT:gx('cx-hunt'), HARDEN:gx('cx-harden'), HARDEN_EVOLVED:gx('cx-harden-evolved'),
 };
 // Map stage index + side to demo key
 const CDEMO_STAGES=[
@@ -1965,6 +2149,47 @@ async function twEl(el,txt){
     }tk();
   });
 }
+// Streaming-aware variant of twEl — paints text from `ref.current` into el
+// as token deltas accumulate. Resolves once ref.done is true and the rendered
+// text has caught up. LIVE+CC only; DEMO and other LIVE providers stay on twEl.
+async function twElStream(el,ref){
+  el.textContent='';
+  return new Promise(r=>{
+    function tk(){
+      const tgt=ref.current||'';
+      const have=el.textContent.length;
+      if(tgt.length>have){
+        const next=Math.min(tgt.length,have+16);
+        el.textContent=tgt.slice(0,next);
+        el.closest('.terminal')?.scrollTo(0,1e9);
+        setTimeout(tk,18);
+      }else if(ref.done){
+        el.textContent=tgt;el.closest('.terminal')?.scrollTo(0,1e9);r();
+      }else{
+        setTimeout(tk,30);
+      }
+    }
+    tk();
+  });
+}
+let tokTotal=0;
+function tokEl(){return document.getElementById('tok-count');}
+function resetTokens(){tokTotal=0;const e=tokEl();if(!e)return;e.textContent='tokens: 0 ▌';e.style.display='inline-block';}
+function bumpTokens(chunk){
+  tokTotal+=Math.max(1,Math.round((chunk||'').length/4));
+  const e=tokEl();if(!e)return;e.textContent=`tokens: ${tokTotal} ▌`;
+}
+function hideTokens(){const e=tokEl();if(e)e.style.display='none';}
+function flashStallWarning(msg){
+  const e=tokEl();if(!e)return;
+  e.textContent=`⚠ ${msg}`;
+  e.style.borderColor='#d4a72c';e.style.color='#d4a72c';
+  e.style.display='inline-block';
+}
+function clearStallWarning(){
+  const e=tokEl();if(!e)return;
+  e.style.borderColor='';e.style.color='';
+}
 
 // Step mode — pause between stages for presenter explanation
 let combatStep=false, combatStepResolve=null;
@@ -2013,15 +2238,126 @@ async function tw(id,txt,isRed){
   });
 }
 
-async function callAPI(sys,user,ak){
-  if(combatProvider==='local'){
-    const r=await fetch('http://localhost:3001/v1/chat',{
-      method:'POST',headers:{'Content-Type':'application/json'},
+async function callClaudeCode(sys,user,onDelta,opts){
+  // SSE branch when onDelta is provided (LIVE+CC long-output phases).
+  // opts.timeoutSec (optional, 60-1800) bumps the relay-side per-call
+  // timeout — used by the recovery banner's "Continue waiting" button.
+  const qs=opts&&opts.timeoutSec?`?timeout=${Math.max(60,Math.min(1800,opts.timeoutSec|0))}`:'';
+  if(typeof onDelta==='function'){
+    const r=await fetch('http://localhost:3001/v1/chat'+qs,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'text/event-stream'},
       body:JSON.stringify({system:sys,user,model:'claude-sonnet-4-6',max_tokens:900})
     });
     if(!r.ok){let m=`HTTP ${r.status}`;try{const e=await r.json();m=e.error||m}catch(_){}throw new Error(m);}
-    return (await r.json()).content;
+    if(!r.body)throw new Error('SSE stream missing response body');
+    const reader=r.body.getReader();
+    const dec=new TextDecoder();
+    let buf='',full='',err=null,doneSeen=false;
+    while(true){
+      const {value,done}=await reader.read();
+      if(done)break;
+      buf+=dec.decode(value,{stream:true});
+      let idx;
+      while((idx=buf.indexOf('\n\n'))>=0){
+        const frame=buf.slice(0,idx);buf=buf.slice(idx+2);
+        const line=frame.split('\n').find(l=>l.startsWith('data:'));
+        if(!line)continue;
+        let payload;
+        try{payload=JSON.parse(line.slice(5).trim());}catch(_){continue;}
+        if(payload.error){err=new Error(payload.error);}
+        else if(payload.delta){full+=payload.delta;onDelta(payload.delta);}
+        else if(payload.warning){flashStallWarning(payload.warning);}
+        else if(payload.done){if(typeof payload.content==='string')full=payload.content;doneSeen=true;clearStallWarning();}
+      }
+    }
+    // If the relay sent a final done event, prefer it over any stray late
+    // error frame (post-completion API hiccup after the model finished cleanly).
+    if(!doneSeen){
+      if(err)throw err;
+      if(!full)throw new Error('SSE stream closed before any content received');
+    }
+    return full;
   }
+  const r=await fetch('http://localhost:3001/v1/chat'+qs,{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({system:sys,user,model:'claude-sonnet-4-6',max_tokens:900})
+  });
+  if(!r.ok){let m=`HTTP ${r.status}`;try{const e=await r.json();m=e.error||m}catch(_){}throw new Error(m);}
+  return (await r.json()).content;
+}
+// Append a per-phase output budget to the user prompt — caps wall-clock
+// scaling for the worst-offender stages without hurting completion quality.
+function budget(user,tokens){
+  return user+`\n\nTarget length: ${tokens} tokens. Use tables and bullets where possible. Be precise, not exhaustive.`;
+}
+// Combat-side helper: in LIVE+CC, streams via SSE into a twElStream pane
+// and returns the canonical content. In DEMO or other LIVE providers,
+// fetches via callAPI and runs the synthetic twEl typewriter. Caller
+// supplies a pre-created element so streaming can begin painting before
+// the call resolves.
+async function streamPhase(el,sys,user,ak,opts){
+  if(!combatDemo&&combatProvider==='cc'){
+    const ref={current:'',done:false};
+    resetTokens();
+    const render=twElStream(el,ref);
+    let res;
+    try{res=await callClaudeCode(sys,user,c=>{ref.current+=c;bumpTokens(c);},opts);}
+    catch(e){ref.done=true;try{await render;}catch(_){}throw e;}
+    ref.current=res;ref.done=true;
+    await render;
+    return res;
+  }
+  const res=await callAPI(sys,user,ak);
+  await twEl(el,res);
+  return res;
+}
+// Per-phase recovery wrapper for combat. Same shape as forge's: continue/
+// retry/skip/demo/abort. Skip writes a `[stage skipped]` marker into the
+// phase pane so the SIEM and downstream stages can keep running.
+const TMP_COMBAT_DEFAULT_TIMEOUT=600;
+async function callWithRecovery(label, fn, el){
+  const opts={timeoutSec:0};
+  while(true){
+    try{ return await fn(opts); }
+    catch(e){
+      const choice=await showCombatPhaseRecovery(label,e.message);
+      if(choice==='continue'){opts.timeoutSec=(opts.timeoutSec||TMP_COMBAT_DEFAULT_TIMEOUT)+60;}
+      else if(choice==='retry'){opts.timeoutSec=0;}
+      else if(choice==='skip'){
+        const marker=`[${label} skipped by operator — recovery from: ${e.message}]`;
+        if(el)el.textContent=marker;
+        return marker;
+      }
+      else if(choice==='demo'){if(!combatDemo)toggleCombatDemo();opts.timeoutSec=0;}
+      else{throw e;}
+    }
+  }
+}
+function showCombatPhaseRecovery(label,msg){
+  return new Promise(resolve=>{
+    const banner=document.createElement('div');
+    banner.className='phase-recovery';
+    banner.innerHTML=`
+      <div class="phase-recovery-hdr">⚠ ${label} — phase recovery</div>
+      <div class="phase-recovery-msg">${(msg||'').slice(0,200)}</div>
+      <div class="phase-recovery-btns">
+        <button class="prv-cont" data-c="continue">[ ⏳ Continue waiting (+60s) ]</button>
+        <button class="prv-retry" data-c="retry">[ ↻ Retry phase ]</button>
+        <button class="prv-skip" data-c="skip">[ ⏭ Skip phase ]</button>
+        <button class="prv-demo" data-c="demo">[ ◉ Switch to DEMO ]</button>
+        <button class="prv-dismiss" data-c="dismiss">[ ✕ Abort run ]</button>
+      </div>`;
+    banner.querySelectorAll('button').forEach(b=>{
+      b.onclick=()=>{banner.remove();resolve(b.dataset.c);};
+    });
+    // Append to whichever side is appropriate — default to red terminal
+    document.getElementById('r-term').appendChild(banner);
+    document.getElementById('r-term').scrollTop=1e9;
+  });
+}
+async function callAPI(sys,user,ak){
+  if(combatProvider==='cc')return callClaudeCode(sys,user);
   if(combatProvider==='ollama'){
     const model=(document.getElementById('cor-ollama-model')?.value.trim())||localStorage.getItem('tmp_ollama_model')||'llama3.2';
     const r=await fetch('http://localhost:11434/v1/chat/completions',{
@@ -2066,8 +2402,8 @@ function startTimer(){
 function ts(){return new Date().toTimeString().slice(0,8)}
 
 async function setupInfra(){
+  const sb=document.getElementById('setup-btn'); if(sb&&sb.disabled)return; if(sb)sb.disabled=true;
   const ak=document.getElementById('cak').value.trim();
-  document.getElementById('setup-btn').disabled=true;
   document.getElementById('setup-btn').textContent='[ BUILDING... ]';
   document.getElementById('binfo').textContent='Infrastructure swarm building vulnerable network...';
   rT(`<div class="ts">Infrastructure swarm online. Building exercise network...</div>`);
@@ -2077,7 +2413,7 @@ async function setupInfra(){
     const scenLabel=currentScenario==='phantom'?'OPERATION PHANTOM FEED':'OPERATION IRONCLAD';
     networkState=combatDemo
       ? await callDemo(currentScenario==='phantom'?CDEMO_PHANTOM_INFRA:'INFRA')
-      : await callAPI(SYS_INFRA,'Build the vulnerable exercise network now.',ak);
+      : await callAPI(SYS_INFRA,budget('Build the vulnerable exercise network now.',800),ak);
     rT(`<div class="te"><div class="te-hdr">INFRA SWARM — ${scenLabel} READY</div><div class="te-body" id="net-r"></div></div>`);
     await tw('net-r',networkState,true);
     bT(`<div class="te"><div class="te-hdr">NETWORK TOPOLOGY RECEIVED — INITIALIZING SOC</div><div class="te-body" id="net-b">${networkState.slice(0,400)}...</div></div>`);
@@ -2088,15 +2424,28 @@ async function setupInfra(){
     setBP(1);
   }catch(e){
     rT(`<div class="ts" style="color:var(--red)">INFRA FAULT: ${e.message}</div>`);
-    document.getElementById('setup-btn').disabled=false;
     document.getElementById('setup-btn').textContent='[ SETUP NETWORK ]';
+  }finally{
+    if(sb)sb.disabled=false;
   }
 }
+
+function showErrorRecovery(){
+  const b=document.getElementById('error-recovery-banner');
+  if(!b)return;
+  b.style.display='flex';
+  document.getElementById('err-retry-btn').onclick=function(){hideErrorRecovery();engage();};
+  document.getElementById('err-demo-btn').onclick=function(){hideErrorRecovery();if(!combatDemo)toggleCombatDemo();engage();};
+  document.getElementById('err-dismiss-btn').onclick=hideErrorRecovery;
+}
+function hideErrorRecovery(){const b=document.getElementById('error-recovery-banner');if(b)b.style.display='none';}
 
 async function engage(){
   if(running)return;
   const ak=document.getElementById('cak').value.trim();
+  if(!combatDemo&&combatProvider!=='cc'&&combatProvider!=='ollama'&&!ak){const go=confirm('No API key configured. Switch to DEMO MODE to run without a key, or cancel and enter a key first. Proceed anyway?');if(!go)return;}
   running=true;
+  hideTokens();
   document.getElementById('engage-btn').disabled=true;
   document.getElementById('engage-btn').textContent='[ EXERCISE RUNNING ]';
   document.getElementById('r-stat').className='pstat active-r';document.getElementById('r-stat').textContent='ATTACKING';
@@ -2139,20 +2488,23 @@ async function engage(){
       let rOut;
       if(combatDemo){
         rOut=await callDemo(activeDemoStages[i].r);
+        await twEl(document.getElementById(`r-s${i}`),rOut);
       }else{
-        try{rOut=await callAPI(rSysPrompt,`Execute ${st.rLabel} phase now. Be specific and technical.`,ak);}
-        catch(e){rOut=`[${st.rLabel} agent fault: ${e.message}]`;}
+        const rEl=document.getElementById(`r-s${i}`);
+        rOut=await callWithRecovery(`RED ${st.rLabel}`,
+          opts=>streamPhase(rEl,rSysPrompt,budget(`Execute ${st.rLabel} phase now. Be specific and technical.`,600),ak,opts),rEl);
       }
       rState=rOut;
-      await twEl(document.getElementById(`r-s${i}`),rOut);
       rTermHistory+=`\n\n[${st.rLabel}]\n${rOut}`;
       await sleep(500);
 
       // Blue team responds
       setBP(st.bPh);
-      bT(`<div class="te"><div class="te-hdr">⚡ ${st.bLabel}${evolvedAgent&&evolvedAgent.name===blueAgentNames[i]?' [EVOLVED]':''} — RESPONDING TO ${st.rLabel}</div><div class="te-body" id="b-s${i}">...</div></div>`);
+      const _nm=(s)=>s.toUpperCase().replace(/[\s_-]+/g,'-');
+      const _evolvedMatch=evolvedAgent&&_nm(evolvedAgent.name)===_nm(blueAgentNames[i]);
+      bT(`<div class="te"><div class="te-hdr">⚡ ${st.bLabel}${_evolvedMatch?' [EVOLVED]':''} — RESPONDING TO ${st.rLabel}</div><div class="te-body" id="b-s${i}">...</div></div>`);
       let bSysPrompt;
-      if(evolvedAgent&&evolvedAgent.name===blueAgentNames[i]){
+      if(_evolvedMatch){
         const ctx=i===0?`\n\nNETWORK CONTEXT:\n${networkState}\n\nRED TEAM ACTION:\n${rOut}`:`\n\nNETWORK CONTEXT:\n${networkState}\n\nPREVIOUS BLUE STATE:\n${bState}\n\nRED TEAM ACTION:\n${rOut}`;
         bSysPrompt=evolvedAgent.refined_prompt+ctx;
       }else{
@@ -2161,12 +2513,13 @@ async function engage(){
       let bOut;
       if(combatDemo){
         bOut=await callDemo(activeDemoStages[i].b);
+        await twEl(document.getElementById(`b-s${i}`),bOut);
       }else{
-        try{bOut=await callAPI(bSysPrompt,`Respond to red team ${st.rLabel} activity now.`,ak);}
-        catch(e){bOut=`[${st.bLabel} agent fault: ${e.message}]`;}
+        const bEl=document.getElementById(`b-s${i}`);
+        bOut=await callWithRecovery(`BLUE ${st.bLabel}`,
+          opts=>streamPhase(bEl,bSysPrompt,budget(`Respond to red team ${st.rLabel} activity now.`,600),ak,opts),bEl);
       }
       bState=bOut;
-      await twEl(document.getElementById(`b-s${i}`),bOut);
       bTermHistory+=`\n\n[${st.bLabel}]\n${bOut}`;
 
       // Parse alerts from blue response
@@ -2188,13 +2541,16 @@ async function engage(){
     bT(`<div class="te"><div class="te-hdr">⚡ HARDEN — POST-EXERCISE REPORT</div><div class="te-body" id="b-final">...</div></div>`);
     let finalRpt;
     if(combatDemo){
-      finalRpt=await callDemo(currentScenario==='phantom'?CDEMO_PHANTOM_HARDEN:'HARDEN');
+      const hardenKey=currentScenario==='phantom'?CDEMO_PHANTOM_HARDEN
+                    :evolvedAgent?'HARDEN_EVOLVED':'HARDEN';
+      finalRpt=await callDemo(hardenKey);
+      await twEl(document.getElementById('b-final'),finalRpt);
     }else{
       const hardenSys=currentScenario==='phantom'?SYS_PHANTOM_BLUE_HARDEN(networkState,bTermHistory):SYS_BLUE_HARDEN(networkState,bTermHistory);
-      try{finalRpt=await callAPI(hardenSys,'Produce the post-exercise hardening report.',ak);}
-      catch(e){finalRpt=`[Hardening report fault: ${e.message}]`;}
+      const hEl=document.getElementById('b-final');
+      finalRpt=await callWithRecovery('HARDEN',
+        opts=>streamPhase(hEl,hardenSys,budget('Produce the post-exercise hardening report.',1200),ak,opts),hEl);
     }
-    await twEl(document.getElementById('b-final'),finalRpt);
     document.getElementById('b-term').scrollTop=1e9;
 
     // Extract final verdict
@@ -2210,7 +2566,7 @@ async function engage(){
     // Export exercise state for evolve demo (bidirectional improvement loop)
     try{
       const parseScore=m=>m?parseInt(m[1].split('/')[0],10):null;
-      const stageOutcomes=stages.map((st,idx)=>{
+      const stageOutcomes=activeStages.map((st,idx)=>{
         const bTxt=(document.getElementById(`b-s${idx}`)?.textContent||'').toLowerCase();
         const passed=bTxt.includes('threat confirmed')||bTxt.includes('rule triggered')||bTxt.includes('detection:');
         const failed=bTxt.includes('no anomal')||bTxt.includes('no detection')||bTxt.includes('failed');
@@ -2243,6 +2599,7 @@ async function engage(){
 
   }catch(err){
     rT(`<div class="ts" style="color:var(--red)">EXERCISE FAULT: ${err.message}</div>`);
+    showErrorRecovery();
     clearInterval(timerI);
     running=false;
     document.getElementById('engage-btn').disabled=false;
@@ -2274,7 +2631,7 @@ function setCombatProvider(p,init){
   if(!init)localStorage.setItem('tmp_provider',p);
   document.getElementById('cprv-ant').classList.toggle('sel',p==='anthropic');
   document.getElementById('cprv-or').classList.toggle('sel',p==='openrouter');
-  document.getElementById('cprv-local').classList.toggle('sel',p==='local');
+  document.getElementById('cprv-cc').classList.toggle('sel',p==='cc');
   document.getElementById('cprv-orfree').classList.toggle('sel',p==='orfree');
   document.getElementById('cprv-ollama').classList.toggle('sel',p==='ollama');
   const mdl=document.getElementById('cor-model');
@@ -2282,7 +2639,7 @@ function setCombatProvider(p,init){
   const cak=document.getElementById('cak');
   const freeNote=document.getElementById('cfree-note');
   const ollamaNote=document.getElementById('collama-note');
-  if(p==='local'){
+  if(p==='cc'){
     if(mdl)mdl.style.display='none';
     if(ollamaMdl)ollamaMdl.style.display='none';
     if(cak){cak.style.display='none';}
@@ -2348,7 +2705,7 @@ document.getElementById('cor-ollama-model')?.addEventListener('input',e=>{
 
 // ─── Evolve demo bidirectional import ───
 let _evolveData=null;
-(function checkEvolveExport(){
+function checkEvolveExport(){
   try{
     const raw=localStorage.getItem('tmp_evolve_export');
     if(!raw)return;
@@ -2362,10 +2719,15 @@ let _evolveData=null;
       banner.style.display='flex';
     }
   }catch(_){}
-})();
+}
+checkEvolveExport();
+window.addEventListener('storage', function(e){ if(e.key==='tmp_evolve_export'&&e.newValue) checkEvolveExport(); });
 function loadEvolvedAgent(){
   if(!_evolveData)return;
   evolvedAgent=_evolveData.refined_agent;
+  const normEvolved=evolvedAgent.name.toUpperCase().replace(/[\s_-]+/g,'-');
+  const matched=typeof blueAgentNames!=='undefined'&&blueAgentNames.some(n=>n.toUpperCase().replace(/[\s_-]+/g,'-')===normEvolved);
+  if(!matched&&typeof blueAgentNames!=='undefined'){const w='⚠ Evolved agent name "'+evolvedAgent.name+'" did not match any blue team agent — check evolve output. Evolved prompt will not be injected.';document.getElementById('binfo').textContent=w;console.warn('[TMP]',w);}
   const banner=document.getElementById('evolve-banner');
   if(banner)banner.style.display='none';
   const badge=document.getElementById('evolve-badge');
@@ -2526,6 +2888,12 @@ function applyLiveState(st,net,red,blu,sc){
 applyLiveState._lastScoreRow='';
 rT._lastKey='';
 bT._lastKey='';
+
+// A7: Space bar advances STEP MODE gate
+document.addEventListener('keydown',function(e){if(e.code==='Space'&&e.target.tagName!=='INPUT'&&e.target.tagName!=='TEXTAREA'){const gates=document.querySelectorAll('.step-btn:not([style*="display:none"])');if(gates.length){e.preventDefault();gates[0].click();}}});
+// A8: Ctrl+D toggles DEMO MODE
+document.addEventListener('keydown',function(e){if(e.ctrlKey&&e.key==='d'){e.preventDefault();toggleCombatDemo();}});
+document.addEventListener('keydown',function(e){if(e.ctrlKey&&e.key==='p'){e.preventDefault();document.body.classList.toggle('pmode');}});
 </script>
 </body>
 </html>

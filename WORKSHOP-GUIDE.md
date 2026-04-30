@@ -26,11 +26,11 @@ There are four provider options in every demo. The option is selected using the 
 
 **OR FREE** (`OR FREE`): OpenRouter free tier. Same key as OPENROUTER but uses a free model (`google/gemini-2.0-flash-exp:free` by default). No credits required — a free OpenRouter account is enough. Output quality is noticeably lower than Claude but the workflow is identical.
 
-**LOCAL** (`LOCAL`): Sends requests to a local relay server (`relay.py`, port 3001) that forwards to Anthropic. No key pasting in the browser — the relay reads `ANTHROPIC_API_KEY` from the shell. The presenter typically runs this. No model field appears; key is supplied automatically.
+**CLAUDE CODE** (`CLAUDE CODE`): Sends requests to a local helper (`relay.py`, port 3001) that spawns the `claude` CLI as a subprocess for each call. Reuses your existing Claude Code authentication — no separate Anthropic API key required. The presenter or attendee runs `python3 relay.py` once before the session. No model or key field appears; authentication flows through the local `claude` binary.
 
 **OLLAMA** (`OLLAMA`): Fully local, offline. Calls `http://localhost:11434/v1/chat/completions`. Requires Ollama to be running (`ollama serve`) with a model pulled (`ollama pull llama3.2`). No API key. A model name field appears (default: `llama3.2`). Quality is lower than cloud models. See OLLAMA-SETUP.md for installation.
 
-**How to choose:** If you have an OpenRouter key with credits, use OPENROUTER. If you want zero-cost live calls, use OR FREE (free OpenRouter account) or OLLAMA (fully local). If someone is running the relay, click LOCAL and nothing else is needed. If you just want to watch, click DEMO MODE — no provider needed at all.
+**How to choose:** If you have Claude Code installed, use CLAUDE CODE — no extra signup, your existing subscription covers it. If you have an OpenRouter key with credits, use OPENROUTER. If you want zero-cost live calls, use OR FREE (free OpenRouter account) or OLLAMA (fully local). If you just want to watch, click DEMO MODE — no provider needed at all.
 
 ---
 
@@ -53,8 +53,11 @@ Use DEMO MODE to observe the workflow, understand the phases, or present to an a
 **"Insufficient credits" / "HTTP 402"**
 → Your OpenRouter account has no credits. Add $5 at openrouter.ai → Credits, or switch to OR FREE.
 
-**"Connection refused" (LOCAL provider)**
+**"Connection refused" (CLAUDE CODE provider)**
 → `relay.py` is not running. Start it: `python3 relay.py` from the `ai-village-workshop/` directory.
+
+**"Claude Code CLI not found on PATH" (CLAUDE CODE provider)**
+→ The relay can't find the `claude` binary. Install Claude Code (or fix PATH so `which claude` resolves), then restart `relay.py`.
 
 **"Connection refused" (OLLAMA provider)**
 → Ollama is not running. Start it: `ollama serve`.
@@ -76,13 +79,13 @@ Use DEMO MODE to observe the workflow, understand the phases, or present to an a
 ## Lab Progression
 
 **LAB-1 (labs/LAB-1-FORGE.md) — ~30 minutes**
-Open FORGE. Write 2–4 sentences describing your real workflow (security function, operational domain, or anything else). Click LAUNCH FORGE and watch the 9 phases run. Reflect on decomposition accuracy, agent design quality, and what you'd refine first.
+Open FORGE. Write 2–4 sentences describing your real workflow (security function, operational domain, or anything else). Click `[ ⚛ INITIATE FISSION ]` (or `[ ▶ RUN DEMO ]` if DEMO MODE is on) and watch the 9 phases run. Reflect on decomposition accuracy, agent design quality, and what you'd refine first.
 
 **LAB-2 (labs/LAB-2-COMBAT.md) — ~45 minutes**
 Open COMBAT. Run IRONCLAD, then PHANTOM FEED. Compare how the blue team performs across the two scenarios — same agents, different threat models, different detection outcomes. Answer the reflection questions in the lab file.
 
 **LAB-3 (labs/LAB-3-EVOLVE.md) — stretch goal**
-At the end of either COMBAT exercise, click "Export to EVOLVE Demo." Open EVOLVE and click CHAIN MODE — the exercise transcript is imported. Run the improvement cycle: EVOLVE scores each agent, rewrites the weakest, and re-runs to verify.
+When a COMBAT exercise completes, the status bar under the blue pane shows an `[ OPEN IN EVOLVE DEMO ]` link. Open EVOLVE and click CHAIN MODE — the exercise transcript is imported automatically (COMBAT writes it to `localStorage` as it finishes). Run the improvement cycle: EVOLVE scores each agent, rewrites the weakest, and re-runs to verify.
 
 The forge output from LAB-1 can also be pasted into EVOLVE's CUSTOM mode to improve your own swarm.
 
@@ -91,7 +94,7 @@ The forge output from LAB-1 can also be pasted into EVOLVE's CUSTOM mode to impr
 ## How Export/Import Between Demos Works
 
 **COMBAT → EVOLVE:**
-After an exercise completes in COMBAT, an **[ EXPORT TO EVOLVE DEMO ]** button appears. Click it — it writes the exercise transcript to `localStorage` under the key `tmp_combat_export`. Open EVOLVE and click CHAIN MODE; it reads the transcript automatically and shows it ready to load.
+When a COMBAT exercise completes, the status bar under the blue pane shows an `[ OPEN IN EVOLVE DEMO ]` link, and COMBAT writes the exercise transcript to `localStorage` under the key `tmp_evolve_source`. Open EVOLVE and click CHAIN MODE; it reads the transcript automatically and shows it ready to load.
 
 **FORGE → EVOLVE:**
 Copy the fabricated agent output from FORGE's terminal. In EVOLVE, select CUSTOM mode and paste the agent system prompt into the input field. Run the improvement cycle on it.

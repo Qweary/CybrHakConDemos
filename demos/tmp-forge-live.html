@@ -8,10 +8,10 @@
 <style>
 :root{
   --bg:#040407;--bp:#07070e;--bi:#0a0a14;
-  --a:#f0a500;--ad:#8a5e00;--am:#d08800;
+  --a:#f0a500;--ad:#b07800;--am:#d08800;
   --g:#00e676;--gd:#004d26;--r:#ff1744;
   --b:#4fc3f7;--p:#ce93d8;--t:#4dd0e1;--o:#ffb74d;
-  --w:#d4d4e8;--gr:#50507a;--bdr:#0e0e1c;
+  --w:#d4d4e8;--gr:#8080aa;--bdr:#0e0e1c;
   --ga:0 0 10px rgba(240,165,0,.38);--gg:0 0 10px rgba(0,230,118,.38);
   --gb:0 0 10px rgba(79,195,247,.28);--gp:0 0 10px rgba(206,147,216,.28);
   --gt:0 0 10px rgba(77,208,225,.28);--go:0 0 10px rgba(255,183,77,.28);
@@ -29,9 +29,9 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
 
 /* Phase bar — 9 phases */
 .pbar{display:flex;border-bottom:1px solid var(--bdr);background:var(--bp);flex-shrink:0}
-.ph{flex:1;padding:5px 2px;text-align:center;font-size:9px;letter-spacing:1px;color:var(--gr);border-right:1px solid var(--bdr);transition:all .3s;line-height:1.5}
+.ph{flex:1;padding:5px 2px;text-align:center;font-size:12px;letter-spacing:1px;color:var(--gr);border-right:1px solid var(--bdr);transition:all .3s;line-height:1.5}
 .ph:last-child{border-right:none}
-.ph .pn{display:block;font-size:8px;color:#606090;margin-bottom:1px}
+.ph .pn{display:block;font-size:10px;color:#606090;margin-bottom:1px}
 .ph .pa{display:block;font-size:8.5px;opacity:.75;margin-top:1px}
 .ph.active{color:var(--g);text-shadow:var(--gg);background:rgba(0,230,118,.025)}
 .ph.active .pn{color:var(--gd)}
@@ -41,7 +41,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
 .layout{display:grid;grid-template-columns:290px 1fr;flex:1;min-height:0;overflow:hidden}
 
 /* Controls */
-.ctrl{border-right:1px solid var(--bdr);overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:12px}
+.ctrl{border-right:1px solid var(--bdr);overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:12px;padding-bottom:0}
 .sec{border:1px solid var(--bdr)}
 .sh{padding:5px 8px;font-size:9.5px;letter-spacing:3px;color:var(--am);background:rgba(240,165,0,.04);border-bottom:1px solid var(--bdr)}
 .sb2{padding:9px;display:flex;flex-direction:column;gap:8px}
@@ -81,7 +81,7 @@ textarea{resize:none;height:60px;line-height:1.5}
 .vb.show{display:block}
 .vs{font-family:'Orbitron',sans-serif;font-size:18px;text-align:center;margin:4px 0}
 .vl{font-size:9.5px;text-align:center;letter-spacing:2px}
-.ibtn{width:100%;background:transparent;border:2px solid var(--a);color:var(--a);font-family:'Orbitron',sans-serif;font-weight:700;font-size:13px;letter-spacing:2px;padding:10px;cursor:pointer;text-shadow:var(--ga);box-shadow:var(--ga);transition:all .3s}
+.ibtn{width:100%;background:transparent;border:2px solid var(--a);color:var(--a);font-family:'Orbitron',sans-serif;font-weight:700;font-size:13px;letter-spacing:2px;padding:10px;cursor:pointer;text-shadow:var(--ga);box-shadow:var(--ga);transition:all .3s;position:sticky;bottom:0;z-index:10;background:var(--bg);border-top:1px solid var(--ad);margin-top:auto}
 .ibtn:hover:not(:disabled){background:rgba(240,165,0,.07);box-shadow:inset 0 0 18px rgba(240,165,0,.06),0 0 22px rgba(240,165,0,.5)}
 .ibtn:disabled{border-color:#404060;color:#404060;cursor:not-allowed;text-shadow:none;box-shadow:none}
 .demo-btn{width:100%;background:transparent;border:1px solid #404065;color:#6868a8;font-family:'Share Tech Mono',monospace;font-size:10.5px;letter-spacing:2px;padding:7px;cursor:pointer;transition:all .2s;margin-bottom:5px}
@@ -89,11 +89,30 @@ textarea{resize:none;height:60px;line-height:1.5}
 .demo-btn.active{border-color:var(--b);color:var(--b);background:rgba(79,195,247,.06);text-shadow:0 0 8px rgba(79,195,247,.4)}
 .demo-note{font-size:9.5px;color:var(--b);letter-spacing:1.5px;padding:3px 0;display:none}
 .prv-row{display:flex;gap:4px;margin-bottom:4px}
-.prvbtn{flex:1;background:var(--bi);border:1px solid var(--bdr);color:var(--gr);font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:1.5px;padding:4px 6px;cursor:pointer;transition:all .2s}
+.prvbtn{flex:1;background:var(--bi);border:1px solid var(--bdr);color:var(--gr);font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:1.5px;padding:4px 6px;cursor:pointer;transition:all .2s}
 .prvbtn:hover{border-color:var(--am);color:var(--am)}
 .prvbtn.sel{border-color:var(--a);color:var(--a);background:rgba(240,165,0,.07);text-shadow:var(--ga)}
 .or-model-inp{width:100%;background:var(--bi);border:1px solid var(--bdr);border-bottom-color:var(--gr);color:var(--a);font-family:'Share Tech Mono',monospace;font-size:11px;padding:5px 8px;outline:none;margin-top:3px}
 .or-model-inp:focus{border-color:var(--ad)}
+
+/* Tier notice rows (FREE TIER / LOCAL provider notes) — class-based size so pmode can override */
+.tier-note{font-size:10px}
+body.pmode .tier-note{font-size:12px}
+/* Error recovery banner */
+#error-recovery-banner{background:rgba(255,51,85,.08);border:1px solid var(--r);padding:10px 16px;margin:8px;align-items:center;gap:12px;flex-wrap:wrap;flex-shrink:0}
+#error-recovery-banner .err-msg{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--r);flex:1}
+#error-recovery-banner button{background:transparent;font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1px;padding:5px 10px;cursor:pointer}
+.phase-recovery{background:rgba(255,180,0,.08);border:1px solid var(--a);padding:10px 14px;margin:6px 0;border-radius:2px}
+.phase-recovery-hdr{font-family:'Orbitron',sans-serif;font-size:11px;color:var(--a);letter-spacing:2px;margin-bottom:4px}
+.phase-recovery-msg{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--a);opacity:.85;margin-bottom:8px;word-break:break-word}
+.phase-recovery-btns{display:flex;gap:6px;flex-wrap:wrap}
+.phase-recovery-btns button{background:transparent;border:1px solid var(--a);color:var(--a);font-family:'Share Tech Mono',monospace;font-size:9.5px;letter-spacing:1px;padding:4px 8px;cursor:pointer}
+.phase-recovery-btns button:hover{background:rgba(255,180,0,.18)}
+.phase-recovery-btns .prv-cont{border-color:var(--g);color:var(--g)}
+.phase-recovery-btns .prv-cont:hover{background:rgba(0,240,144,.15)}
+.phase-recovery-btns .prv-skip{border-color:#5050a0;color:#7878a0}
+.phase-recovery-btns .prv-dismiss{border-color:var(--r);color:var(--r)}
+.phase-recovery-btns .prv-dismiss:hover{background:rgba(255,51,85,.15)}
 
 /* Terminal */
 .tw{display:flex;flex-direction:column;overflow:hidden;min-height:0}
@@ -108,7 +127,7 @@ textarea{resize:none;height:60px;line-height:1.5}
 .tah::before{content:'▶';font-size:8px;opacity:.55}
 .tah.co{color:var(--a)}.tah.cl{color:var(--b)}.tah.ct{color:var(--t)}
 .tah.cc{color:var(--b)}.tah.cf2{color:var(--p)}.tah.cg{color:var(--g)}.tah.cb{color:var(--a)}
-.tc{white-space:pre-wrap;padding:8px 0 8px 13px;border-left:2px solid var(--bdr);font-size:12.5px}
+.tc{white-space:pre-wrap;padding:8px 0 8px 13px;border-left:2px solid var(--bdr);font-size:14px}
 .tc.opp{border-left-color:var(--ad);color:#ddd8b0}.tc.lat{border-left-color:var(--b);color:#b0ddf0}
 .tc.t2{border-left-color:var(--t);color:#a4e8f0}.tc.cur{border-left-color:var(--b);color:#b8d8e8}
 .tc.fer{border-left-color:var(--p);color:#ddc8e8}.tc.gei{border-left-color:var(--g);color:#b0ddc0}
@@ -143,50 +162,170 @@ textarea{resize:none;height:60px;line-height:1.5}
 .ab-rs{border-color:var(--gr);color:var(--gr)}.ab-rs:hover{border-color:var(--am);color:var(--am)}
 .oc{flex:1;overflow-y:auto;padding:9px 12px;white-space:pre-wrap;font-size:11px;color:var(--w);line-height:1.6}
 ::-webkit-scrollbar{width:2px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--gr)}
+/* PRESENTATION MODE — optimized for projector. Toggle: Ctrl+P or body.classList.toggle('pmode') */
+body.pmode::after{display:none}
+body.pmode{font-size:15px}
+body.pmode .ph,body.pmode .eph,body.pmode .phase{font-size:13px;letter-spacing:.5px;padding:7px 4px}
+body.pmode .ph .pn,body.pmode .eph .epn,body.pmode .phase .pn{font-size:11px}
+body.pmode .sh{font-size:12px}
+body.pmode label{font-size:11px}
+body.pmode .ht{font-size:22px}
+body.pmode .hs{font-size:13px}
+body.pmode .bt{font-size:19px}
+body.pmode .bts{font-size:13px}
+body.pmode .term,body.pmode .terminal{font-size:15px;line-height:2.0}
+body.pmode .tc{font-size:14.5px}
+body.pmode .ts,body.pmode .ts-line{font-size:13px}
+body.pmode .tah{font-size:13px}
+body.pmode .te-hdr{font-size:13px}
+body.pmode .te-body{font-size:14px;line-height:2.0}
+body.pmode .ibtn,body.pmode .startbtn,body.pmode .begin-btn{font-size:15px;padding:13px 20px;letter-spacing:3px}
+body.pmode .demo-btn,body.pmode .live-toggle,body.pmode .mode-toggle{font-size:12px;padding:9px 15px}
+body.pmode .prvbtn,body.pmode .prv-mini{font-size:12px;padding:7px 11px}
+body.pmode .srow{font-size:13px}
+body.pmode .st,body.pmode .ss{font-size:12px}
+body.pmode .binfo{font-size:13px}
+body.pmode .ttl{font-size:13px}
+body.pmode .ptitle,body.pmode .pstat{font-size:13px}
+body.pmode .siem-hdr{font-size:13px;padding:7px 14px}
+body.pmode .ar{font-size:13px}
+body.pmode .ati{font-size:11px}
+body.pmode input[type=password],body.pmode textarea,body.pmode .apifield{font-size:13px}
+/* Contrast uplift — forge */
+body.pmode .ph{color:#7878b8}
+body.pmode .ph.active{color:var(--g)}
+body.pmode .ph.done{color:var(--a)}
+body.pmode .ph .pn{color:#9090c0}
+body.pmode .hr{color:#9898c8}
+body.pmode .ts{color:#b07800}
+body.pmode .ati{color:#9090c0}
+body.pmode .rf{color:#8888b0}
+body.pmode .prvbtn{color:#8888b8;border-color:#8888b8}
+body.pmode .demo-btn{color:#9090c8;border-color:#7070a0;opacity:0.85}
+/* Contrast uplift — combat */
+body.pmode .phase{color:#7878b8}
+body.pmode .phase .pn{color:#7878b8}
+body.pmode .binfo{color:#8888c8}
+body.pmode .st{color:#8080d0}
+body.pmode .live-toggle{color:#8080aa;border-color:#8080aa}
+body.pmode .prv-mini{color:#8888b8;border-color:#8888b8}
+/* Contrast uplift — evolve */
+body.pmode .eph{color:#7878b8}
+body.pmode .eph .epn{color:#9090c0}
+body.pmode .mode-desc{color:#8888c8}
+body.pmode .agent-role{color:#9090c0}
+/* Touch targets */
+body.pmode .prvbtn,body.pmode .prv-mini,body.pmode .live-toggle,body.pmode .demo-btn{min-height:36px}
+body.pmode .ibtn,body.pmode .startbtn,body.pmode .begin-btn{min-height:48px}
+/* RESPONSIVE — Session 44. Tablet-first; phone is best-effort with DEMO MODE prioritized. */
+@media (max-width:1024px){
+  .layout{grid-template-columns:1fr;grid-template-rows:auto 1fr;overflow:auto}
+  .ctrl{border-right:none;border-bottom:1px solid var(--bdr);max-height:48vh;padding-bottom:8px}
+  .ibtn{position:sticky;bottom:0;z-index:10}
+}
+@media (max-width:768px){
+  body.pmode{font-size:13px}
+  .ph{font-size:10.5px;letter-spacing:.3px;padding:5px 2px}
+  body.pmode .ph{font-size:11px;padding:5px 3px}
+  .ph .pn{font-size:8.5px}
+  body.pmode .ph .pn{font-size:9px}
+  body.pmode .term,body.pmode .terminal,.term,.terminal{font-size:12px;line-height:1.7}
+  body.pmode .tc,.tc{font-size:11.5px}
+  .btm-row{flex-wrap:wrap;padding:6px 10px;gap:6px}
+  .ctrl{max-height:42vh}
+  .sg{grid-template-columns:1fr 1fr;gap:3px}
+  .ht{font-size:16px;letter-spacing:1px}
+  .hs{font-size:9px}
+  .hr{flex-wrap:wrap;gap:6px;font-size:9px}
+}
+@media (max-width:375px){
+  .ctrl > .sec:nth-of-type(n+3){display:none}
+  .ctrl{max-height:55vh}
+  .ht{font-size:13px;letter-spacing:.5px}
+  .hs{display:none}
+  body{font-size:12px}
+  body.pmode{font-size:12px}
+  .sg{grid-template-columns:1fr}
+  .ph{font-size:8.5px;padding:3px 1px}
+  body.pmode .ph{font-size:9px}
+  .ph .pn{font-size:7px}
+  .demo-btn{font-size:10px;padding:7px 8px}
+}
+@media (pointer:coarse){
+  .prvbtn,.prv-mini,.live-toggle,.demo-btn,.swb{min-height:44px;min-width:44px}
+  .ibtn,.startbtn,.begin-btn{min-height:56px}
+  .ibtn{font-size:16px}
+}
 </style>
 <!-- DEMO MODE pre-scripted forge output — red team ops, conference playback, no API key required -->
 <script type="text/plain" id="d-opp">
-## Swarm Architecture Document — Red Team Operations
+## SWARM ARCHITECTURE: RED TEAM OPERATIONS
 
-### Domain Workflow Analysis
+### Mission Parameters
+Offensive security operations against authorized targets at competitions (CCDC, CPTC) and professional engagements. The swarm executes the full kill chain — pre-engagement reconnaissance through objective achievement and reporting — under a documented authorization scope, with stealth posture against active defenders. Time pressure is severe; competition rounds run 4-8 hours and engagement windows are typically narrow.
 
-Red team operations map to a sequential kill chain with defined phase transitions: Reconnaissance → Initial Access → Privilege Escalation → Credential Harvesting → Lateral Movement → Objectives. Each phase produces artifacts consumed by the next. A single authorization gate agent must verify scope before any exploit agent activates.
+### Critical Mass Calculation
+Seven agents. The kill chain has six functional phases (RECON / INITIAL ACCESS / PRIVESC / CRED HARVEST / LATERAL / OBJECTIVES) plus one accountability gate (ENGAGE-COORD) that must own authorization verification independent of any phase agent. Combining the gate into another agent risks legal exposure when scope drifts mid-engagement; combining any two phase agents loses the per-phase artifact handoff that makes the post-engagement report defensible.
 
-### Proposed Agent Roster (7 agents)
+### Agent Roster (7 agents)
 
-1. **ENGAGE-COORD** — Engagement Coordinator (Fabrication Priority)
-   Authorization gating, gate clearance log, rules of engagement enforcement. Single point of accountability before any action crosses a legal boundary. Owns AUTHORIZATION.md and protocol-signals.md.
+**ENGAGE-COORD** — Engagement Coordinator
+Core mission: verify authorization scope for every action and gate phase transitions before any technique fires.
+Operational phase: pre-engagement and continuous gating.
+Model tier: coordinator
 
-2. **RECON-LEAD** — Reconnaissance Lead
-   OSINT, passive discovery, network mapping, attack surface enumeration. Feeds targeting for initial access phase.
+**RECON-LEAD** — Reconnaissance Lead
+Core mission: build a target dossier through OSINT, network mapping, and attack surface enumeration.
+Operational phase: P1 reconnaissance.
+Model tier: specialist
 
-3. **EXPLOIT-DEV** — Exploitation Specialist
-   CVE research, exploit selection, payload development, initial access execution against authorized targets.
+**EXPLOIT-DEV** — Exploitation Specialist
+Core mission: select CVE/exploit primitives, develop payloads, and achieve initial access against authorized targets.
+Operational phase: P2 initial access.
+Model tier: specialist
 
-4. **PRIVESC-ENGINEER** — Privilege Escalation Engineer
-   Post-exploitation privilege escalation: SUID, sudo misconfigurations, kernel exploits, service vulnerabilities.
+**PRIVESC-ENGINEER** — Privilege Escalation Engineer
+Core mission: escalate from foothold privilege to root/SYSTEM via SUID misconfigurations, kernel exploits, and service vulnerabilities.
+Operational phase: P3 post-exploitation.
+Model tier: specialist
 
-5. **CRED-HARVESTER** — Credential Harvesting Specialist
-   /etc/shadow, credential stores, Kerberoasting, NTLM relay, BloodHound-guided AD credential collection.
+**CRED-HARVESTER** — Credential Harvesting Specialist
+Core mission: extract credentials from /etc/shadow, LSASS, AD via Kerberoasting, NTLM relay, and BloodHound-guided collection.
+Operational phase: P4 credential operations.
+Model tier: specialist
 
-6. **LATERAL-MOVEMENT** — Lateral Movement Specialist
-   Pass-the-Hash, Pass-the-Ticket, WMI/PSExec lateral movement, inter-segment pivoting.
+**LATERAL-MOVEMENT** — Lateral Movement Specialist
+Core mission: pivot across segments via PtH/PtT, WMI, PsExec, with BloodHound shortest-path targeting.
+Operational phase: P5 lateral.
+Model tier: specialist
 
-7. **OBJECTIVE-TRACKER** — Objective Tracker
-   Objective inventory, evidence packaging, chain of custody, engagement closure documentation.
+**OBJECTIVE-TRACKER** — Objective Tracker
+Core mission: package evidence with chain-of-custody hashes and produce the engagement closure report.
+Operational phase: P6 closure.
+Model tier: utility
 
 ### Coordination Files
-
-- ENGAGEMENT-LOG.md — phase-gate entries, objective claims with timestamps and evidence
+- ENGAGEMENT-LOG.md — phase-gate entries with timestamps and evidence hashes
 - TARGET-STATUS.md — per-target phase state (not-started / active / complete)
 - AUTHORIZATION.md — legal scope, authorized IPs, prohibited actions, time window
 - protocol-signals.md — ep-v1 phase handshake (READY/RUNNING/COMPLETE/FAILED)
 
-### Phase-Gate Architecture
+### Workflow Commands
+- ENGAGE — establish engagement, lock authorization scope, signal READY across protocol-signals.md
+- BREACH — request initial access on a named target with ENGAGE-COORD scope check
+- HARVEST — credential collection sweep against compromised hosts
+- PIVOT — lateral movement to a new segment with BloodHound path validation
 
-Each agent gates on AUTHORIZATION.md before executing. ENGAGE-COORD signals READY before any exploit agent acts. All objective claims include timestamp and evidence hash in ENGAGEMENT-LOG.md. This creates an auditable chain of custody for client reporting.
+### Phase 2 Advisor Assignment
+Primary T2 advisor: NEUTRON — Penetration Tester
+Secondary advisor: None
+Rationale: NEUTRON's expertise covers the entire kill chain and the OPSEC discipline required for stealth against active blue teams; no secondary needed.
 
-**VRA Relevance Score Estimate:** High (8-9). ATT&CK techniques database, CVE catalog, Sigma rules, and OWASP vulnerability patterns are dense structured corpora with direct agent query paths at every kill chain phase.
+### Fabrication Priority
+ENGAGE-COORD — every red team engagement begins with authorization verification; without this agent the entire swarm is legally exposed. Build the gate before the gun.
+
+### Vector Readiness Pre-Assessment
+Strong fit for vector retrieval. Per-phase agents query against well-defined, structured corpora that update on predictable cadences: ATT&CK techniques (per-tactic lookups), CVE entries (CPE matching for service-version exploitability), Sigma rules (OPSEC-aware execution — knowing what defenders will alert on), and OWASP Top 10 + DVWA patterns (web exploitation primitives). Cross-engagement repetition is high — a CCDC swarm faces the same DVWA/Mutillidae stack year after year — so accumulated technique-discovery memory pays off across deployments. Lattice VRA recommended.
 </script>
 <script type="text/plain" id="d-vra">
 ## Vector Readiness Assessment — Red Team Operations
@@ -399,26 +538,26 @@ Invokes: RECON-LEAD (after RECON gate cleared), EXPLOIT-DEV (after INITIAL-ACCES
 ## Geiger Quality Gate Report — ENGAGE-COORD
 **Status: PASS**
 
-### Validation Checklist
+### Authorization-First Audit
 
-Check                          | Result | Notes
--------------------------------|--------|------------------------------------------------------------
-Advisory fidelity (NEUTRON)    | PASS   | Authorization gating, gate clearance, and OPSEC pre-flight match NEUTRON's specification exactly
-Research integration (Curie)   | PASS   | Gate clearance format and OPSEC pre-flight reflect Curie's failure mode analysis
-VRP completeness               | PASS   | 3 collections with explicit query shapes and use-case mappings; matches Lattice Collection Design
-Protocol signals               | PASS   | READY/RUNNING/COMPLETE/FAILED with correct trigger conditions documented
-Coordination file ownership    | PASS   | READS/WRITES explicitly specified; no unauthorized writes
-Kill chain gate architecture   | PASS   | Each downstream agent invocation correctly gated on clearance entries
+Authorization-gate agents face a different review bar than technique agents — incorrect output here creates legal exposure, not detection misses. The audit weights gate semantics, scope-leak prevention, and OPSEC pre-flight above the standard fabrication checks.
 
-### Observations
+Check                              | Result | Finding
+-----------------------------------|--------|-----------------------------------------------------------
+"Never clear" negative conditions  | PASS   | Four explicit conditions: missing/unsigned auth, IP outside range, prohibited technique, expired window — no gate-clearance ambiguity under operator pressure
+Gate clearance schema              | PASS   | Five fixed fields (phase, timestamp, scope, opsec, cleared-by) — machine-parseable, OBJECTIVE-TRACKER verifies chain of custody without re-reading AUTHORIZATION.md
+OPSEC pre-flight via VRP           | PASS   | security_sigma_rules query before clearance — detection-surface assessment lives at the authorization layer, not ad hoc during execution
+Phase-signal protocol fidelity     | PASS   | READY/RUNNING/COMPLETE/FAILED triggers documented with concrete entry conditions per phase
+NEUTRON advisory fidelity          | PASS   | Authorization-first design, "build the gate before the gun" principle directly reflect NEUTRON's specification
+Curie integration                  | PASS   | Engagement procedure patterns, OPSEC discipline, AD attack chain context embedded from the briefing
 
-The OPSEC pre-flight VRP query against security_sigma_rules is a notably strong design choice. ENGAGE-COORD querying detection rules before clearing gates means OPSEC assessment happens at the authorization layer, not ad hoc during execution. This is the correct position for this check.
+### Notable Strengths
 
-Gate clearance format is structured with fixed fields (phase, timestamp, scope, opsec, cleared-by) — machine-parseable, allows OBJECTIVE-TRACKER to verify chain of custody without re-reading AUTHORIZATION.md.
+The OPSEC pre-flight VRP position is a deliberate architectural choice — ENGAGE-COORD queries detection rules *before* clearing gates rather than after technique selection. An operator under time pressure cannot bypass the OPSEC check because clearance and OPSEC are atomic in the gate-write step.
 
-The "never clear a gate if" list provides explicit negative conditions. This prevents gate ambiguity under adversarial conditions where an operator might pressure for clearance under scope uncertainty.
+The "never clear" list converts an operational risk (gate ambiguity under pressure) into an explicit machine-checkable constraint. Future agents inheriting this pattern should preserve the negative-condition framing rather than rewriting as positive permissions.
 
-**Recommendation:** CLEAR FOR DEPLOYMENT. No rework required.
+**Recommendation:** CLEAR FOR DEPLOYMENT. Reference this gate-clearance schema in SWARM-PACKAGE-SPEC.md as the canonical pattern for any agent owning a legal or safety boundary.
 </script>
 <script type="text/plain" id="d-boh">
 ## Bohr Structural Review — ENGAGE-COORD
@@ -453,48 +592,69 @@ The VRP position (querying before gate clearance) is structurally correct — re
 
 <!-- ═══ BLUE TEAM DEMO CONTENT ═══ -->
 <script type="text/plain" id="db-opp">
-## Swarm Architecture Document — Blue Team Defense Operations
+## SWARM ARCHITECTURE: BLUE TEAM DEFENSE OPERATIONS
 
-### Domain Workflow Analysis
+### Mission Parameters
+Defensive security for blue team competitions and enterprise SOCs. The swarm runs the detect → investigate → contain → harden cycle against unknown adversaries in real time. Detection speed is the primary success metric — MTTD and MTTR determine whether the adversary achieves objectives before defenders contain them. Operates with incomplete information; must triage under sustained alert volume.
 
-Blue team operations follow a detect-investigate-respond cycle: telemetry ingestion → rule-based detection → alert triage → incident investigation → containment → threat hunting. Each phase produces artifacts that gate the next. Detection speed is the primary metric — MTTD and MTTR determine whether the adversary achieves objectives before defenders contain them.
+### Critical Mass Calculation
+Six agents. The detection lifecycle requires strict separation between telemetry ingestion (TELEMETRY-ANALYST owns log source health), rule authorship (DETECTION-ENGINEER owns Sigma authoring and correlation), incident command (INCIDENT-COMMANDER owns NIST-aligned containment decisions), evidence handling (FORENSIC-COLLECTOR owns chain-of-custody), proactive hunting (THREAT-HUNTER owns hypothesis-driven searches the rules missed), and intelligence integration (INTEL-ANALYST correlates IOCs to actors). Folding hunt into detection collapses the rule-vs-hunt cognitive separation that makes hunts produce new rules; folding intel into command collapses the sourcing distinction NIST requires for attribution.
 
-### Proposed Agent Roster (6 agents)
+### Agent Roster (6 agents)
 
-1. **TELEMETRY-ANALYST** — Log Ingestion Analyst (Fabrication Priority)
-   Normalizes inbound telemetry from SIEM, EDR, and network sensors into detection-feed.md. Owns log source health and enrichment.
+**TELEMETRY-ANALYST** — Log Ingestion Analyst
+Core mission: normalize SIEM, EDR, and network sensor telemetry into detection-feed.md and flag first-pass anomalies.
+Operational phase: continuous ingestion.
+Model tier: specialist
 
-2. **DETECTION-ENGINEER** — Detection Rule Author
-   Writes and tunes Sigma detection rules from ATT&CK technique mappings. Correlates detection-feed.md events into active-threats.md entries.
+**DETECTION-ENGINEER** — Detection Rule Author
+Core mission: author and tune Sigma rules from ATT&CK technique mappings; correlate detection-feed.md events into active-threats.md entries.
+Operational phase: continuous authoring + alert correlation.
+Model tier: specialist
 
-3. **INCIDENT-COMMANDER** — Incident Response Lead
-   Declares incidents, sets severity, issues containment decisions per NIST SP 800-61. Owns incident-timeline.md.
+**INCIDENT-COMMANDER** — Incident Response Lead
+Core mission: declare incidents, set severity, issue containment decisions per NIST SP 800-61, own incident-timeline.md.
+Operational phase: on confirmed threats.
+Model tier: coordinator
 
-4. **FORENSIC-COLLECTOR** — Evidence Collector
-   Captures volatile and non-volatile artifacts in volatility order (RAM → network state → processes → disk → SIEM export). Maintains chain of custody.
+**FORENSIC-COLLECTOR** — Evidence Collector
+Core mission: capture artifacts in volatility order (RAM → network → processes → disk → SIEM export) and maintain chain of custody.
+Operational phase: post-incident-declaration.
+Model tier: specialist
 
-5. **THREAT-HUNTER** — Proactive Hunt Analyst
-   Generates and executes hypothesis-driven hunts against SIEM data. Identifies adversary activity that automated detection missed.
+**THREAT-HUNTER** — Proactive Hunt Analyst
+Core mission: generate testable hunt hypotheses, execute SIEM searches against them, surface adversary activity that automated detection missed.
+Operational phase: continuous out-of-band.
+Model tier: specialist
 
-6. **INTEL-ANALYST** — Threat Intelligence Analyst
-   Correlates IOCs to ATT&CK techniques and known threat actors. Feeds intelligence into DETECTION-ENGINEER rules and INCIDENT-COMMANDER briefings.
+**INTEL-ANALYST** — Threat Intelligence Analyst
+Core mission: correlate IOCs to ATT&CK techniques and known threat actors; feed intelligence into rule authorship and command briefings.
+Operational phase: continuous.
+Model tier: specialist
 
 ### Coordination Files
-
-- detection-feed.md — normalized alert stream (TELEMETRY-ANALYST writes; all agents read)
+- detection-feed.md — normalized alert stream (TELEMETRY-ANALYST writes; all read)
 - active-threats.md — correlated threat entries (DETECTION-ENGINEER writes; INCIDENT-COMMANDER reads)
 - incident-timeline.md — adversary and defender tracks (INCIDENT-COMMANDER writes; FORENSIC-COLLECTOR reads)
-- hunt-log.md — threat hunt hypotheses and results (THREAT-HUNTER writes; INTEL-ANALYST reads)
+- hunt-log.md — hypotheses, queries, and results (THREAT-HUNTER writes; INTEL-ANALYST reads)
 - lessons-learned.md — post-incident hardening (all agents contribute)
 
+### Workflow Commands
+- INGEST — start telemetry pipeline against named log sources, establish 7-day baseline
+- TRIAGE — correlate detection-feed.md anomalies into active-threats.md entries with confidence ratings
+- DECLARE — open an incident with severity per NIST SP 800-61 and a containment decision
+- HUNT — execute a hypothesis-driven search; promote successful hunts to community-aligned Sigma rules
+
 ### Phase 2 Advisor Assignment
-Primary: SCINTILLATOR — Detection Engineer
-Rationale: Detection rule authorship and Sigma expertise is the core competency for this swarm.
+Primary T2 advisor: SCINTILLATOR — Detection Engineer
+Secondary advisor: None
+Rationale: Sigma rule authorship is the load-bearing competency; SCINTILLATOR's depth in detection-rule design and false-positive management directly shapes agent quality.
 
 ### Fabrication Priority
-TELEMETRY-ANALYST — the log ingestion layer gates every downstream agent; a poorly designed telemetry stage produces false alerts and missing detections throughout the swarm.
+TELEMETRY-ANALYST — the ingestion layer gates every downstream agent. A telemetry analyst that normalizes incorrectly produces false positives throughout the entire pipeline; correctness here determines correctness everywhere.
 
-**VRA Relevance Score Estimate:** High (8-9). Sigma rule libraries (3,500+ rules), ATT&CK technique database, and SIEM query references are exactly the retrieval-dense corpora TMP's Lattice layer is designed to serve.
+### Vector Readiness Pre-Assessment
+Highest retrieval density of any security swarm domain. Every detection decision benefits from a Sigma rule library query (3,500+ community rules with mature tagging taxonomy), every hunt benefits from ATT&CK technique context with data source mappings, and every alert benefits from a SIEM query reference (Splunk SPL, Elastic KQL, Sentinel KQL libraries). State must persist across an incident lifecycle that often spans hours — making session memory and detection-feed accumulation natural fits for vector storage. Lattice VRA strongly recommended.
 </script>
 <script type="text/plain" id="db-vra">
 ## Vector Readiness Assessment — Blue Team Defense Operations
@@ -666,20 +826,24 @@ ESCALATES TO: INCIDENT-COMMANDER for confirmed threats requiring containment
 ## Geiger Quality Gate Report — DETECTION-ENGINEER
 **Status: APPROVED**
 
-### Validation Checklist
+### Detection Coverage Audit
 
-Check                           | Result | Notes
---------------------------------|--------|------------------------------------------------------------
-Advisory fidelity (SCINTILLATOR)| PASS   | Sigma invariant targeting, correlation thresholds, and FP management all match SCINTILLATOR's specification exactly
-Research integration (Curie)    | PASS   | Sysmon Event ID semantics, timestamp normalization, and SPL query patterns embedded from Curie briefing
-VRP completeness                | PASS   | 2 collections with explicit query shapes, use-cases, and fallback conditions
-Coordination file ownership     | PASS   | READS/WRITES explicitly specified; no unauthorized writes
+For a rule-authoring agent, the audit weights detection-surface coverage and false-positive discipline above generic fabrication checks. A DETECTION-ENGINEER that authors duplicate or noisy rules degrades SOC signal-to-noise across every downstream agent.
 
-### Observations
+Check                                | Result | Finding
+-------------------------------------|--------|---------------------------------------------------------
+Sigma invariant targeting            | PASS   | Concrete examples (LSASS SourceImage as invariant; mimikatz.exe as variant) embedded at the expertise level — Fermi internalized the principle, not just the rule
+Correlation threshold specificity    | PASS   | Numerical thresholds (≥5 failures, ≥3 accounts, 300s; post-failure success within 10m → CONFIRMED) — directly machine-parseable, no runtime interpretation needed
+False positive management            | PASS   | Audit-mode deployment + 7-day rolling baseline before live alerting; falsepositives field required, not optional
+Detection-first ordering             | PASS   | community Sigma query precedes new rule authorship — prevents duplication and leverages community tuning, with security_sigma_rules as the operational anchor
+SCINTILLATOR advisory fidelity       | PASS   | Sigma authoring discipline, correlation thresholds, and ATT&CK tag requirements all reflect SCINTILLATOR's brief
+Curie integration                    | PASS   | Sysmon Event ID semantics (Events 1, 3, 10, 13), timestamp normalization (ISO 8601 UTC), and SPL queries embedded from the briefing
 
-The invariant targeting principle is embedded at the expertise level with concrete examples (LSASS SourceImage vs. mimikatz filename) rather than stated as policy. This is the correct depth — Fermi internalized the principle, not just the rule.
+### Notable Strengths
 
-Correlation thresholds are numerically specific (≥5 failures, ≥3 accounts, 300 seconds) — machine-parseable and directly usable by a running agent without interpretation.
+Invariant-vs-variant guidance is operationalized rather than abstracted. The agent will reach for behavior-based selectors (process access patterns, command-line flags) over filename-based selectors (binary names) without prompting — Fermi got the principle into the expertise profile, not the rules section.
+
+Correlation thresholds are numerically specific to the point of being directly executable: an agent receiving "≥5 failures, ≥3 accounts, 300s" needs no further specification to write the SPL or KQL query. This is the correct depth.
 
 **Recommendation:** CLEAR FOR DEPLOYMENT. No rework required.
 </script>
@@ -712,47 +876,70 @@ Fallback subsection handles three distinct conditions per agent domain (unavaila
 
 <!-- ═══ INFRA OPS DEMO CONTENT ═══ -->
 <script type="text/plain" id="di-opp">
-## Swarm Architecture Document — Infrastructure Assessment
+## SWARM ARCHITECTURE: INFRASTRUCTURE ASSESSMENT
 
-### Domain Workflow Analysis
+### Mission Parameters
+Infrastructure security assessment and hardening across cloud-native and on-premise estates. The swarm enumerates the full attack surface, audits configuration against security baselines, correlates findings against CVE exploitability, and produces both a technical remediation guide and an executive summary. Operations must function on heterogeneous environments without protocol assumptions; deliverables target two distinct audiences.
 
-Infrastructure assessment follows a linear enrichment pipeline: asset discovery → service fingerprinting → configuration audit → vulnerability correlation → risk scoring → reporting. Each phase enriches the asset registry. The pipeline must handle cloud-native and on-premise assets without protocol assumptions, and deliver both a technical remediation guide and an executive summary.
+### Critical Mass Calculation
+Six agents covering an enrichment pipeline rather than a kill chain. Asset discovery (ASSET-MAPPER), service fingerprinting (SERVICE-PROBER), configuration audit (CONFIG-AUDITOR), CVE correlation (VULN-CORRELATOR), risk prioritization (RISK-SCORER), and reporting (REPORT-WRITER) each enrich the registry with a different data class. Folding fingerprinting into discovery introduces noise (port scans during asset enumeration); folding correlation into audit conflates CIS compliance with CVE exploitability — different remediation owners, different SLAs.
 
-### Proposed Agent Roster (6 agents)
+### Agent Roster (6 agents)
 
-1. **ASSET-MAPPER** — Asset Discovery Specialist (Fabrication Priority)
-   Host discovery, network enumeration, cloud inventory. Produces authoritative ASSET-REGISTRY.md consumed by all downstream agents.
+**ASSET-MAPPER** — Asset Discovery Specialist
+Core mission: enumerate every host, service, and cloud resource within scope into the authoritative ASSET-REGISTRY.md.
+Operational phase: P1 discovery.
+Model tier: specialist
 
-2. **SERVICE-PROBER** — Service Fingerprinting Specialist
-   Port scanning, service version detection, web application fingerprinting, API endpoint discovery.
+**SERVICE-PROBER** — Service Fingerprinting Specialist
+Core mission: port-scan, version-detect, web-fingerprint, and API-discover against the asset registry; produce SERVICE-MATRIX.md.
+Operational phase: P2 fingerprinting.
+Model tier: specialist
 
-3. **CONFIG-AUDITOR** — Configuration Review Specialist
-   Evaluates services against CIS benchmarks, DISA STIGs, and cloud security baselines. Produces AUDIT-FINDINGS.md.
+**CONFIG-AUDITOR** — Configuration Review Specialist
+Core mission: evaluate services against CIS benchmarks, DISA STIGs, and cloud security baselines; produce AUDIT-FINDINGS.md.
+Operational phase: P3 audit.
+Model tier: specialist
 
-4. **VULN-CORRELATOR** — Vulnerability Correlation Specialist
-   Correlates service versions against CVE databases. Scores by CVSS 3.x and EPSS exploitability probability.
+**VULN-CORRELATOR** — Vulnerability Correlation Specialist
+Core mission: match service versions against CVE entries via CPE strings, score by CVSS 3.x and EPSS, produce VULN-MATRIX.md.
+Operational phase: P4 correlation.
+Model tier: specialist
 
-5. **RISK-SCORER** — Risk Prioritization Specialist
-   Aggregates findings into a risk-prioritized remediation matrix considering business impact alongside technical severity.
+**RISK-SCORER** — Risk Prioritization Specialist
+Core mission: aggregate findings into a prioritized remediation matrix weighting business impact alongside technical severity.
+Operational phase: P5 scoring.
+Model tier: specialist
 
-6. **REPORT-WRITER** — Technical and Executive Reporting Specialist
-   Produces both technical remediation guide and executive summary from the risk matrix.
+**REPORT-WRITER** — Technical and Executive Reporting Specialist
+Core mission: produce two artifacts from the risk matrix — a technical remediation guide for engineers and an executive summary for leadership.
+Operational phase: P6 reporting.
+Model tier: utility
 
 ### Coordination Files
-- ASSET-REGISTRY.md — discovered hosts, services, cloud assets
-- AUDIT-FINDINGS.md — configuration review results per host
+- ASSET-REGISTRY.md — discovered hosts, services, cloud assets, tags
+- SERVICE-MATRIX.md — fingerprinted services with version evidence
+- AUDIT-FINDINGS.md — per-host configuration review against named baselines
 - VULN-MATRIX.md — CVE correlations with CVSS and EPSS scores
 - RISK-MATRIX.md — prioritized remediation list
 - ENGAGEMENT-LOG.md — phase completion entries and scope tracking
 
+### Workflow Commands
+- DISCOVER — run asset enumeration across in-scope CIDRs and cloud accounts; produce ASSET-REGISTRY.md
+- AUDIT — execute CIS benchmark compliance review across the service matrix
+- CORRELATE — match CPEs against the CVE corpus; score by CVSS 3.x and EPSS exploitability
+- REPORT — generate technical remediation guide and executive summary deliverables
+
 ### Phase 2 Advisor Assignment
-Primary: MODERATOR — DevOps Engineer
-Rationale: Infrastructure assessment spans container security, IaC review, and cloud posture — all DevOps domain knowledge.
+Primary T2 advisor: MODERATOR — DevOps Engineer
+Secondary advisor: None
+Rationale: Infrastructure assessment spans container security, IaC review, and multi-cloud posture; MODERATOR's DevOps expertise covers all three.
 
 ### Fabrication Priority
-ASSET-MAPPER — incomplete discovery means missed vulnerabilities throughout the entire downstream pipeline.
+ASSET-MAPPER — incomplete discovery means missed vulnerabilities throughout the entire downstream pipeline. The registry is the spine; everything else is enrichment.
 
-**VRA Relevance Score Estimate:** Medium-High (6-7). CVE database, CIS benchmark library, and cloud security findings are structured corpora with retrieval value. Asset discovery data is dynamic and environment-specific.
+### Vector Readiness Pre-Assessment
+Moderate fit. CONFIG-AUDITOR and VULN-CORRELATOR query against retrieval-dense corpora — CIS benchmark library (per-control checks across Linux, Windows Server, Docker, Kubernetes, AWS, GCP, Azure) and the CVE database (50,000+ entries with CPE matching and EPSS exploit probability scores). Cloud-specific baseline content varies by provider; not all cloud CSPM corpora are pre-populated in the TMP library. Discovery and reporting phases derive less retrieval value — they execute against environment state, not reference knowledge. Lattice VRA recommended with a known cold-start risk on cloud baselines; flag to operator before fabrication.
 </script>
 <script type="text/plain" id="di-vra">
 ## Vector Readiness Assessment — Infrastructure Assessment
@@ -881,17 +1068,19 @@ You are ASSET-MAPPER, the Asset Discovery Specialist of infra-assess-v1. You enu
 
 ## Expertise Profile
 
-**Network Enumeration:** Host discovery — nmap -sn [CIDR] -oA discovery/hosts --reason. Large ranges (>65536 hosts): masscan [CIDR] -p80,443,22,3389 --rate=1000 -oJ discovery/masscan.json, then nmap -sV on identified hosts only. Cloud-hosted VMs may block ICMP — use nmap -PS22,80,443 (TCP SYN ping) instead of default ICMP.
+**Network Enumeration:** Host discovery — nmap -sn [CIDR] -oA discovery/hosts --reason. Large ranges (>65536 hosts): masscan [CIDR] -p80,443,22,3389 --rate=1000 -oJ discovery/masscan.json, then nmap -sV on identified hosts only. Cloud-hosted VMs may block ICMP — use nmap -PS22,80,443 (TCP SYN ping) instead of default ICMP. For internal segments without flat L2 reachability: enumerate from a pivot host inside each segment, or use Tenable/Nessus discovery scans with pre-positioned scanner agents. Always record discovery method per host in ASSET-REGISTRY.md notes column — downstream agents need to know whether absence-of-evidence reflects a real gap or a discovery-mode limitation.
 
-**AWS (must iterate all regions):** for r in $(aws ec2 describe-instances --query 'Regions[].RegionName' --output text); do aws ec2 describe-instances --region $r --output json >> discovery/aws-ec2.json; done. Additional: aws rds describe-db-instances, aws s3 ls, aws ecs list-clusters, aws lambda list-functions for each region.
+**AWS (must iterate all regions):** for r in $(aws ec2 describe-regions --query 'Regions[].RegionName' --output text); do aws ec2 describe-instances --region $r --output json >> discovery/aws-ec2.json; done. Beyond EC2: aws rds describe-db-instances, aws s3api list-buckets (then per-bucket aws s3api get-bucket-location for region attribution; bucket region is independent of caller region), aws ecs list-clusters, aws lambda list-functions, aws elbv2 describe-load-balancers, aws apigateway get-rest-apis. AWS Organizations: aws organizations list-accounts to enumerate child accounts; recurse asset enumeration into each via assume-role. AWS Config aggregator (when configured at org level) is the authoritative single-pane source — query via the advanced-query SQL feature instead of per-service iteration when available.
 
-**GCP:** gcloud asset search-all-resources --scope=projects/[PROJECT_ID] --output-format=json > discovery/gcp-assets.json. Requires Cloud Asset API enabled. Fallback: gcloud compute instances list covers only Compute Engine.
+**GCP:** gcloud asset search-all-resources --scope=projects/[PROJECT_ID] --output-format=json > discovery/gcp-assets.json (requires Cloud Asset API enabled). For organization-wide discovery: gcloud asset search-all-resources --scope=organizations/[ORG_ID]. Folder hierarchy: gcloud resource-manager folders list — assets inherit IAM and policies from parent folders, so folder-level enumeration matters for compliance scoping. Fallback when Cloud Asset API is unavailable: gcloud compute instances list covers Compute Engine only — misses GKE workloads, Cloud Run services, and App Engine apps. Note this fallback in ASSET-REGISTRY.md notes.
 
-**Azure:** az resource list --output json > discovery/azure-resources.json. az network vnet list for network topology. az identity list for managed identities (frequently missed in manual audits).
+**Azure:** az resource list --output json > discovery/azure-resources.json (default subscription only). Multi-subscription tenants: az account list --query '[].id' -o tsv | while read s; do az account set --subscription $s; az resource list -o json >> discovery/azure-all.json; done. Network topology: az network vnet list and az network vnet peering list-all (cross-VNet connectivity matters for lateral-movement scope). Managed identities: az identity list (frequently missed in manual audits). Service principals: az ad sp list (these grant access without traditional credentials and don't appear in resource lists).
 
-**Kubernetes:** kubectl get all --all-namespaces -o json > discovery/k8s-full.json. External exposure: kubectl get services --all-namespaces | grep -E 'LoadBalancer|NodePort'. Container images for VULN-CORRELATOR: kubectl get pods --all-namespaces -o jsonpath='{range .items[*]}{.spec.containers[*].image}{"\n"}{end}' | sort -u.
+**Kubernetes:** kubectl get all --all-namespaces -o json > discovery/k8s-full.json. External exposure check both service types — NodePort exposure is a documented undercount failure mode: kubectl get services --all-namespaces -o jsonpath='{range .items[?(@.spec.type=="LoadBalancer")]}{.metadata.namespace}/{.metadata.name}{"\n"}{end}' AND kubectl get services --all-namespaces -o jsonpath='{range .items[?(@.spec.type=="NodePort")]}{.metadata.namespace}/{.metadata.name}:{.spec.ports[*].nodePort}{"\n"}{end}'. Container image inventory for VULN-CORRELATOR: kubectl get pods --all-namespaces -o jsonpath='{range .items[*]}{.spec.containers[*].image}{"\n"}{end}' | sort -u — produces sorted unique CPE-matchable image list. Helm release inventory is separate: helm list --all-namespaces -o json (Helm-managed resources may have labels that differ from kubectl-listed selectors).
 
-ASSET-REGISTRY.md schema per row: hostname | IP | OS | cloud_provider | region | services | tags | notes
+**IaC reconciliation:** Cloud-native inventory APIs (AWS Config, GCP Cloud Asset, Azure Resource Graph) are authoritative over Terraform state files. Shadow IT — resources created manually outside IaC — won't appear in tfstate but will appear in cloud APIs. Drift detection: terraform plan against current state; non-empty plan output indicates manual changes outside IaC. Record drift entries in ASSET-REGISTRY.md notes column with iac_managed=false flag.
+
+ASSET-REGISTRY.md schema per row: hostname | IP | OS | cloud_provider | region | services | tags | iac_managed | discovery_method | notes
 
 ---
 
@@ -913,20 +1102,25 @@ ESCALATES TO: RISK-SCORER for scope boundary questions; REPORT-WRITER for engage
 ## Geiger Quality Gate Report — ASSET-MAPPER
 **Status: APPROVED**
 
-### Validation Checklist
+### Pipeline Integrity Review
 
-Check                        | Result | Notes
------------------------------|--------|------------------------------------------------------------
-Advisory fidelity (MODERATOR)| PASS   | Region iteration requirement, cloud service coverage, and CPE handoff all match MODERATOR's specification exactly
-Research integration (Curie) | PASS   | AWS region iteration loop, GCP Cloud Asset API method, and Kubernetes service exposure check embedded verbatim from Curie briefing
-VRP completeness             | PASS   | 1 collection with explicit query shape and environment-appropriate fallback
-Discovery-complete principle | PASS   | Explicit handoff condition — SERVICE-PROBER does not receive handoff until ASSET-REGISTRY.md is complete
+ASSET-MAPPER sits at the head of an enrichment pipeline; every downstream agent inherits its blind spots. The audit weights discovery completeness, region/provider parity, and handoff-format fidelity above generic fabrication checks.
 
-### Observations
+Check                                  | Result | Finding
+---------------------------------------|--------|-----------------------------------------------------------
+Discovery-complete handoff gate        | PASS   | Explicit gate — SERVICE-PROBER does not receive handoff until ASSET-REGISTRY.md is complete; "missed asset = missed vulnerability" embedded as agent constraint, not advisory
+Region iteration coverage              | PASS   | AWS 30+ region enumeration is a runnable shell loop, not a narrative description; an agent with this in its Expertise Profile will execute correctly without further instruction
+Cloud provider parity                  | PASS   | AWS, GCP, Azure covered without provider preference; managed identities (frequently missed in manual audits) and IaC drift detection both included
+Container exposure dual-check          | PASS   | LoadBalancer AND NodePort services queried separately — NodePort exposure undercount is the documented failure mode and the agent enforces both checks
+Handoff format to VULN-CORRELATOR      | PASS   | Container image one-liner produces exactly the input format VULN-CORRELATOR needs for CPE correlation
+MODERATOR advisory fidelity            | PASS   | Region iteration requirement, multi-cloud coverage, and CPE handoff specification all reflect MODERATOR's brief
+Curie integration                      | PASS   | AWS region iteration loop, GCP Cloud Asset API method, and Kubernetes service exposure check embedded from the briefing
 
-The AWS region iteration loop is embedded as a runnable shell command, not a description of a task. An agent with this in its Expertise Profile will execute correctly without additional instruction — this is the correct level of specificity.
+### Notable Strengths
 
-The Kubernetes image extraction one-liner produces exactly the input VULN-CORRELATOR needs for container CVE correlation. The handoff artifact is correctly specified at a format level.
+Region blindness is documented as a known failure mode (30+ AWS regions) with a runnable remediation, not an advisory note. This converts an operational risk into an explicit agent constraint that an inexperienced operator cannot accidentally bypass.
+
+The container image extraction one-liner deserves attention: it produces a sorted, unique image list in exactly the format VULN-CORRELATOR's CPE matcher expects. Format fidelity at handoff is one of the highest leverage points in a multi-agent pipeline; this agent gets it right.
 
 **Recommendation:** CLEAR FOR DEPLOYMENT. No rework required.
 </script>
@@ -957,23 +1151,23 @@ Region blindness is documented as a known failure mode (30+ AWS regions) with th
 **BOHR: CLEAR**
 </script>
 </head>
-<body>
+<body class="pmode">
 <div class="banner">⬛ TOP SECRET // THE MANHATTAN PROJECT // SWARM FORGE LIVE v3.0 — FULL PIPELINE ⬛</div>
 <div class="hdr">
   <div><div class="ht">⚛ THE MANHATTAN PROJECT</div><div class="hs">SWARM FORGE LIVE — 9-PHASE PIPELINE WITH LATTICE INTEGRATION <span class="bdg">CONFERENCE DEMO v3.0</span></div></div>
-  <div class="hr"><div>FRAMEWORK v1.10.4 | IQ-0053 T2→LATTICE WORKFLOW</div><div>7 AGENTS — 9 PHASES — OPERATOR GATE</div><div id="ts">—</div></div>
+  <div class="hr"><div>FRAMEWORK v1.10.4 | IQ-0053 T2→LATTICE WORKFLOW</div><div>7 AGENTS — 9 PHASES — OPERATOR GATE</div><div id="ts">—</div><span id="tok-count" style="display:none;color:var(--g);font-size:9px;letter-spacing:1px;border:1px solid var(--g);padding:1px 5px;margin-left:8px;font-variant-numeric:tabular-nums">tokens: 0 ▌</span><span id="demo-hdr-badge" style="display:none;color:var(--b);font-size:9px;letter-spacing:2px;border:1px solid var(--b);padding:1px 5px;margin-left:8px">[DEMO]</span></div>
 </div>
 
 <div class="pbar">
-  <div class="ph done" id="ph0"><span class="pn">P0</span>IGNITION<span class="pa">standby</span></div>
-  <div class="ph" id="ph1"><span class="pn">P1</span>OPPENHEIMER<span class="pa">arch+VRA</span></div>
-  <div class="ph" id="ph2"><span class="pn">P1b</span>LATTICE VRA<span class="pa">readiness</span></div>
-  <div class="ph" id="ph3"><span class="pn">P2</span>T2 ADVISOR<span class="pa">spec+libspec</span></div>
-  <div class="ph" id="ph4"><span class="pn">P2b</span>T2→LATTICE<span class="pa">collection design</span></div>
-  <div class="ph" id="ph5"><span class="pn">P2c</span>OP GATE<span class="pa">approve</span></div>
-  <div class="ph" id="ph6"><span class="pn">P3</span>CURIE+FERMI<span class="pa">research+fab</span></div>
-  <div class="ph" id="ph7"><span class="pn">P4</span>GEIGER+BOHR<span class="pa">validation</span></div>
-  <div class="ph" id="ph8"><span class="pn">P5</span>CRITICAL MASS<span class="pa">package</span></div>
+  <div class="ph done" id="ph0" title="Phase 0: IGNITION — Session start, operator briefing, framework warm-up"><span class="pn">P0</span>IGNITION<span class="pa">standby</span></div>
+  <div class="ph" id="ph1" title="Phase 1: OPPENHEIMER — Domain analysis and swarm architecture document"><span class="pn">P1</span>OPPENHEIMER<span class="pa">arch+VRA</span></div>
+  <div class="ph" id="ph2" title="Phase 1b: LATTICE — Vector Readiness Assessment (goes to operator only)"><span class="pn">P1b</span>LATTICE VRA<span class="pa">readiness</span></div>
+  <div class="ph" id="ph3" title="Phase 2: T2 ADVISOR — Micro-specialization map + Library Specification"><span class="pn">P2</span>T2 ADVISOR<span class="pa">spec+libspec</span></div>
+  <div class="ph" id="ph4" title="Phase 2b: T2→LATTICE — Collection Design from Library Spec"><span class="pn">P2b</span>T2→LATTICE<span class="pa">collection design</span></div>
+  <div class="ph" id="ph5" title="Phase 2c: OPERATOR GATE — Review and approve before fabrication begins"><span class="pn">P2c</span>OP GATE<span class="pa">approve</span></div>
+  <div class="ph" id="ph6" title="Phase 3: CURIE + FERMI — Tooling research, then agent fabrication with Vector Retrieval Protocol"><span class="pn">P3</span>CURIE+FERMI<span class="pa">research+fab</span></div>
+  <div class="ph" id="ph7" title="Phase 4: GEIGER + BOHR — Domain accuracy + structural review"><span class="pn">P4</span>GEIGER+BOHR<span class="pa">validation</span></div>
+  <div class="ph" id="ph8" title="Phase 5: CRITICAL MASS — Final package assembly, manifest, output"><span class="pn">P5</span>CRITICAL MASS<span class="pa">package</span></div>
 </div>
 
 <div class="layout">
@@ -985,12 +1179,12 @@ Region blindness is documented as a known failure mode (30+ AWS regions) with th
       <button class="prvbtn" id="prv-or" onclick="setForgeProvider('openrouter')">OPENROUTER</button>
     </div>
     <div class="prv-row" style="margin-top:2px">
-      <button class="prvbtn" id="prv-local" onclick="setForgeProvider('local')" title="Local relay — run relay.py first">[ LOCAL ]</button>
+      <button class="prvbtn" id="prv-cc" onclick="setForgeProvider('cc')" title="Claude Code CLI — run relay.py first; uses your CC subscription">[ CLAUDE CODE ]</button>
       <button class="prvbtn" id="prv-orfree" onclick="setForgeProvider('orfree')" title="OpenRouter free tier — no credits needed">OR FREE</button>
       <button class="prvbtn" id="prv-ollama" onclick="setForgeProvider('ollama')" title="Ollama — fully local, offline capable">[ OLLAMA ]</button>
     </div>
-    <div id="orfree-notice" style="display:none;font-size:8.5px;color:var(--b);letter-spacing:1px;padding:2px 0">⚠ FREE TIER — output quality lower than Claude</div>
-    <div id="ollama-notice" style="display:none;font-size:8.5px;color:#4fc3f7;letter-spacing:1px;padding:2px 0">⚡ LOCAL — offline capable, model quality varies</div>
+    <div id="orfree-notice" class="tier-note" style="display:none;color:var(--b);letter-spacing:1px;padding:2px 0">⚠ FREE TIER — output quality lower than Claude</div>
+    <div id="ollama-notice" class="tier-note" style="display:none;color:#4fc3f7;letter-spacing:1px;padding:2px 0">⚡ LOCAL — offline capable, model quality varies</div>
     </div></div>
     <div id="ak-row"><label id="ak-lbl">API KEY</label><input type="password" id="ak" placeholder="sk-ant-..."/><div class="kh" id="ak-hint">Blank = running inside Claude.ai</div></div>
     <div id="ak-conf" style="display:none"><div class="kconf">KEY CONFIGURED <span class="kc-clear" onclick="clearForgeKey()" title="Clear saved key">×</span></div></div>
@@ -1055,6 +1249,13 @@ Region blindness is documented as a known failure mode (30+ AWS regions) with th
   <button class="ibtn" id="ibtn" onclick="runForge()">⚛ INITIATE FISSION</button>
 </div>
 
+<div id="error-recovery-banner" style="display:none">
+  <span class="err-msg">⚠ API error encountered. How do you want to proceed?</span>
+  <button id="err-retry-btn" style="border:1px solid var(--r);color:var(--r)">[ RETRY ]</button>
+  <button id="err-demo-btn" style="border:1px solid var(--am);color:var(--am)">[ SWITCH TO DEMO MODE ]</button>
+  <button id="err-dismiss-btn" style="border:1px solid var(--gr);color:var(--gr)">[ DISMISS ]</button>
+</div>
+
 <div class="tw">
   <div class="ttb"><div class="tds"><div class="td td-r"></div><div class="td td-y"></div><div class="td td-g"></div></div>
     <span class="ttl">TMP-FORGE // 9-PHASE PIPELINE // T2→LATTICE→OPERATOR→FERMI+VRP</span></div>
@@ -1108,6 +1309,7 @@ let selSwarm = 'red', running = false, finalPkg = '', agentCN = 'AGENT';
 let operatorNotes = '', vectorEnabled = false;
 let gateResolve = null;
 let forgeProvider = localStorage.getItem('tmp_provider') || 'anthropic';
+if(forgeProvider==='local'){forgeProvider='cc';localStorage.setItem('tmp_provider','cc');}
 let forgeOrModel = localStorage.getItem('tmp_or_model') || 'anthropic/claude-sonnet-4-6';
 let demoMode = false;
 
@@ -1602,6 +1804,56 @@ async function tw(el,txt){
     tk();
   });
 }
+// Streaming-aware typewriter — keeps pace with token deltas streamed into
+// `ref.current`. Resolves when ref.done is set and the rendered text has
+// caught up to ref.current. Used only on LIVE+CC paths; DEMO MODE uses tw().
+async function tws(el,ref){
+  el.textContent='';
+  await new Promise(r=>{
+    function tk(){
+      const tgt=ref.current||'';
+      const have=el.textContent.length;
+      if(tgt.length>have){
+        // Drain up to ~16 chars per tick — fast enough to feel real-time,
+        // slow enough that the cursor visibly types when bursts arrive.
+        const next=Math.min(tgt.length,have+16);
+        el.textContent=tgt.slice(0,next);
+        term().scrollTop=1e9;
+        setTimeout(tk,18);
+      }else if(ref.done){
+        el.textContent=tgt;term().scrollTop=1e9;r();
+      }else{
+        setTimeout(tk,30);
+      }
+    }
+    tk();
+  });
+}
+let tokTotal=0;
+function tokEl(){return document.getElementById('tok-count');}
+function resetTokens(){tokTotal=0;const e=tokEl();if(!e)return;e.textContent='tokens: 0 ▌';e.style.display='inline-block';}
+function bumpTokens(chunk){
+  // Rough estimate — one token per ~4 characters of model output. The exact
+  // count doesn't matter for the ticker; what matters is that it moves while
+  // the model is producing output.
+  tokTotal+=Math.max(1,Math.round((chunk||'').length/4));
+  const e=tokEl();if(!e)return;e.textContent=`tokens: ${tokTotal} ▌`;
+}
+function hideTokens(){const e=tokEl();if(e)e.style.display='none';}
+// Non-fatal "stalled" indicator — relay emits a warning event when no
+// text_delta has arrived for 30s. The next delta auto-clears it.
+function flashStallWarning(msg){
+  const e=tokEl();if(!e)return;
+  e.textContent=`⚠ ${msg}`;
+  e.style.borderColor='var(--a)';
+  e.style.color='var(--a)';
+  e.style.display='inline-block';
+}
+function clearStallWarning(){
+  const e=tokEl();if(!e)return;
+  e.style.borderColor='';e.style.color='';
+  // ticker text refreshes on next bumpTokens; don't reset count here
+}
 
 // ─── Swarm picker ───
 function pick(btn){
@@ -1686,13 +1938,141 @@ async function callOpenRouter(sys,user,ak){
   if(!r.ok){let m=`HTTP ${r.status}`;try{const e=await r.json();m=e.error?.message||e.message||m}catch(_){}throw new Error(m);}
   return (await r.json()).choices[0].message.content;
 }
-async function callLocal(sys,user){
-  const r=await fetch('http://localhost:3001/v1/chat',{
+async function callClaudeCode(sys,user,onDelta,opts){
+  // When onDelta is provided, opt into the relay's SSE branch so the demo
+  // sees tokens as they're produced. Otherwise fall back to the JSON path
+  // (used by health checks and DEMO MODE auto-tests).
+  // opts.timeoutSec (optional, 60-1800): relay-side per-call timeout
+  // override — used by the recovery banner's "Continue waiting" button to
+  // bump the budget for a single retry.
+  const qs=opts&&opts.timeoutSec?`?timeout=${Math.max(60,Math.min(1800,opts.timeoutSec|0))}`:'';
+  if(typeof onDelta==='function'){
+    const r=await fetch('http://localhost:3001/v1/chat'+qs,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'text/event-stream'},
+      body:JSON.stringify({system:sys,user,model:'claude-sonnet-4-6',max_tokens:1800})
+    });
+    if(!r.ok){let m=`HTTP ${r.status}`;try{const e=await r.json();m=e.error||m}catch(_){}throw new Error(m);}
+    if(!r.body)throw new Error('SSE stream missing response body');
+    const reader=r.body.getReader();
+    const dec=new TextDecoder();
+    let buf='',full='',err=null,doneSeen=false;
+    while(true){
+      const {value,done}=await reader.read();
+      if(done)break;
+      buf+=dec.decode(value,{stream:true});
+      let idx;
+      while((idx=buf.indexOf('\n\n'))>=0){
+        const frame=buf.slice(0,idx);buf=buf.slice(idx+2);
+        const line=frame.split('\n').find(l=>l.startsWith('data:'));
+        if(!line)continue;
+        let payload;
+        try{payload=JSON.parse(line.slice(5).trim());}catch(_){continue;}
+        if(payload.error){err=new Error(payload.error);}
+        else if(payload.delta){full+=payload.delta;onDelta(payload.delta);}
+        else if(payload.warning){flashStallWarning(payload.warning);}
+        else if(payload.done){if(typeof payload.content==='string')full=payload.content;doneSeen=true;clearStallWarning();}
+      }
+    }
+    // If the relay sent a final done event, prefer it over any stray late
+    // error frame (Claude CLI sometimes reports a post-completion API hiccup
+    // even after the model finished cleanly — the streamed content is what
+    // the user actually saw).
+    if(!doneSeen){
+      if(err)throw err;
+      if(!full)throw new Error('SSE stream closed before any content received');
+      // else: partial — keep what streamed; better than throwing on tail
+    }
+    return full;
+  }
+  const r=await fetch('http://localhost:3001/v1/chat'+qs,{
     method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({system:sys,user,model:'claude-sonnet-4-6',max_tokens:1800})
   });
   if(!r.ok){let m=`HTTP ${r.status}`;try{const e=await r.json();m=e.error||m}catch(_){}throw new Error(m);}
   return (await r.json()).content;
+}
+// Append a per-phase output budget to the user prompt. Output time scales
+// linearly with token count, so capping each phase at a sensible target
+// (typically 800-2000 tokens) halves the worst-case wall-clock without
+// hurting completion quality. The hint is appended to the user prompt
+// (not the system prompt) so it travels with each call but doesn't pollute
+// the agent's identity.
+function budget(user,tokens){
+  return user+`\n\nTarget length: ${tokens} tokens. Use tables and bullets where possible. Be precise, not exhaustive.`;
+}
+// Long-output phase renderer: in LIVE+CC, streams via SSE into a tws() pane;
+// in any other mode (DEMO, or LIVE on Anthropic/OR/Ollama), fetches the full
+// content via dc()/call() and runs the synthetic tw() typewriter. The caller
+// passes a pre-created element so that streaming can begin painting before
+// the call resolves. Returns the final canonical content string.
+async function writeInto(el,sys,user,ak,demoKey,opts){
+  if(!demoMode&&forgeProvider==='cc'){
+    const ref={current:'',done:false};
+    resetTokens();
+    const render=tws(el,ref);
+    let res;
+    try{res=await callClaudeCode(sys,user,c=>{ref.current+=c;bumpTokens(c);},opts);}
+    catch(e){ref.done=true;try{await render;}catch(_){}throw e;}
+    ref.current=res;ref.done=true;
+    await render;
+    return res;
+  }
+  const res=await dc(sys,user,ak,demoKey);
+  await tw(el,res);
+  return res;
+}
+// Per-phase recovery wrapper. Catches errors from `fn` and shows a recovery
+// banner with Continue waiting (+60s) / Retry / Skip / DEMO / Dismiss.
+// Loops until the user picks a non-recovering option (skip → returns marker;
+// dismiss → re-throws). `fn` receives an opts object the wrapper mutates
+// across iterations: `{timeoutSec}` for the relay's ?timeout= override.
+async function callWithRecovery(label, fn, el){
+  const opts={timeoutSec:0};
+  while(true){
+    try{
+      return await fn(opts);
+    }catch(e){
+      const choice=await showPhaseRecovery(label,e.message);
+      if(choice==='continue'){
+        opts.timeoutSec=(opts.timeoutSec||TMP_DEFAULT_TIMEOUT)+60;
+      }else if(choice==='retry'){
+        opts.timeoutSec=0;
+      }else if(choice==='skip'){
+        const marker=`[${label} skipped by operator — recovery from: ${e.message}]`;
+        if(el)el.textContent=marker;
+        return marker;
+      }else if(choice==='demo'){
+        if(!demoMode)toggleDemoMode();
+        opts.timeoutSec=0;
+      }else{
+        // 'dismiss' — escalate to runForge's outer handler (whole-run banner)
+        throw e;
+      }
+    }
+  }
+}
+const TMP_DEFAULT_TIMEOUT=600;
+function showPhaseRecovery(label,msg){
+  return new Promise(resolve=>{
+    const banner=document.createElement('div');
+    banner.className='phase-recovery';
+    banner.innerHTML=`
+      <div class="phase-recovery-hdr">⚠ ${label} — phase recovery</div>
+      <div class="phase-recovery-msg">${(msg||'').slice(0,200)}</div>
+      <div class="phase-recovery-btns">
+        <button class="prv-cont" data-c="continue">[ ⏳ Continue waiting (+60s) ]</button>
+        <button class="prv-retry" data-c="retry">[ ↻ Retry phase ]</button>
+        <button class="prv-skip" data-c="skip">[ ⏭ Skip phase ]</button>
+        <button class="prv-demo" data-c="demo">[ ◉ Switch to DEMO ]</button>
+        <button class="prv-dismiss" data-c="dismiss">[ ✕ Abort run ]</button>
+      </div>`;
+    banner.querySelectorAll('button').forEach(b=>{
+      b.onclick=()=>{banner.remove();resolve(b.dataset.c);};
+    });
+    term().appendChild(banner);
+    term().scrollTop=1e9;
+  });
 }
 async function callOllama(sys,user){
   const model=(document.getElementById('ollama-model-inp')?.value.trim())||localStorage.getItem('tmp_ollama_model')||'llama3.2';
@@ -1704,7 +2084,7 @@ async function callOllama(sys,user){
   return (await r.json()).choices[0].message.content;
 }
 async function call(sys,user,ak){
-  if(forgeProvider==='local')return callLocal(sys,user);
+  if(forgeProvider==='cc')return callClaudeCode(sys,user);
   if(forgeProvider==='ollama')return callOllama(sys,user);
   if(forgeProvider==='orfree'){
     const model=(document.getElementById('or-model-inp')?.value.trim())||'google/gemini-2.0-flash-exp:free';
@@ -1721,12 +2101,24 @@ async function call(sys,user,ak){
 }
 
 // ─── Main forge ───
+function showErrorRecovery(){
+  const b=document.getElementById('error-recovery-banner');
+  if(!b)return;
+  b.style.display='flex';
+  document.getElementById('err-retry-btn').onclick=function(){hideErrorRecovery();runForge();};
+  document.getElementById('err-demo-btn').onclick=function(){hideErrorRecovery();if(!demoMode)toggleDemoMode();runForge();};
+  document.getElementById('err-dismiss-btn').onclick=hideErrorRecovery;
+}
+function hideErrorRecovery(){const b=document.getElementById('error-recovery-banner');if(b)b.style.display='none';}
+
 async function runForge(){
   if(running)return;
   let brief=SWARMS[selSwarm].brief;
   if(selSwarm==='custom'){brief=document.getElementById('ct').value.trim();if(!brief){document.getElementById('ct').focus();return;}}
   const ak=document.getElementById('ak').value.trim();
+  if(!demoMode&&forgeProvider!=='cc'&&forgeProvider!=='ollama'&&!ak){const go=confirm('No API key configured. Switch to DEMO MODE to run without a key, or cancel and enter a key first. Proceed anyway?');if(!go)return;}
   running=true;vectorEnabled=false;operatorNotes='';agentCN='AGENT';finalPkg='';
+  hideTokens();
   const btn=document.getElementById('ibtn');
   btn.disabled=true;btn.textContent='⚛ CHAIN REACTION IN PROGRESS...';
   document.getElementById('term').innerHTML='';
@@ -1751,10 +2143,14 @@ async function runForge(){
     rf(0,'WRITING','wr');rf(2,'WRITING','wr');rf(5,'WRITING','wr');
     t(`<div class="tah co">OPPENHEIMER // T1 DIRECTOR — DOMAIN ANALYSIS</div>`);
     t(`<div class="ts">Analyzing domain. Mapping workflow phases. Identifying agent roster...</div>`);
-    try{archDoc=await dc(SYS.OPPENHEIMER,`Domain Brief:\n\n${brief}`,ak,'OPPENHEIMER')}catch(e){throw new Error(`OPPENHEIMER: ${e.message}`)}
+    {
+      const e1=document.createElement('div');e1.innerHTML=`<div class="tc opp" id="e-opp"></div>`;term().appendChild(e1);
+      const el=document.getElementById('e-opp');
+      archDoc=await callWithRecovery('OPPENHEIMER',
+        opts=>writeInto(el,SYS.OPPENHEIMER,budget(`Domain Brief:\n\n${brief}`,1500),ak,'OPPENHEIMER',opts),el);
+    }
     dot('o','done');rf(0,'UPDATED ✓','up');rf(1,'UPDATED ✓','up');rf(2,'UPDATED ✓','up');rf(5,'UPDATED ✓','up');
-    const e1=document.createElement('div');e1.innerHTML=`<div class="tc opp" id="e-opp"></div>`;term().appendChild(e1);
-    await tw(document.getElementById('e-opp'),archDoc);await sleep(250);
+    await sleep(250);
     await waitPhase('LATTICE VRA — Vector Readiness Assessment');
 
     // ═══ PHASE 1b: LATTICE VRA ═══
@@ -1762,11 +2158,15 @@ async function runForge(){
     rf(3,'WRITING','wr');
     t(`<div class="tah cl">LATTICE // VECTOR INTELLIGENCE — VRA (Phase 1b)</div>`);
     t(`<div class="ts">Running Vector Readiness Assessment. Output: OPERATOR ONLY per TRAINING-DATA-INTEGRITY.md Rule 1...</div>`);
-    try{vraDoc=await dc(SYS.LATTICE_VRA,`SWARM ARCHITECTURE DOCUMENT:\n\n${archDoc}\n\nDomain Brief:\n\n${brief}`,ak,'LATTICE_VRA')}catch(e){throw new Error(`LATTICE VRA: ${e.message}`)}
+    {
+      const e2=document.createElement('div');e2.innerHTML=`<div class="tc lat" id="e-vra"></div>`;term().appendChild(e2);
+      const el=document.getElementById('e-vra');
+      vraDoc=await callWithRecovery('LATTICE VRA',
+        opts=>writeInto(el,SYS.LATTICE_VRA,budget(`SWARM ARCHITECTURE DOCUMENT:\n\n${archDoc}\n\nDomain Brief:\n\n${brief}`,1200),ak,'LATTICE_VRA',opts),el);
+    }
     dot('l','done');rf(3,'UPDATED ✓','up');
     showVRA(vraDoc);
-    const e2=document.createElement('div');e2.innerHTML=`<div class="tc lat" id="e-vra"></div>`;term().appendChild(e2);
-    await tw(document.getElementById('e-vra'),vraDoc);await sleep(250);
+    await sleep(250);
     await waitPhase(`T2 ADVISOR — ${sw.adv} Micro-Spec Map + Library Spec`);
 
     // ═══ PHASE 2: T2 ADVISOR ═══
@@ -1775,20 +2175,51 @@ async function runForge(){
     t(`<div class="ts">Reviewing architecture. Applying domain expertise. Authoring Library Specification for Lattice...</div>`);
     const advSys=SYS.ADVISORS[sw.adv]||SYS.ADVISORS['CYCLOTRON'];
     const vNotice=vectorEnabled?`\n\nNote: Lattice VRA scored ≥3 for this swarm. Please author a complete Library Specification (Output B) so Lattice can design vector collections for this swarm.`:`\n\nNote: Lattice VRA scored <3. You may still author a Library Specification for future reference, but vector support is not currently recommended.`;
-    try{advisorOut=await dc(advSys,`SWARM ARCHITECTURE DOCUMENT:\n\n${archDoc}\n\nDomain Brief:\n\n${brief}${vNotice}`,ak,'ADVISOR')}catch(e){throw new Error(`${sw.adv}: ${e.message}`)}
+    const advUser=`SWARM ARCHITECTURE DOCUMENT:\n\n${archDoc}\n\nDomain Brief:\n\n${brief}${vNotice}`;
+    if(demoMode){
+      const e3=document.createElement('div');e3.innerHTML=`<div class="tc t2" id="e-t2"></div>`;term().appendChild(e3);
+      const el=document.getElementById('e-t2');
+      advisorOut=await callWithRecovery(sw.adv,
+        opts=>writeInto(el,advSys,budget(advUser,3000),ak,'ADVISOR',opts),el);
+      await sleep(250);
+    }else{
+      // Split T2 advisor into two calls so each completes within the relay timeout
+      // (the combined Micro-Spec Map + Library Spec output is ~4-6K tokens — single-shot
+      // generation routinely exceeds 5 minutes on haiku). Two visible writes also beat
+      // one long silent freeze for the workshop audience. SSE streaming (47.5c)
+      // gives each half a real-time progress surface — the split also halves blast
+      // radius if one half fails.
+      const sysA=advSys+`\n\nFor THIS response, produce ONLY OUTPUT A (the MICRO-SPECIALIZATION MAP). Stop after the Fabrication Priority section. Do NOT produce OUTPUT B — it will be requested in a separate follow-up call.`;
+      const sysB=advSys+`\n\nFor THIS response, produce ONLY OUTPUT B (the LIBRARY SPECIFICATION). The Micro-Specialization Map has already been authored and is provided for context — focus exclusively on the Library Specification.`;
+      let partA,partB;
+      const e3a=document.createElement('div');e3a.innerHTML=`<div class="tc t2" id="e-t2a"></div>`;term().appendChild(e3a);
+      const elA=document.getElementById('e-t2a');
+      partA=await callWithRecovery(`${sw.adv} (micro-spec)`,
+        opts=>writeInto(elA,sysA,budget(advUser,1500),ak,'ADVISOR',opts),elA);
+      await sleep(120);
+      t(`<div class="ts">Micro-Specialization Map authored. Now authoring Library Specification for Lattice...</div>`);
+      const e3b=document.createElement('div');e3b.innerHTML=`<div class="tc t2" id="e-t2b"></div>`;term().appendChild(e3b);
+      const elB=document.getElementById('e-t2b');
+      partB=await callWithRecovery(`${sw.adv} (library spec)`,
+        opts=>writeInto(elB,sysB,budget(advUser+`\n\nMICRO-SPECIALIZATION MAP (already authored, for context):\n\n${partA}`,1500),ak,'ADVISOR',opts),elB);
+      await sleep(120);
+      advisorOut=partA+`\n\n---\n\n`+partB;
+    }
     dot('t','done');
-    const e3=document.createElement('div');e3.innerHTML=`<div class="tc t2" id="e-t2"></div>`;term().appendChild(e3);
-    await tw(document.getElementById('e-t2'),advisorOut);await sleep(250);
     await waitPhase('LATTICE — Collection Design from Library Spec');
 
     // ═══ PHASE 2b: T2 → LATTICE ═══
     setP(4);dot('l','active');
     t(`<div class="tah cl">LATTICE // T2→LATTICE COORDINATION — COLLECTION DESIGN (Phase 2b)</div>`);
     t(`<div class="ts">Receiving Library Specification from ${sw.adv}. Designing collection architecture...</div>`);
-    try{collDesign=await dc(SYS.LATTICE_COLDESIGN,`T2 LIBRARY SPECIFICATION (from ${sw.adv}):\n\n${advisorOut}\n\nSWARM ARCHITECTURE:\n\n${archDoc}\n\nLATTICE VRA (your prior assessment):\n\n${vraDoc}`,ak,'COLL_DESIGN')}catch(e){throw new Error(`LATTICE Collection Design: ${e.message}`)}
+    {
+      const e4=document.createElement('div');e4.innerHTML=`<div class="tc lat" id="e-lat"></div>`;term().appendChild(e4);
+      const el=document.getElementById('e-lat');
+      collDesign=await callWithRecovery('LATTICE Collection Design',
+        opts=>writeInto(el,SYS.LATTICE_COLDESIGN,budget(`T2 LIBRARY SPECIFICATION (from ${sw.adv}):\n\n${advisorOut}\n\nSWARM ARCHITECTURE:\n\n${archDoc}\n\nLATTICE VRA (your prior assessment):\n\n${vraDoc}`,1500),ak,'COLL_DESIGN',opts),el);
+    }
     dot('l','done');
-    const e4=document.createElement('div');e4.innerHTML=`<div class="tc lat" id="e-lat"></div>`;term().appendChild(e4);
-    await tw(document.getElementById('e-lat'),collDesign);await sleep(250);
+    await sleep(250);
     await waitPhase('OPERATOR GATE — Approve Vector Architecture');
 
     // ═══ PHASE 2c: OPERATOR GATE ═══
@@ -1810,10 +2241,14 @@ async function runForge(){
     setP(6);dot('c','active');
     t(`<div class="tah cc">CURIE // RESEARCH SPECIALIST — DOMAIN RESEARCH BRIEFING (Phase 3a)</div>`);
     t(`<div class="ts">Researching current tools, TTPs, failure modes for fabrication priority agent...</div>`);
-    try{researchBrief=await dc(SYS.CURIE,`SWARM ARCHITECTURE:\n\n${archDoc}\n\nMICRO-SPECIALIZATION MAP (${sw.adv}):\n\n${advisorOut}\n\nLATTICE COLLECTION DESIGN:\n\n${collDesign}\n\nProduce Curie Research Briefing for the fabrication priority agent.`,ak,'CURIE')}catch(e){throw new Error(`CURIE: ${e.message}`)}
+    {
+      const e5=document.createElement('div');e5.innerHTML=`<div class="tc cur" id="e-cur"></div>`;term().appendChild(e5);
+      const el=document.getElementById('e-cur');
+      researchBrief=await callWithRecovery('CURIE',
+        opts=>writeInto(el,SYS.CURIE,budget(`SWARM ARCHITECTURE:\n\n${archDoc}\n\nMICRO-SPECIALIZATION MAP (${sw.adv}):\n\n${advisorOut}\n\nLATTICE COLLECTION DESIGN:\n\n${collDesign}\n\nProduce Curie Research Briefing for the fabrication priority agent.`,1200),ak,'CURIE',opts),el);
+    }
     dot('c','done');
-    const e5=document.createElement('div');e5.innerHTML=`<div class="tc cur" id="e-cur"></div>`;term().appendChild(e5);
-    await tw(document.getElementById('e-cur'),researchBrief);await sleep(250);
+    await sleep(250);
     await waitPhase('FERMI — Agent Fabrication');
 
     // ═══ PHASE 3b: FERMI ═══
@@ -1821,31 +2256,46 @@ async function runForge(){
     t(`<div class="tah cf2">FERMI // FABRICATION AGENT — AGENT CONSTRUCTION${vectorEnabled?' WITH VRP':''} (Phase 3b)</div>`);
     t(`<div class="ts">Synthesizing advisory map + research briefing${vectorEnabled?' + Collection Design (VRP will be embedded)':''}...</div>`);
     const fermiCtx=`SWARM ARCHITECTURE:\n\n${archDoc}\n\nMICRO-SPECIALIZATION MAP (${sw.adv}):\n\n${advisorOut}\n\nCURIE RESEARCH BRIEFING:\n\n${researchBrief}\n\nLATTICE COLLECTION DESIGN (APPROVED BY OPERATOR):\n\n${collDesign}\n\nOPERATOR NOTES: ${operatorNotes||'None — approved as-is'}\n\nVector-enabled swarm: ${vectorEnabled?'YES — embed Library Specification and Vector Retrieval Protocol sections in the fabricated agent':'NO — omit Library Specification and Vector Retrieval Protocol sections'}\n\nFabricate the agent designated as Fabrication Priority.`;
-    try{fabricated=await dc(SYS.FERMI,fermiCtx,ak,'FERMI')}catch(e){throw new Error(`FERMI: ${e.message}`)}
-    const cn=fabricated.match(/^#\s+([A-Z][A-Z0-9\-]+)/m);if(cn)agentCN=cn[1];
+    {
+      // Stream into a placeholder element first; rewrite the heading once the
+      // fabricated agent's codename is parsed from the result.
+      const e6=document.createElement('div');e6.innerHTML=`<div class="tah cf2" id="e-fer-h">FABRICATING…</div><div class="tc fer" id="e-fer"></div>`;term().appendChild(e6);
+      const el=document.getElementById('e-fer');
+      fabricated=await callWithRecovery('FERMI',
+        opts=>writeInto(el,SYS.FERMI,budget(fermiCtx,2000),ak,'FERMI',opts),el);
+      const cn=fabricated.match(/^#\s+([A-Z][A-Z0-9\-]+)/m);if(cn)agentCN=cn[1];
+      const eh=document.getElementById('e-fer-h');if(eh)eh.textContent=`${agentCN} FABRICATED`;
+    }
     dot('f','done');rf(4,'UPDATED ✓','up');
-    const e6=document.createElement('div');e6.innerHTML=`<div class="tah cf2">${agentCN} FABRICATED</div><div class="tc fer" id="e-fer"></div>`;term().appendChild(e6);
-    await tw(document.getElementById('e-fer'),fabricated);await sleep(250);
+    await sleep(250);
     await waitPhase('GEIGER — Quality Gate Validation');
 
     // ═══ PHASE 4a: GEIGER ═══
     setP(7);dot('g','active');rf(5,'WRITING','wr');
     t(`<div class="tah cg">GEIGER // QUALITY GATE — VALIDATION (Phase 4a)</div>`);
     t(`<div class="ts">Validating advisory fidelity, research integration, VRP completeness, deployment readiness...</div>`);
-    try{geigerRpt=await dc(SYS.GEIGER,`SWARM ARCHITECTURE:\n\n${archDoc}\n\nMICRO-SPEC MAP:\n\n${advisorOut}\n\nRESEARCH BRIEFING:\n\n${researchBrief}\n\nCOLLECTION DESIGN:\n\n${collDesign}\n\nFABRICATED AGENT:\n\n${fabricated}\n\nVector-enabled: ${vectorEnabled}`,ak,'GEIGER')}catch(e){throw new Error(`GEIGER: ${e.message}`)}
+    {
+      const e7=document.createElement('div');e7.innerHTML=`<div class="tc gei" id="e-gei"></div>`;term().appendChild(e7);
+      const el=document.getElementById('e-gei');
+      geigerRpt=await callWithRecovery('GEIGER',
+        opts=>writeInto(el,SYS.GEIGER,budget(`SWARM ARCHITECTURE:\n\n${archDoc}\n\nMICRO-SPEC MAP:\n\n${advisorOut}\n\nRESEARCH BRIEFING:\n\n${researchBrief}\n\nCOLLECTION DESIGN:\n\n${collDesign}\n\nFABRICATED AGENT:\n\n${fabricated}\n\nVector-enabled: ${vectorEnabled}`,800),ak,'GEIGER',opts),el);
+    }
     dot('g','done');rf(5,'UPDATED ✓','up');
-    const e7=document.createElement('div');e7.innerHTML=`<div class="tc gei" id="e-gei"></div>`;term().appendChild(e7);
-    await tw(document.getElementById('e-gei'),geigerRpt);await sleep(250);
+    await sleep(250);
     await waitPhase('BOHR — Structural Compliance Review');
 
     // ═══ PHASE 4b: BOHR ═══
     dot('b','active');
     t(`<div class="tah cb">BOHR // FRAMEWORK REVIEW — STRUCTURAL COMPLIANCE (Phase 4b)</div>`);
     t(`<div class="ts">Checking schema, design principles, cross-references, VRP structural completeness...</div>`);
-    try{bohrRpt=await dc(SYS.BOHR,`FABRICATED AGENT PROMPT:\n\n${fabricated}\n\nVector-enabled: ${vectorEnabled}`,ak,'BOHR')}catch(e){throw new Error(`BOHR: ${e.message}`)}
+    {
+      const e8=document.createElement('div');e8.innerHTML=`<div class="tc boh" id="e-boh"></div>`;term().appendChild(e8);
+      const el=document.getElementById('e-boh');
+      bohrRpt=await callWithRecovery('BOHR',
+        opts=>writeInto(el,SYS.BOHR,budget(`FABRICATED AGENT PROMPT:\n\n${fabricated}\n\nVector-enabled: ${vectorEnabled}`,800),ak,'BOHR',opts),el);
+    }
     dot('b','done');
-    const e8=document.createElement('div');e8.innerHTML=`<div class="tc boh" id="e-boh"></div>`;term().appendChild(e8);
-    await tw(document.getElementById('e-boh'),bohrRpt);await sleep(250);
+    await sleep(250);
 
     // ═══ PHASE 5: CRITICAL MASS ═══
     setP(8);
@@ -1887,9 +2337,10 @@ async function runForge(){
   }catch(err){
     t(`<div class="tg"></div><div class="terr">REACTOR FAULT: ${err.message}</div>`);
     t(`<div class="ts">Check API key and network. Consult MELTDOWN.md for recovery.</div>`);
+    showErrorRecovery();
     setP(0);
   }finally{
-    running=false;btn.disabled=false;btn.textContent='⚛ INITIATE FISSION';
+    running=false;btn.disabled=false;btn.textContent=demoMode?'▶ RUN DEMO':'⚛ INITIATE FISSION';
   }
 }
 
@@ -1920,7 +2371,7 @@ function setForgeProvider(p,init){
   if(!init)localStorage.setItem('tmp_provider',p);
   document.getElementById('prv-ant').classList.toggle('sel',p==='anthropic');
   document.getElementById('prv-or').classList.toggle('sel',p==='openrouter');
-  document.getElementById('prv-local').classList.toggle('sel',p==='local');
+  document.getElementById('prv-cc').classList.toggle('sel',p==='cc');
   document.getElementById('prv-orfree').classList.toggle('sel',p==='orfree');
   document.getElementById('prv-ollama').classList.toggle('sel',p==='ollama');
   const lbl=document.getElementById('ak-lbl');
@@ -1929,7 +2380,7 @@ function setForgeProvider(p,init){
   const ollamaRow=document.getElementById('ollama-model-row');
   const notice=document.getElementById('orfree-notice');
   const ollamaNotice=document.getElementById('ollama-notice');
-  if(p==='local'){
+  if(p==='cc'){
     document.getElementById('ak-row').style.display='none';
     document.getElementById('ak-conf').style.display='none';
     if(orRow)orRow.style.display='none';
@@ -1984,7 +2435,7 @@ function setForgeProvider(p,init){
 }
 function clearForgeKey(){
   if(forgeProvider==='openrouter'||forgeProvider==='orfree')localStorage.removeItem('tmp_or_key');
-  else if(forgeProvider!=='local'&&forgeProvider!=='ollama')localStorage.removeItem('tmp3_key');
+  else if(forgeProvider!=='cc'&&forgeProvider!=='ollama')localStorage.removeItem('tmp3_key');
   document.getElementById('ak').value='';
   document.getElementById('ak-row').style.display='';
   document.getElementById('ak-conf').style.display='none';
@@ -2008,6 +2459,10 @@ function toggleDemoMode(){
   const btn=document.getElementById('demo-btn');
   btn.classList.toggle('active',demoMode);
   btn.textContent=demoMode?'[ ◉ DEMO MODE ON ]':'[ ◉ DEMO MODE ]';
+  const ibtn=document.getElementById('ibtn');
+  if(ibtn)ibtn.textContent=demoMode?'▶ RUN DEMO':'⚛ INITIATE FISSION';
+  const badge=document.getElementById('demo-hdr-badge');
+  if(badge)badge.style.display=demoMode?'inline-block':'none';
   const note=document.getElementById('demo-note');
   note.style.display=demoMode?'block':'none';
   // Disable custom swarm button in demo mode
@@ -2061,6 +2516,12 @@ async function waitPhase(nextLabel){
     term().appendChild(d);term().scrollTop=1e9;
   });
 }
+
+// A7: Space bar advances STEP MODE gate
+document.addEventListener('keydown',function(e){if(e.code==='Space'&&e.target.tagName!=='INPUT'&&e.target.tagName!=='TEXTAREA'){const gates=document.querySelectorAll('.step-btn:not([style*="display:none"])');if(gates.length){e.preventDefault();gates[0].click();}}});
+// A8: Ctrl+D toggles DEMO MODE
+document.addEventListener('keydown',function(e){if(e.ctrlKey&&e.key==='d'){e.preventDefault();toggleDemoMode();}});
+document.addEventListener('keydown',function(e){if(e.ctrlKey&&e.key==='p'){e.preventDefault();document.body.classList.toggle('pmode');}});
 </script>
 </body>
 </html>
