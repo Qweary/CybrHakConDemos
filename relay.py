@@ -69,18 +69,37 @@ SUBPROC_LIMIT = int(os.environ.get('TMP_RELAY_SUBPROC_LIMIT', str(4 * 1024 * 102
 DEFAULT_MODEL = os.environ.get('TMP_RELAY_MODEL', 'claude-haiku-4-5')
 
 
-def cors(response):
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
-    response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+# Single source of truth for CORS headers. Applied by cors_middleware on
+# every regular Response and FileResponse (static layer included). The
+# SSE StreamResponse path duplicates these into its construction headers
+# because aiohttp middleware runs only after the handler returns — by
+# which time the SSE response has already been prepared and headers
+# flushed to the wire. Both paths reference this dict to stay in sync.
+CORS_HEADERS = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Accept',
+}
+
+
+@web.middleware
+async def cors_middleware(request, handler):
+    """Inject CORS headers on every non-SSE response. Composes with
+    dotfile_filter — list this OUTER (first in the middlewares=[] tuple)
+    so that even early-return 404s from dotfile_filter come back
+    through here and pick up the headers."""
+    response = await handler(request)
+    for k, v in CORS_HEADERS.items():
+        response.headers[k] = v
     return response
 
 
 def _chat_response(response, timeout):
     """Stamp the effective per-call timeout on a chat response so a
-    caller can detect when their `?timeout=N` was clamped (FRG-07)."""
+    caller can detect when their `?timeout=N` was clamped (FRG-07).
+    CORS headers are added by cors_middleware."""
     response.headers['X-Timeout-Used'] = str(timeout)
-    return cors(response)
+    return response
 
 
 def claude_path():
@@ -88,7 +107,7 @@ def claude_path():
 
 
 async def handle_options(request):
-    return cors(web.Response(status=204))
+    return web.Response(status=204)
 
 
 async def handle_chat_get(request):
@@ -96,11 +115,11 @@ async def handle_chat_get(request):
     types the URL into a browser hits the static catch-all and sees a
     confusing "404 Not Found" instead of "this endpoint is POST-only."
     """
-    return cors(web.Response(
+    return web.Response(
         status=405,
         text='POST a JSON body to /v1/chat. See docs/dev/testing.md.',
         headers={'Allow': 'POST, OPTIONS'},
-    ))
+    )
 
 
 @web.middleware
@@ -111,17 +130,17 @@ async def dotfile_filter(request, handler):
     aiohttp's StaticResource."""
     for segment in request.path.split('/'):
         if segment.startswith('.') and segment not in ('', '.'):
-            return cors(web.Response(status=404, text='Not Found'))
+            return web.Response(status=404, text='Not Found')
     return await handler(request)
 
 
 async def handle_health(request):
     binary = claude_path()
-    return cors(web.json_response({
+    return web.json_response({
         'status': 'ok',
         'claude_binary_present': bool(binary),
         'claude_binary_path': binary,
-    }))
+    })
 
 
 async def handle_index(request):
@@ -130,12 +149,12 @@ async def handle_index(request):
     small explicit shim."""
     path = os.path.join(WEB_DIR, 'index.html')
     if not os.path.isfile(path):
-        return cors(web.Response(
+        return web.Response(
             status=404,
             text=(f'web/index.html not found at {path}. Open a specific '
                   f'demo instead, e.g. /forge.html'),
-        ))
-    return cors(web.FileResponse(path))
+        )
+    return web.FileResponse(path)
 
 
 def _build_args(binary, system, model, streaming):
@@ -196,14 +215,14 @@ async def handle_chat(request):
     try:
         body = await request.json()
     except Exception:
-        return cors(web.json_response({'error': 'Invalid JSON body'}, status=400))
+        return web.json_response({'error': 'Invalid JSON body'}, status=400)
 
     binary = claude_path()
     if not binary:
-        return cors(web.json_response(
+        return web.json_response(
             {'error': 'Claude Code CLI not found on PATH. Install Claude Code to use this provider.'},
             status=500
-        ))
+        )
 
     # Normalize system at the boundary. Empty string and whitespace-only
     # both mean "omit the --system-prompt flag" (CLI uses its default
@@ -269,7 +288,7 @@ async def handle_chat(request):
             status=500
         ), timeout)
     except Exception as e:
-        return cors(web.json_response({'error': str(e)}, status=502))
+        return web.json_response({'error': str(e)}, status=502)
 
 
 async def _handle_chat_sse(request, binary, system, user, model, timeout=None):
@@ -285,9 +304,9 @@ async def _handle_chat_sse(request, binary, system, user, model, timeout=None):
             'Connection': 'keep-alive',
             'X-Accel-Buffering': 'no',
             'X-Timeout-Used': str(timeout),  # FRG-07
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type, Accept',
+            # CORS duplicated here because cors_middleware can't set headers
+            # after prepare() flushes them. Both reference CORS_HEADERS.
+            **CORS_HEADERS,
         },
     )
     await response.prepare(request)
@@ -533,7 +552,10 @@ async def _handle_chat_sse(request, binary, system, user, model, timeout=None):
 
 
 async def main():
-    app = web.Application(middlewares=[dotfile_filter])
+    # cors_middleware OUTER so dotfile_filter's early 404s come back through
+    # it and pick up CORS headers. Order matters: aiohttp runs middlewares
+    # in registration order; first-listed is outermost.
+    app = web.Application(middlewares=[cors_middleware, dotfile_filter])
     app.router.add_route('OPTIONS', '/{path_info:.*}', handle_options)
     app.router.add_get('/health', handle_health)
     app.router.add_post('/v1/chat', handle_chat)
