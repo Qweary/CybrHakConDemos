@@ -129,6 +129,27 @@ def verify_whole_file() -> None:
 
 
 PROMPTS_PATH = os.path.join(SNAPSHOTS, 'prompts.json')
+PROMPTS_DIR = os.path.join(WORKSHOP, 'web', 'assets', 'prompts')
+
+
+def prompt_filename(name: str) -> str:
+    """Map a SYS_* / SYS.X constant name to a kebab-case .md filename.
+    Examples:
+      SYS.OPPENHEIMER          → oppenheimer.md
+      SYS.LATTICE_VRA          → lattice-vra.md
+      SYS.ADVISORS.NEUTRON     → advisors/neutron.md  (nested dir)
+      SYS_RED_RECON            → red-recon.md
+      SYS_PHANTOM_BLUE_HARDEN  → phantom-blue-harden.md
+      SYS_ARBITER              → arbiter.md
+    """
+    n = name
+    if n.startswith('SYS.ADVISORS.'):
+        return 'advisors/' + n[len('SYS.ADVISORS.'):].lower().replace('_', '-') + '.md'
+    if n.startswith('SYS.'):
+        return n[len('SYS.'):].lower().replace('_', '-') + '.md'
+    if n.startswith('SYS_'):
+        return n[len('SYS_'):].lower().replace('_', '-') + '.md'
+    return n.lower().replace('_', '-').replace('.', '/') + '.md'
 
 
 def _scan_template(text: str, start: int) -> tuple[str, int] | None:
@@ -227,13 +248,41 @@ def collect_prompts() -> dict[str, dict[str, str]]:
 
 
 def update_prompts() -> None:
-    write_json(PROMPTS_PATH, collect_prompts())
+    """Regenerate the JSON snapshot AND the human-readable .md export
+    under web/assets/prompts/. The .md files are derived artifacts —
+    inline SYS_* / SYS.* constants in the demo HTML are still the
+    runtime source. The .md export exists so an LLM (or a human) can
+    read a single prompt without scanning 165KB of HTML."""
     snap = collect_prompts()
-    counts = ', '.join(f'{label}={len(v)}' for label, v in snap.items())
-    print(f'  → wrote {PROMPTS_PATH} ({counts})')
+    write_json(PROMPTS_PATH, snap)
+
+    # Re-extract bodies (collect_prompts only stored hashes) and write
+    # each to its own .md file.
+    counts: dict[str, int] = {}
+    written = 0
+    for label, path in DEMO_FILES:
+        text = read_text(path)
+        prompts = extract_prompts(text)
+        counts[label] = len(prompts)
+        for name, body in prompts.items():
+            out = os.path.join(PROMPTS_DIR, label, prompt_filename(name))
+            os.makedirs(os.path.dirname(out), exist_ok=True)
+            with open(out, 'w', encoding='utf-8') as f:
+                f.write(body)
+                if not body.endswith('\n'):
+                    f.write('\n')
+            written += 1
+    counts_str = ', '.join(f'{k}={v}' for k, v in counts.items())
+    print(f'  → wrote {PROMPTS_PATH} ({counts_str})')
+    print(f'  → wrote {written} .md files under {PROMPTS_DIR}/')
 
 
 def verify_prompts() -> None:
+    """Three-way check:
+      1. JSON snapshot vs. live HTML extraction (catches HTML edits)
+      2. .md exports vs. live HTML extraction (catches forgotten regen)
+      3. Total .md count vs. snapshot count (catches stray files)
+    """
     print('\n── prompts: per-prompt SHA256 ─────────────────────────────')
     if not os.path.exists(PROMPTS_PATH):
         check('prompts snapshot exists', False,
@@ -241,17 +290,21 @@ def verify_prompts() -> None:
         return
     expected = read_json(PROMPTS_PATH)
     actual = collect_prompts()
+
+    # Re-extract bodies for the .md round-trip.
+    bodies: dict[str, dict[str, str]] = {}
+    for label, path in DEMO_FILES:
+        bodies[label] = extract_prompts(read_text(path))
+
     for label in sorted(set(expected) | set(actual)):
         exp = expected.get(label, {})
         act = actual.get(label, {})
-        # Count check first — catches accidentally-deleted prompt early.
         check(f'{label}: prompt count matches ({len(exp)})',
               len(exp) == len(act),
               f'expected {len(exp)} prompts, found {len(act)}: '
               f'missing={sorted(set(exp) - set(act))[:3]} '
               f'extra={sorted(set(act) - set(exp))[:3]}'
               if len(exp) != len(act) else '')
-        # Then individual hashes — narrows down which prompt drifted.
         for name in sorted(set(exp) | set(act)):
             if name not in exp:
                 check(f'{label}.{name}: in snapshot', False, 'new prompt — run --update if intentional')
@@ -261,6 +314,48 @@ def verify_prompts() -> None:
                 ok = exp[name] == act[name]
                 check(f'{label}.{name}: SHA256 matches', ok,
                       f'prompt body changed (was {exp[name][:12]}…, now {act[name][:12]}…)' if not ok else '')
+
+    # .md round-trip: each extracted prompt must have a matching .md file.
+    print()
+    print('── prompts: .md export round-trip ─────────────────────────')
+    md_total = 0
+    for label in sorted(bodies):
+        for name, body in sorted(bodies[label].items()):
+            md_path = os.path.join(PROMPTS_DIR, label, prompt_filename(name))
+            if not os.path.exists(md_path):
+                check(f'{label}/{prompt_filename(name)}: file exists', False,
+                      f'expected derived export at {md_path} — run --update prompts')
+                continue
+            with open(md_path, encoding='utf-8') as f:
+                md_body = f.read().rstrip('\n')
+            ok = md_body == body.rstrip('\n')
+            check(f'{label}/{prompt_filename(name)}: matches HTML source', ok,
+                  f'derived .md drifted from inline constant — run --update prompts'
+                  if not ok else '')
+            md_total += 1
+    # Stray-file check: every .md under PROMPTS_DIR/<label>/ must correspond
+    # to a known prompt. The top-level README.md is a hand-authored explainer,
+    # not an exported prompt, so it lives at PROMPTS_DIR/README.md and is
+    # excluded by virtue of not being inside a label subdir.
+    expected_paths = {
+        os.path.join(PROMPTS_DIR, label, prompt_filename(name))
+        for label, prompts in bodies.items()
+        for name in prompts
+    }
+    found_paths = set()
+    for label, _ in DEMO_FILES:
+        label_dir = os.path.join(PROMPTS_DIR, label)
+        if not os.path.isdir(label_dir):
+            continue
+        for root, _, files in os.walk(label_dir):
+            for fn in files:
+                if fn.endswith('.md'):
+                    found_paths.add(os.path.join(root, fn))
+    stray = sorted(found_paths - expected_paths)
+    check(f'no stray .md files under {os.path.relpath(PROMPTS_DIR, WORKSHOP)}/<label>/',
+          not stray,
+          f'unexpected files (delete or run --update): {[os.path.relpath(p, WORKSHOP) for p in stray[:5]]}'
+          if stray else '')
 
 
 # ── Snapshot 3: relay /health response schema ────────────────────────
