@@ -6,6 +6,9 @@ __pycache__/
 *.egg-info/
 build/
 dist/
+# uv generates this from pyproject.toml on first `uv run` — deterministic,
+# not worth committing for a workshop kit.
+uv.lock
 
 # Virtual environments
 .venv-e2e/
