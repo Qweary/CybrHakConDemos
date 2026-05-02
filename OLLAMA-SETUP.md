@@ -98,4 +98,4 @@ Start with `llama3.2` if you are unsure.
 → Normal on CPU-only machines. llama3.2 takes 10–60 seconds per phase depending on hardware. Use DEMO MODE if you need speed for a presentation.
 
 **CORS error in browser console**
-→ Should not happen — Ollama's `/v1` endpoint allows browser requests. If you see one, try serving the demo from localhost: `python3 -m http.server 8080` inside `ai-village-workshop/`, then open `http://localhost:8080/demos/tmp-forge-live.html`.
+→ Should not happen — Ollama's `/v1` endpoint allows browser requests. If you see one, try serving the demo from localhost: `python3 -m http.server 8080` from the workshop root, then open `http://localhost:8080/demos/tmp-forge-live.html`.

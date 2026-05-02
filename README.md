@@ -59,7 +59,7 @@ You want to understand how this works and extend it.
 ## Files in This Package
 
 ```
-ai-village-workshop/
+.
 ├── README.md             (this file)
 ├── ATTENDEE-SETUP.md     (API key setup — all four provider options)
 ├── CLAUDE-CODE-SETUP.md  (use your Claude Code subscription via local helper — no separate API key)

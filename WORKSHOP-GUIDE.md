@@ -54,7 +54,7 @@ Use DEMO MODE to observe the workflow, understand the phases, or present to an a
 → Your OpenRouter account has no credits. Add $5 at openrouter.ai → Credits, or switch to OR FREE.
 
 **"Connection refused" (CLAUDE CODE provider)**
-→ `relay.py` is not running. Start it: `python3 relay.py` from the `ai-village-workshop/` directory.
+→ `relay.py` is not running. Start it: `python3 relay.py` from the workshop root directory.
 
 **"Claude Code CLI not found on PATH" (CLAUDE CODE provider)**
 → The relay can't find the `claude` binary. Install Claude Code (or fix PATH so `which claude` resolves), then restart `relay.py`.
@@ -69,7 +69,7 @@ Use DEMO MODE to observe the workflow, understand the phases, or present to an a
 → Key may have been pasted with whitespace. Clear the key field and re-paste. Or your model field has an invalid model name.
 
 **"Network error" from file://**
-→ Some browsers block fetch from file:// origins. Serve locally instead: `cd ai-village-workshop && python3 -m http.server 8080`, then open `http://localhost:8080/demos/tmp-forge-live.html`.
+→ Some browsers block fetch from file:// origins. Serve locally instead: `python3 -m http.server 8080` from the workshop root, then open `http://localhost:8080/demos/tmp-forge-live.html`.
 
 **CORS error in browser console**
 → Usually solved by the localhost:8080 approach above.
@@ -112,7 +112,7 @@ All three demos share `tmp_provider` (provider choice) and `tmp_or_key` (OpenRou
 
 3. **Verify your key** — in FORGE, clear the key and re-paste. Make sure you selected the right provider for your key type.
 
-4. **Try localhost:8080** — if you're opening from file://, switch to the localhost approach: `cd ai-village-workshop && python3 -m http.server 8080`.
+4. **Try localhost:8080** — if you're opening from file://, switch to the localhost approach: run `python3 -m http.server 8080` from the workshop root.
 
 5. **Ask the presenter** during the session, or open an issue at https://github.com/Qweary/The-Manhattan-Project after the conference.
 

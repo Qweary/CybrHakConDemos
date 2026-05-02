@@ -7,7 +7,6 @@ gate), and phase tooltips are wired. Does NOT make live API calls — those
 are a separate concern (S50 territory).
 
 Run with:
-  cd ai-village-workshop
   .venv-e2e/bin/pytest test_workshop_e2e.py -v
 """
 

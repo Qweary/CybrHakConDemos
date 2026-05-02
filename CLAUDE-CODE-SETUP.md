@@ -35,7 +35,7 @@ aiohttp is the only Python dependency the relay needs (not in stdlib). If you al
 
 ## Step 3: Run the Relay
 
-From the `ai-village-workshop/` directory:
+From the workshop root directory:
 
 ```bash
 python3 relay.py

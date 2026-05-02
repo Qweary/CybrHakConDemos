@@ -9,14 +9,12 @@ demos: HTML parses, polish markers (S41-S44), Session 46 P0 fixes, Session
 47 content authenticity, S47.5a CLAUDE CODE provider rebuild, S47.5c
 streaming wiring (`callClaudeCode(sys, user, onDelta)`, `tok-count`
 ticker, relay SSE branch), S47.5d output budgeting + recovery banner +
-relay `?timeout=` and stall watchdog. Hash-parity check between
-`demos/` and `ai-village-workshop/demos/` catches drift between the two
-copies.
+relay `?timeout=` and stall watchdog.
 
 Runs in ~2 seconds with stdlib only. No setup required.
 
 ```
-python3 ai-village-workshop/test_workshop.py
+python3 test_workshop.py
 ```
 
 ## Browser e2e suite — `test_workshop_e2e.py`
@@ -32,26 +30,24 @@ Does not make live API calls (use `test_relay_e2e.py` for that).
 ### First-time setup (~30 sec download)
 
 ```
-cd ai-village-workshop
 python3 -m venv .venv-e2e
 .venv-e2e/bin/pip install playwright pytest pytest-playwright
 .venv-e2e/bin/playwright install chromium
 ```
 
-The venv lives in `ai-village-workshop/.venv-e2e/` (gitignored). 27
-tests across 3 demos × 9 checks each.
+The venv lives in `.venv-e2e/` (gitignored). 27 tests across 3 demos
+× 9 checks each.
 
 ### Running
 
 ```
-cd ai-village-workshop
 .venv-e2e/bin/pytest test_workshop_e2e.py -v
 ```
 
 Or via the unified runner:
 
 ```
-./ai-village-workshop/run_tests.sh
+./run_tests.sh
 ```
 
 Runs in ~10 seconds.
@@ -69,10 +65,10 @@ Used for validating relay/streaming changes before commit. NOT part of
 
 ```
 # Start the relay first (in another shell):
-python3 ai-village-workshop/relay.py
+python3 relay.py
 
 # Then run the harness:
-python3 ai-village-workshop/test_relay_e2e.py
+python3 test_relay_e2e.py
 ```
 
 Exits 0 on success.
@@ -89,5 +85,7 @@ install chromium`.
 with the specific error messages. JavaScript bug somewhere in the demo;
 fix the underlying issue (don't suppress).
 
-**Hash parity fails** — `cp ai-village-workshop/demos/*.html demos/` to
-re-sync the two copies (they must stay md5-identical).
+**Hash parity fails** — n/a; the dual-layout parity check was removed
+in the Phase 2 path normalization (the workshop is now its own root,
+so there is only one copy to be parity-checked against). Phase 3
+snapshot tests replace the underlying intent.
