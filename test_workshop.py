@@ -19,6 +19,7 @@ COMBAT      = os.path.join(WEB, 'combat.html')
 EVOLVE      = os.path.join(WEB, 'evolve.html')
 
 RELAY       = os.path.join(WORKSHOP, 'relay.py')
+TMP_RELAY_SRC = os.path.join(WORKSHOP, 'src', 'tmp_relay')
 README      = os.path.join(WORKSHOP, 'README.md')
 LAB1        = os.path.join(WORKSHOP, 'labs', 'LAB-1-FORGE.md')
 LAB2        = os.path.join(WORKSHOP, 'labs', 'LAB-2-COMBAT.md')
@@ -40,6 +41,21 @@ def check(name, ok, detail=''):
 def read_text(path):
     with open(path, encoding='utf-8') as f:
         return f.read()
+
+
+def read_relay_sources():
+    """Concatenate relay.py + every Python file under src/tmp_relay/.
+    Lets substring invariant checks survive the Phase 5c module split
+    without needing to know which module a constant or string ended up
+    in. (Phase 7 will reshape these tests; this is the bridge until then.)"""
+    chunks = []
+    if os.path.exists(RELAY):
+        chunks.append(read_text(RELAY))
+    if os.path.isdir(TMP_RELAY_SRC):
+        for name in sorted(os.listdir(TMP_RELAY_SRC)):
+            if name.endswith('.py'):
+                chunks.append(read_text(os.path.join(TMP_RELAY_SRC, name)))
+    return '\n'.join(chunks)
 
 
 # ── 1. relay.py syntax ────────────────────────────────────────────────────────
@@ -220,7 +236,7 @@ check('No stale RELAY-SETUP.md left at workshop root',
 # the broken "5 minutes of unmoving UI" state on slower hardware.
 print('\n── CLAUDE CODE SSE streaming (S47.5c) ───────────────────────────────')
 try:
-    relay_src = read_text(RELAY)
+    relay_src = read_relay_sources()
     check('relay.py: text/event-stream SSE branch present',
           'text/event-stream' in relay_src,
           detail='SSE header gate missing — long-output phases will hit the 300s timeout silently')
@@ -279,7 +295,7 @@ for label, html in [('forge', forge_html), ('combat', combat_html), ('evolve', e
 
 # Relay-side S47.5d checks
 try:
-    relay_src = read_text(RELAY)
+    relay_src = read_relay_sources()
     check('relay.py: ?timeout= query param honored',
           'rel_url.query.get(\'timeout\')' in relay_src or 'rel_url.query.get("timeout")' in relay_src,
           detail='Relay must honor ?timeout=N to give Continue waiting a working budget bump')
