@@ -383,6 +383,7 @@ async def _handle_chat_sse(request, binary, system, user, model, timeout=None):
                         # error when we have no content to fall back on.
                         if full_content:
                             completed = True
+                            stall_task.cancel()  # FRG-05: prevent post-done warning
                             await send_event({
                                 'done': True,
                                 'content': full_content,
@@ -400,6 +401,7 @@ async def _handle_chat_sse(request, binary, system, user, model, timeout=None):
                     else:
                         out_content = full_content
                     completed = True
+                    stall_task.cancel()  # FRG-05: prevent post-done warning
                     await send_event({'done': True, 'content': out_content,
                                       'deltas': delta_count})
                     return
