@@ -374,6 +374,18 @@ async def _handle_chat_sse(request, binary, system, user, model, timeout=None):
     stall_task = asyncio.create_task(stall_watcher())
     try:
         async def pump():
+            """Read NDJSON frames from claude --output-format stream-json
+            and either:
+              - emit a `delta` SSE event for each text_delta chunk, or
+              - emit a `done` SSE event on `result` and return, or
+              - emit an `error` SSE event on `result` with is_error=True
+                AND empty content, then return.
+
+            Invariant: any return that is paired with a `done` event MUST
+            set `completed = True` first. The post-loop exit-code check
+            (after the finally block) gates on `not completed` to decide
+            whether to surface a non-zero CLI exit as an error.
+            """
             nonlocal full_content, delta_count, completed, last_delta_at, stall_warned
             assert proc.stdout is not None
             while True:
@@ -455,9 +467,14 @@ async def _handle_chat_sse(request, binary, system, user, model, timeout=None):
             pass
         raise
     finally:
+        # proc.wait() does NOT raise ProcessLookupError — only proc.kill()
+        # does, when the process is already gone. So the outer except is
+        # just for the wait_for timeout (process didn't exit within 2s
+        # after pump returned/raised). The inner try wraps proc.kill()
+        # which can race with natural exit.
         try:
             await asyncio.wait_for(proc.wait(), timeout=2)
-        except (asyncio.TimeoutError, ProcessLookupError):
+        except asyncio.TimeoutError:
             try:
                 proc.kill()
             except ProcessLookupError:
