@@ -301,7 +301,7 @@ async def _handle_chat_sse(request, binary, system, user, model, timeout=None):
     # Stall watchdog state: surface a non-fatal warning to the demo when no
     # text_delta arrives for STALL_WARN_SEC. Keeps the operator's UI from
     # going silent during long thinking pauses without bailing the call.
-    last_delta_at = asyncio.get_event_loop().time()
+    last_delta_at = asyncio.get_running_loop().time()
     stall_warned = False
     STALL_WARN_SEC = 30
 
@@ -311,7 +311,7 @@ async def _handle_chat_sse(request, binary, system, user, model, timeout=None):
             await asyncio.sleep(5)
             if completed or timed_out:
                 return
-            gap = asyncio.get_event_loop().time() - last_delta_at
+            gap = asyncio.get_running_loop().time() - last_delta_at
             if gap > STALL_WARN_SEC and not stall_warned:
                 stall_warned = True
                 try:
@@ -345,7 +345,7 @@ async def _handle_chat_sse(request, binary, system, user, model, timeout=None):
                             if chunk:
                                 full_content += chunk
                                 delta_count += 1
-                                last_delta_at = asyncio.get_event_loop().time()
+                                last_delta_at = asyncio.get_running_loop().time()
                                 stall_warned = False
                                 await send_event({'delta': chunk})
                 elif t == 'result':
