@@ -1,2 +1,0 @@
-[console_scripts]
-tmp-relay = tmp_relay.cli:main
