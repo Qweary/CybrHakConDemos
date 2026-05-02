@@ -49,7 +49,7 @@ If you (or the presenter) already have Claude Code installed and authenticated, 
 
 Prerequisite: `claude --version` works in your terminal. If not, install Claude Code first ([docs.claude.com/claude-code](https://docs.claude.com/claude-code)).
 
-1. Run `python3 relay.py` from the `ai-village-workshop/` directory (do this once, leave it running)
+1. Run `python3 relay.py` from the workshop root directory (do this once, leave it running)
 2. Open any demo and click **[ CLAUDE CODE ]**
 3. No key field appears — authentication flows through your local `claude` CLI
 4. Click `[ ⚛ INITIATE FISSION ]` — calls go to `http://localhost:3001/v1/chat`, which spawns `claude -p` for each phase
@@ -80,7 +80,6 @@ Open `demos/tmp-forge-live.html` directly in your browser. You can use `file://`
 
 ```bash
 # If you have Python:
-cd ai-village-workshop
 python3 -m http.server 8080
 # Then open: http://localhost:8080/demos/tmp-forge-live.html
 ```
