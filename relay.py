@@ -316,10 +316,18 @@ async def _handle_chat_sse(request, binary, system, user, model, timeout=None):
         return response
 
     # Send the user prompt over stdin (avoids ARG_MAX when context is large)
-    # then close stdin so the CLI starts processing immediately.
+    # then close stdin so the CLI starts processing immediately. Chunked
+    # writes (32 KB) with drain between are necessary on Windows
+    # ProactorEventLoop pipes — a single >64 KB write can intermittently
+    # `BrokenPipeError` when the kernel pipe buffer fills before the CLI
+    # starts reading. Workshop forge prompts exceed 64 KB by Phase 3, so
+    # the chunking is load-bearing on Windows. Costs nothing on macOS/Linux.
+    payload = user.encode('utf-8')
+    STDIN_CHUNK = 32 * 1024
     try:
-        proc.stdin.write(user.encode('utf-8'))
-        await proc.stdin.drain()
+        for i in range(0, len(payload), STDIN_CHUNK):
+            proc.stdin.write(payload[i:i + STDIN_CHUNK])
+            await proc.stdin.drain()
         proc.stdin.close()
     except (ConnectionResetError, BrokenPipeError):
         pass
