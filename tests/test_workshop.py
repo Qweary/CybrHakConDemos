@@ -9,8 +9,10 @@ import os
 import re
 import sys
 from html.parser import HTMLParser
+from pathlib import Path
 
-WORKSHOP    = os.path.dirname(os.path.abspath(__file__))
+# This file lives at tests/test_workshop.py — the workshop root is one level up.
+WORKSHOP    = str(Path(__file__).resolve().parents[1])
 
 WEB         = os.path.join(WORKSHOP, 'web')
 
@@ -317,10 +319,10 @@ except FileNotFoundError:
 # casual cleanup doesn't accidentally delete them.
 print('\n── S48 e2e infrastructure (S48) ──────────────────────────────────────')
 E2E_FILES = [
-    ('conftest.py',           'Pytest fixtures: http_server, demo_url, safe_page'),
-    ('test_workshop_e2e.py',  'Playwright smoke + toggle + tooltip tests'),
-    ('run_tests.sh',          'Unified runner for static + e2e suites'),
-    ('docs/dev/testing.md',   'How-to-run docs for both suites + harness'),
+    ('tests/conftest.py',                 'Pytest fixtures: http_server, demo_url, safe_page'),
+    ('tests/e2e/test_browser_smoke.py',   'Playwright smoke + toggle + tooltip tests'),
+    ('run_tests.sh',                      'Unified runner for static + e2e suites'),
+    ('docs/dev/testing.md',               'How-to-run docs for both suites + harness'),
 ]
 for fname, what in E2E_FILES:
     path = os.path.join(WORKSHOP, fname)

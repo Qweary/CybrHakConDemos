@@ -23,10 +23,12 @@ import os
 import socket
 import socketserver
 import threading
+from pathlib import Path
 
 import pytest
 
-WORKSHOP = os.path.dirname(os.path.abspath(__file__))
+# This file lives at tests/conftest.py — workshop root is one up.
+WORKSHOP = str(Path(__file__).resolve().parents[1])
 
 
 def _free_port():

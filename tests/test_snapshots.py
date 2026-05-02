@@ -36,9 +36,11 @@ import sys
 import time
 import urllib.error
 import urllib.request
+from pathlib import Path
 from typing import Any
 
-WORKSHOP = os.path.dirname(os.path.abspath(__file__))
+# This file lives at tests/test_snapshots.py — workshop root is one up.
+WORKSHOP = str(Path(__file__).resolve().parents[1])
 SNAPSHOTS = os.path.join(WORKSHOP, 'tests', 'snapshots')
 WEB = os.path.join(WORKSHOP, 'web')
 
