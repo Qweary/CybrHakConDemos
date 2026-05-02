@@ -5,24 +5,18 @@ Exit 0: all tests pass.  Exit 1: one or more failures.
 """
 
 import ast
-import hashlib
 import os
 import re
 import sys
 from html.parser import HTMLParser
 
 WORKSHOP    = os.path.dirname(os.path.abspath(__file__))
-ROOT        = os.path.dirname(WORKSHOP)
 
-DEMOS_SRC   = os.path.join(ROOT, 'demos')
-DEMOS_WS    = os.path.join(WORKSHOP, 'demos')
+DEMOS       = os.path.join(WORKSHOP, 'demos')
 
-FORGE_SRC   = os.path.join(DEMOS_SRC, 'tmp-forge-live.html')
-COMBAT_SRC  = os.path.join(DEMOS_SRC, 'tmp-combat-live.html')
-EVOLVE_SRC  = os.path.join(DEMOS_SRC, 'tmp-evolve-live.html')
-FORGE_WS    = os.path.join(DEMOS_WS, 'tmp-forge-live.html')
-COMBAT_WS   = os.path.join(DEMOS_WS, 'tmp-combat-live.html')
-EVOLVE_WS   = os.path.join(DEMOS_WS, 'tmp-evolve-live.html')
+FORGE       = os.path.join(DEMOS, 'tmp-forge-live.html')
+COMBAT      = os.path.join(DEMOS, 'tmp-combat-live.html')
+EVOLVE      = os.path.join(DEMOS, 'tmp-evolve-live.html')
 
 RELAY       = os.path.join(WORKSHOP, 'relay.py')
 README      = os.path.join(WORKSHOP, 'README.md')
@@ -41,11 +35,6 @@ def check(name, ok, detail=''):
     print(f'  [{status}] {name}')
     if not ok and detail:
         print(f'         → {detail}')
-
-
-def sha256(path):
-    with open(path, 'rb') as f:
-        return hashlib.sha256(f.read()).hexdigest()
 
 
 def read_text(path):
@@ -78,9 +67,9 @@ class StrictParser(HTMLParser):
 
 
 for label, path in [
-    ('forge (workshop)', FORGE_WS),
-    ('combat (workshop)', COMBAT_WS),
-    ('evolve (workshop)', EVOLVE_WS),
+    ('forge', FORGE),
+    ('combat', COMBAT),
+    ('evolve', EVOLVE),
 ]:
     try:
         html = read_text(path)
@@ -94,9 +83,9 @@ for label, path in [
 # ── 3. Ollama button IDs ──────────────────────────────────────────────────────
 print('\n── Ollama button IDs ─────────────────────────────────────────────────')
 try:
-    forge_html  = read_text(FORGE_WS)
-    combat_html = read_text(COMBAT_WS)
-    evolve_html = read_text(EVOLVE_WS)
+    forge_html  = read_text(FORGE)
+    combat_html = read_text(COMBAT)
+    evolve_html = read_text(EVOLVE)
     check('forge:  id="prv-ollama"  present', 'prv-ollama'  in forge_html)
     check('combat: id="cprv-ollama" present', 'cprv-ollama' in combat_html)
     check('evolve: id="eprv-ollama" present', 'eprv-ollama' in evolve_html)
@@ -600,9 +589,9 @@ SCRIPT_BLOCK_RE = re.compile(
 )
 
 for label, path in [
-    ('forge',  FORGE_WS),
-    ('combat', COMBAT_WS),
-    ('evolve', EVOLVE_WS),
+    ('forge',  FORGE),
+    ('combat', COMBAT),
+    ('evolve', EVOLVE),
 ]:
     try:
         html = read_text(path)
@@ -627,26 +616,18 @@ for label, path in [
 # This catches re-introduction outside the script-block scan.
 EVOLVE_LIVE_PLACEHOLDER = '[Live mode: ${st.rLabel} content would be generated here]'
 try:
-    evolve_src = read_text(EVOLVE_WS)
+    evolve_src = read_text(EVOLVE)
     check('evolve: LIVE preset path no longer emits literal placeholder',
           EVOLVE_LIVE_PLACEHOLDER not in evolve_src,
           detail='Literal "[Live mode: ${st.rLabel} content would be generated here]" still present in JS')
 except FileNotFoundError:
     check('evolve: LIVE preset path no longer emits literal placeholder', False, 'evolve workshop copy not found')
 
-# ── 10. demos/ ↔ workshop/demos/ hash parity ─────────────────────────────────
-print('\n── File hash parity (demos/ == ai-village-workshop/demos/) ──────────')
-for name, src, ws in [
-    ('forge',  FORGE_SRC,  FORGE_WS),
-    ('combat', COMBAT_SRC, COMBAT_WS),
-    ('evolve', EVOLVE_SRC, EVOLVE_WS),
-]:
-    try:
-        ok = sha256(src) == sha256(ws)
-        check(f'{name}: hashes match', ok,
-              detail='Files differ — workshop copy is out of sync' if not ok else '')
-    except FileNotFoundError as e:
-        check(f'{name}: hashes match', False, str(e))
+# Section 10 (hash parity between demos/ and ai-village-workshop/demos/) was
+# removed in the Phase 2 path-normalization pass. The two copies were
+# collapsed into one when the workshop was promoted to repo root, so the
+# parity check had nothing to compare. Phase 3 introduces snapshot tests
+# that lock content properly; those replace what this test was meant to do.
 
 # ── Summary ───────────────────────────────────────────────────────────────────
 print()
