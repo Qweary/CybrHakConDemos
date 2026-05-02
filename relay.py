@@ -36,37 +36,26 @@ import asyncio
 import json
 import os
 import shutil
+import sys
+
+# Bootstrap: make the in-tree src/tmp_relay/ package importable without
+# requiring `pip install -e .`. Attendees can run `python3 relay.py`
+# directly from a fresh clone. Power users who pip-install get the
+# `tmp-relay` console script instead — both end up at the same code.
+_HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(_HERE, 'src'))
+
 from aiohttp import web
 
-PORT = 3001
-# Static web root — relay serves the workshop's launcher and demo HTML
-# from here. Same-origin with /v1/chat eliminates the CORS surface for
-# the demos and replaces the python -m http.server pattern attendees
-# would otherwise be told to run (which binds 0.0.0.0 by default).
-WEB_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'web')
-# Each call spawns a fresh `claude -p` subprocess. CURIE and FERMI phases on
-# typical workshop hardware land at ~250-300s for the unabridged forge demo
-# prompts; 600s gives enough headroom for slower laptops without making real
-# stalls take forever to surface. Override via TMP_RELAY_TIMEOUT_SEC.
-TIMEOUT_SEC = int(os.environ.get('TMP_RELAY_TIMEOUT_SEC', '600'))
-# Per-call ?timeout=N override bounds. Recovery banner's "Continue
-# waiting" can extend the budget within these limits without restarting
-# the relay. Out-of-bounds values clamp silently — every chat response
-# carries an X-Timeout-Used header so the caller can detect the override.
-MIN_PERCALL_TIMEOUT_SEC = 60
-MAX_PERCALL_TIMEOUT_SEC = 1800
-# Per-line buffer limit on the subprocess StreamReader. asyncio's default is
-# 64 KB, but `claude --output-format stream-json` emits assistant-message
-# snapshot lines that contain the FULL accumulated content for each chunk
-# — those routinely exceed 64 KB once the model produces ~3K+ tokens of
-# structured output, which throws LimitOverrunError mid-stream. 4 MB gives
-# enough headroom for any realistic single-call output.
-SUBPROC_LIMIT = int(os.environ.get('TMP_RELAY_SUBPROC_LIMIT', str(4 * 1024 * 1024)))
-# Default model overrides the demo's request. Haiku 4.5 is ~3-4x faster
-# than Sonnet 4.6 and adequate for the workflow-focused demo. Operators
-# who want max-quality output can set TMP_RELAY_MODEL=claude-sonnet-4-6.
-# Set to empty string to honor whatever model the demo requests.
-DEFAULT_MODEL = os.environ.get('TMP_RELAY_MODEL', 'claude-haiku-4-5')
+from tmp_relay.settings import (
+    PORT,
+    WEB_DIR,
+    TIMEOUT_SEC,
+    MIN_PERCALL_TIMEOUT_SEC,
+    MAX_PERCALL_TIMEOUT_SEC,
+    SUBPROC_LIMIT,
+    DEFAULT_MODEL,
+)
 
 
 # Single source of truth for CORS headers. Applied by cors_middleware on
