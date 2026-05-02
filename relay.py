@@ -362,7 +362,13 @@ async def _handle_chat_sse(request, binary, system, user, model, timeout=None):
                 stall_warned = True
                 try:
                     await send_event({'warning': f'stalled — no token in {int(gap)}s'})
-                except Exception:
+                except (ConnectionResetError, RuntimeError):
+                    # Client disconnected mid-warning, or aiohttp couldn't
+                    # write because the response was already closed. Both
+                    # are normal late-stream conditions; just exit. Bare
+                    # `except Exception` would have masked CancelledError
+                    # (BaseException subclass since 3.8 — already not
+                    # caught here, but documenting the choice).
                     return
 
     stall_task = asyncio.create_task(stall_watcher())
@@ -459,13 +465,20 @@ async def _handle_chat_sse(request, binary, system, user, model, timeout=None):
         stderr_task.cancel()
         try:
             await stderr_task
-        except (asyncio.CancelledError, Exception):
+        except asyncio.CancelledError:
             pass
+        except Exception as e:
+            # Drain task exited with an unexpected error (e.g.
+            # LimitOverrunError if SUBPROC_LIMIT was exceeded on stderr).
+            # Surface to operator stderr so it isn't silently swallowed.
+            print(f'[RELAY] stderr drain task error (non-fatal): {e!r}', flush=True)
         stall_task.cancel()
         try:
             await stall_task
-        except (asyncio.CancelledError, Exception):
+        except asyncio.CancelledError:
             pass
+        except Exception as e:
+            print(f'[RELAY] stall watcher error (non-fatal): {e!r}', flush=True)
 
     # Skip the post-stream exit-code check when pump() already emitted a done
     # event — the CLI's exit code is informational at that point and surfacing
