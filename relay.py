@@ -190,7 +190,13 @@ async def handle_chat(request):
             status=500
         ))
 
-    system = body.get('system', '')
+    # Normalize system at the boundary. Empty string and whitespace-only
+    # both mean "omit the --system-prompt flag" (CLI uses its default
+    # agent prompt — the slow path noted at the top of this module).
+    # Sending whitespace would otherwise pass a degraded prompt that
+    # subtly perturbs model output. To explicitly request the CLI default,
+    # callers omit the field entirely; same effect.
+    system = (body.get('system') or '').strip()
     user = body.get('user', '')
     model = DEFAULT_MODEL or body.get('model', 'claude-haiku-4-5')
     timeout = _per_call_timeout(request)
