@@ -23,6 +23,11 @@ python3 test_workshop.py
 STATIC_RC=$?
 
 echo
+echo "═══ Snapshot tripwires (test_snapshots.py) ═══"
+python3 test_snapshots.py
+SNAP_RC=$?
+
+echo
 echo "═══ Browser e2e suite (test_workshop_e2e.py) ═══"
 if [ ! -x .venv-e2e/bin/pytest ]; then
   echo "✗ .venv-e2e/bin/pytest missing — first-time setup:"
@@ -35,9 +40,9 @@ fi
 E2E_RC=$?
 
 echo
-if [ $STATIC_RC -eq 0 ] && [ $E2E_RC -eq 0 ]; then
+if [ $STATIC_RC -eq 0 ] && [ $SNAP_RC -eq 0 ] && [ $E2E_RC -eq 0 ]; then
   echo "✅ ALL SUITES PASSED"
   exit 0
 fi
-echo "❌ One or more suites failed (static=$STATIC_RC e2e=$E2E_RC)"
+echo "❌ One or more suites failed (static=$STATIC_RC snap=$SNAP_RC e2e=$E2E_RC)"
 exit 1
