@@ -31,7 +31,11 @@ import hashlib
 import json
 import os
 import re
+import subprocess
 import sys
+import time
+import urllib.error
+import urllib.request
 from typing import Any
 
 WORKSHOP = os.path.dirname(os.path.abspath(__file__))
@@ -259,12 +263,198 @@ def verify_prompts() -> None:
                       f'prompt body changed (was {exp[name][:12]}…, now {act[name][:12]}…)' if not ok else '')
 
 
+# ── Snapshot 3: relay /health response schema ────────────────────────
+
+
+HEALTH_PATH = os.path.join(SNAPSHOTS, 'relay_health.json')
+RELAY_PORT = 3001  # current hardcode in relay.py; Phase 5 makes this configurable
+RELAY_PY = os.path.join(WORKSHOP, 'relay.py')
+
+_TYPE_NAMES: dict[str, type] = {
+    'str': str, 'bool': bool, 'int': int, 'float': float,
+    'dict': dict, 'list': list, 'NoneType': type(None),
+}
+
+
+def _interpreter_has_aiohttp(interp: str) -> bool:
+    try:
+        r = subprocess.run(
+            [interp, '-c', 'import aiohttp'],
+            capture_output=True, timeout=5,
+        )
+        return r.returncode == 0
+    except (subprocess.TimeoutExpired, FileNotFoundError):
+        return False
+
+
+def _pick_relay_interpreter() -> str | None:
+    """Find a python that can run the relay. Tries the current
+    interpreter first, then `.venv-e2e/bin/python3` (the interpreter
+    the workshop install instructions create)."""
+    candidates = [sys.executable, os.path.join(WORKSHOP, '.venv-e2e', 'bin', 'python3')]
+    for interp in candidates:
+        if interp and os.path.exists(interp) and _interpreter_has_aiohttp(interp):
+            return interp
+    return None
+
+
+def _start_relay_subprocess(interp: str) -> tuple[subprocess.Popen | None, str]:
+    """Spawn the relay; return (Popen, '') once /health responds, or
+    (None, stderr_excerpt) if the relay crashed or didn't come up
+    within 5 seconds."""
+    proc = subprocess.Popen(
+        [interp, RELAY_PY],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.PIPE,
+    )
+    deadline = time.time() + 5.0
+    while time.time() < deadline:
+        if proc.poll() is not None:
+            err = (proc.stderr.read() if proc.stderr else b'').decode('utf-8', 'replace')
+            return None, err.strip()[-500:]
+        try:
+            urllib.request.urlopen(
+                f'http://127.0.0.1:{RELAY_PORT}/health', timeout=0.5,
+            ).read()
+            return proc, ''
+        except urllib.error.URLError:
+            time.sleep(0.1)
+    proc.terminate()
+    return None, f'relay did not respond within 5s on port {RELAY_PORT}'
+
+
+def _stop_relay_subprocess(proc: subprocess.Popen) -> None:
+    proc.terminate()
+    try:
+        proc.wait(timeout=2)
+    except subprocess.TimeoutExpired:
+        proc.kill()
+        proc.wait()
+
+
+def _try_existing_relay() -> tuple[int, dict[str, Any]] | None:
+    """If a relay is already serving on 3001, hit it and return the
+    response. Returns None if nothing answers (we don't conflate "port
+    bound but stale" with "real relay running")."""
+    try:
+        r = urllib.request.urlopen(
+            f'http://127.0.0.1:{RELAY_PORT}/health', timeout=1.0,
+        )
+        return r.getcode(), json.loads(r.read().decode('utf-8'))
+    except (urllib.error.URLError, ConnectionError):
+        return None
+
+
+def _capture_health() -> tuple[int, dict[str, Any]] | tuple[None, str]:
+    """Capture (status_code, response_dict). Tries an already-running
+    relay first; otherwise spawns one. Returns (None, reason) on
+    failure."""
+    existing = _try_existing_relay()
+    if existing is not None:
+        return existing
+
+    interp = _pick_relay_interpreter()
+    if interp is None:
+        return None, (
+            'no python interpreter with aiohttp found; tried '
+            f'{sys.executable} and .venv-e2e/bin/python3 — '
+            'install with: pip install aiohttp  (or set up the e2e venv per TESTING.md)'
+        )
+    proc, err = _start_relay_subprocess(interp)
+    if proc is None:
+        return None, f'relay subprocess failed: {err}'
+    try:
+        r = urllib.request.urlopen(
+            f'http://127.0.0.1:{RELAY_PORT}/health', timeout=2.0,
+        )
+        return r.getcode(), json.loads(r.read().decode('utf-8'))
+    except Exception as e:
+        return None, f'relay started but /health failed: {e}'
+    finally:
+        _stop_relay_subprocess(proc)
+
+
+def _infer_schema(payload: dict[str, Any]) -> dict[str, Any]:
+    """Infer a snapshot schema from a captured response. Treats the
+    `claude_binary_path` key as nullable since its value depends on
+    whether the claude CLI is installed on the snapshotting machine."""
+    schema: dict[str, Any] = {}
+    for k, v in payload.items():
+        nullable = (k == 'claude_binary_path')  # may be None on machines without claude
+        schema[k] = {'type': type(v).__name__, 'nullable': nullable}
+    return schema
+
+
+def update_health() -> None:
+    code, payload = _capture_health()
+    if code is None:
+        print(f'  ✗ cannot capture: {payload}', file=sys.stderr)
+        sys.exit(1)
+    snap = {
+        'endpoint': '/health',
+        'method': 'GET',
+        'response': {'status_code': code, 'schema': _infer_schema(payload)},
+    }
+    write_json(HEALTH_PATH, snap)
+    keys = ', '.join(sorted(snap['response']['schema']))
+    print(f'  → wrote {HEALTH_PATH} (keys: {keys})')
+
+
+def verify_health() -> None:
+    print('\n── health: relay /health response schema ──────────────────')
+    if not os.path.exists(HEALTH_PATH):
+        check('health snapshot exists', False,
+              f'no snapshot at {HEALTH_PATH} — run with --update to create')
+        return
+    snap = read_json(HEALTH_PATH)
+    expected_code = snap['response']['status_code']
+    expected_schema = snap['response']['schema']
+
+    code, payload = _capture_health()
+    if code is None:
+        check('relay /health reachable', False, payload)
+        return
+    check(f'/health status code is {expected_code}', code == expected_code,
+          f'got {code}')
+    if not isinstance(payload, dict):
+        check('/health body is a JSON object', False,
+              f'got {type(payload).__name__}')
+        return
+    check('/health body is a JSON object', True)
+
+    expected_keys = set(expected_schema)
+    actual_keys = set(payload)
+    missing = expected_keys - actual_keys
+    extra = actual_keys - expected_keys
+    check('/health keys: no missing', not missing,
+          f'missing keys: {sorted(missing)}' if missing else '')
+    check('/health keys: no extra', not extra,
+          f'extra keys (would silently leak data): {sorted(extra)}' if extra else '')
+
+    for key in sorted(expected_keys & actual_keys):
+        spec = expected_schema[key]
+        expected_type = _TYPE_NAMES.get(spec['type'])
+        nullable = spec.get('nullable', False)
+        value = payload[key]
+        if value is None and nullable:
+            check(f'/health[{key}]: type ok ({spec["type"]} or null)', True)
+            continue
+        if expected_type is None:
+            check(f'/health[{key}]: type ok', False,
+                  f'unknown type name in snapshot: {spec["type"]!r}')
+            continue
+        ok = isinstance(value, expected_type)
+        check(f'/health[{key}]: type matches {spec["type"]}', ok,
+              f'got {type(value).__name__}={value!r}' if not ok else '')
+
+
 # ── Driver ───────────────────────────────────────────────────────────
 
 
 SNAPSHOTS_REGISTRY = {
     'whole_file': (update_whole_file, verify_whole_file),
     'prompts': (update_prompts, verify_prompts),
+    'health': (update_health, verify_health),
 }
 
 
