@@ -358,7 +358,7 @@ def _capture_health() -> tuple[int, dict[str, Any]] | tuple[None, str]:
         return None, (
             'no python interpreter with aiohttp found; tried '
             f'{sys.executable} and .venv-e2e/bin/python3 — '
-            'install with: pip install aiohttp  (or set up the e2e venv per TESTING.md)'
+            'install with: pip install aiohttp  (or set up the e2e venv per docs/dev/testing.md)'
         )
     proc, err = _start_relay_subprocess(interp)
     if proc is None:
