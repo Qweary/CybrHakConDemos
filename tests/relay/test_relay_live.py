@@ -1,6 +1,17 @@
 #!/usr/bin/env python3
 """
-test_relay_e2e.py — End-to-end relay harness for Session 47.5c.
+test_relay_live.py — End-to-end relay harness against the real claude API.
+
+⚠ COSTS REAL ANTHROPIC SPEND. ~16 minutes per run. Do not invoke from CI
+or pytest collection — only manually when validating relay/streaming
+changes. run_tests.sh deliberately excludes this file. Pytest discovers
+no test_* functions here (only main()), so `pytest tests/` is also safe.
+
+Manual invocation:
+  # Start the relay first (in another shell):
+  python3 relay.py
+  # Then:
+  python3 tests/relay/test_relay_live.py
 
 Drives the relay through realistic phase sequences (forge OPP→VRA→T2A→T2B→
 COL→CURIE→FERMI→GEIGER→BOHR plus combat red/blue stages and evolve
