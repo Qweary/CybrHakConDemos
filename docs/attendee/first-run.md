@@ -18,7 +18,7 @@ You only need to do this once. Your key is stored in your browser's localStorage
 
 No API key. No internet required after setup. Runs open-weight models (llama3.2, mistral, phi3) entirely on your machine.
 
-1. Install Ollama and pull a model — see **OLLAMA-SETUP.md** for full instructions
+1. Install Ollama and pull a model — see **providers/ollama.md** for full instructions
 2. Run `ollama serve` in a terminal
 3. In any demo, click **[ OLLAMA ]** in the provider selector
 4. A model name field appears — type `llama3.2` (or your preferred model)
@@ -54,7 +54,7 @@ Prerequisite: `claude --version` works in your terminal. If not, install Claude 
 3. No key field appears — authentication flows through your local `claude` CLI
 4. Click `[ ⚛ INITIATE FISSION ]` — calls go to `http://localhost:3001/v1/chat`, which spawns `claude -p` for each phase
 
-See **CLAUDE-CODE-SETUP.md** for installation prerequisites and troubleshooting.
+See **providers/claude-code.md** for installation prerequisites and troubleshooting.
 
 ---
 
@@ -76,12 +76,12 @@ OpenRouter is a vendor-neutral API gateway. It gives you access to Claude, GPT-4
 
 ### Step 2: Open a Demo
 
-Open `demos/tmp-forge-live.html` directly in your browser. You can use `file://` paths (double-click the file) or serve it locally:
+Open `web/forge.html` directly in your browser. You can use `file://` paths (double-click the file) or serve it locally:
 
 ```bash
 # If you have Python:
 python3 -m http.server 8080
-# Then open: http://localhost:8080/demos/tmp-forge-live.html
+# Then open: http://localhost:8080/web/forge.html
 ```
 
 **Note on CORS:** The demos call `https://openrouter.ai/api/v1/chat/completions` directly from the browser. This works fine from `file://` — no server required. If you see a CORS error in your browser console, switch to the `localhost:8080` approach above.

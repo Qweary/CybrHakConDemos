@@ -22,9 +22,9 @@ RELAY       = os.path.join(WORKSHOP, 'relay.py')
 README      = os.path.join(WORKSHOP, 'README.md')
 LAB1        = os.path.join(WORKSHOP, 'labs', 'LAB-1-FORGE.md')
 LAB2        = os.path.join(WORKSHOP, 'labs', 'LAB-2-COMBAT.md')
-GUIDE       = os.path.join(WORKSHOP, 'WORKSHOP-GUIDE.md')
-OLLAMA_SETUP = os.path.join(WORKSHOP, 'OLLAMA-SETUP.md')
-CC_SETUP    = os.path.join(WORKSHOP, 'CLAUDE-CODE-SETUP.md')
+GUIDE       = os.path.join(WORKSHOP, 'docs', 'attendee', 'workshop-guide.md')
+OLLAMA_SETUP = os.path.join(WORKSHOP, 'docs', 'attendee', 'providers', 'ollama.md')
+CC_SETUP    = os.path.join(WORKSHOP, 'docs', 'attendee', 'providers', 'claude-code.md')
 
 results = []
 
@@ -304,7 +304,7 @@ E2E_FILES = [
     ('conftest.py',           'Pytest fixtures: http_server, demo_url, safe_page'),
     ('test_workshop_e2e.py',  'Playwright smoke + toggle + tooltip tests'),
     ('run_tests.sh',          'Unified runner for static + e2e suites'),
-    ('TESTING.md',            'How-to-run docs for both suites + harness'),
+    ('docs/dev/testing.md',   'How-to-run docs for both suites + harness'),
 ]
 for fname, what in E2E_FILES:
     path = os.path.join(WORKSHOP, fname)

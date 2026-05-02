@@ -6,11 +6,11 @@ This guide gives you everything you need to answer the attendee's questions accu
 
 ## What the Three Demos Do
 
-**FORGE** (`demos/tmp-forge-live.html`): A swarm factory. The attendee describes a domain or workflow in plain language, and the demo runs a 9-phase pipeline that designs a complete multi-agent swarm from scratch. Phases are: Oppenheimer (domain analysis), Lattice (vector readiness), T2 Domain Advisor (micro-spec map), Curie (research), Fermi (agent fabrication), Geiger (quality gate), and packaging. Output is a full swarm package: agent names, system prompts, tool requirements, coordination files.
+**FORGE** (`web/forge.html`): A swarm factory. The attendee describes a domain or workflow in plain language, and the demo runs a 9-phase pipeline that designs a complete multi-agent swarm from scratch. Phases are: Oppenheimer (domain analysis), Lattice (vector readiness), T2 Domain Advisor (micro-spec map), Curie (research), Fermi (agent fabrication), Geiger (quality gate), and packaging. Output is a full swarm package: agent names, system prompts, tool requirements, coordination files.
 
-**COMBAT** (`demos/tmp-combat-live.html`): A red-vs-blue adversarial exercise. Two swarms — red team (attackers) and blue team (defenders) — run through a structured 6-phase exercise. Two scenarios are available: IRONCLAD (traditional enterprise network attack) and PHANTOM FEED (MLOps/AI pipeline supply chain poisoning). Blue must detect red at each phase. The demo shows how the same blue team performs differently against these two very different threat models.
+**COMBAT** (`web/combat.html`): A red-vs-blue adversarial exercise. Two swarms — red team (attackers) and blue team (defenders) — run through a structured 6-phase exercise. Two scenarios are available: IRONCLAD (traditional enterprise network attack) and PHANTOM FEED (MLOps/AI pipeline supply chain poisoning). Blue must detect red at each phase. The demo shows how the same blue team performs differently against these two very different threat models.
 
-**EVOLVE** (`demos/tmp-evolve-live.html`): An autonomous self-improvement loop. An agent is scored, the weakest one is identified, its system prompt is rewritten, and the exercise re-runs to verify the improvement. CHAIN MODE imports a COMBAT result and improves the failing agent. CUSTOM MODE lets the attendee paste any agent prompt for refinement.
+**EVOLVE** (`web/evolve.html`): An autonomous self-improvement loop. An agent is scored, the weakest one is identified, its system prompt is rewritten, and the exercise re-runs to verify the improvement. CHAIN MODE imports a COMBAT result and improves the failing agent. CUSTOM MODE lets the attendee paste any agent prompt for refinement.
 
 The three demos are connected: FORGE builds swarms → COMBAT runs them → EVOLVE improves them. The COMBAT demo has an "Export to EVOLVE" button that pushes the exercise transcript to localStorage, which EVOLVE's CHAIN MODE picks up automatically.
 
@@ -28,7 +28,7 @@ There are four provider options in every demo. The option is selected using the 
 
 **CLAUDE CODE** (`CLAUDE CODE`): Sends requests to a local helper (`relay.py`, port 3001) that spawns the `claude` CLI as a subprocess for each call. Reuses your existing Claude Code authentication — no separate Anthropic API key required. The presenter or attendee runs `python3 relay.py` once before the session. No model or key field appears; authentication flows through the local `claude` binary.
 
-**OLLAMA** (`OLLAMA`): Fully local, offline. Calls `http://localhost:11434/v1/chat/completions`. Requires Ollama to be running (`ollama serve`) with a model pulled (`ollama pull llama3.2`). No API key. A model name field appears (default: `llama3.2`). Quality is lower than cloud models. See OLLAMA-SETUP.md for installation.
+**OLLAMA** (`OLLAMA`): Fully local, offline. Calls `http://localhost:11434/v1/chat/completions`. Requires Ollama to be running (`ollama serve`) with a model pulled (`ollama pull llama3.2`). No API key. A model name field appears (default: `llama3.2`). Quality is lower than cloud models. See `docs/attendee/providers/ollama.md` for installation.
 
 **How to choose:** If you have Claude Code installed, use CLAUDE CODE — no extra signup, your existing subscription covers it. If you have an OpenRouter key with credits, use OPENROUTER. If you want zero-cost live calls, use OR FREE (free OpenRouter account) or OLLAMA (fully local). If you just want to watch, click DEMO MODE — no provider needed at all.
 
