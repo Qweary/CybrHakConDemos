@@ -69,10 +69,10 @@ Use DEMO MODE to observe the workflow, understand the phases, or present to an a
 → Key may have been pasted with whitespace. Clear the key field and re-paste. Or your model field has an invalid model name.
 
 **"Network error" from file://**
-→ Some browsers block fetch from file:// origins. Serve locally instead: `python3 -m http.server 8080` from the workshop root, then open `http://localhost:8080/demos/tmp-forge-live.html`.
+→ Some browsers block fetch from `file://` origins. Run the relay (`python3 relay.py`) and load the demo via `http://localhost:3001/forge.html` (or `combat.html` / `evolve.html`) instead. The relay binds 127.0.0.1 only — no surprise network exposure.
 
 **CORS error in browser console**
-→ Usually solved by the localhost:8080 approach above.
+→ Same fix: load via the relay instead of `file://`. Demos and `/v1/chat` are then same-origin.
 
 ---
 
@@ -112,7 +112,7 @@ All three demos share `tmp_provider` (provider choice) and `tmp_or_key` (OpenRou
 
 3. **Verify your key** — in FORGE, clear the key and re-paste. Make sure you selected the right provider for your key type.
 
-4. **Try localhost:8080** — if you're opening from file://, switch to the localhost approach: run `python3 -m http.server 8080` from the workshop root.
+4. **Switch from file:// to the relay** — if you're opening the demo via `file://`, start the relay (`python3 relay.py` from the workshop root) and load the demo at `http://localhost:3001/forge.html` instead. Same-origin avoids browser `file://` restrictions on `fetch()`.
 
 5. **Ask the presenter** during the session, or open an issue at https://github.com/Qweary/The-Manhattan-Project after the conference.
 
