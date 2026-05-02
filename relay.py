@@ -39,6 +39,11 @@ import shutil
 from aiohttp import web
 
 PORT = 3001
+# Static web root — relay serves the workshop's launcher and demo HTML
+# from here. Same-origin with /v1/chat eliminates the CORS surface for
+# the demos and replaces the python -m http.server pattern attendees
+# would otherwise be told to run (which binds 0.0.0.0 by default).
+WEB_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'web')
 # Each call spawns a fresh `claude -p` subprocess. CURIE and FERMI phases on
 # typical workshop hardware land at ~250-300s for the unabridged forge demo
 # prompts; 600s gives enough headroom for slower laptops without making real
@@ -80,6 +85,20 @@ async def handle_health(request):
         'claude_binary_present': bool(binary),
         'claude_binary_path': binary,
     }))
+
+
+async def handle_index(request):
+    """GET / serves the web/index.html launcher. aiohttp's add_static
+    doesn't auto-serve index.html for directory roots, so this is a
+    small explicit shim."""
+    path = os.path.join(WEB_DIR, 'index.html')
+    if not os.path.isfile(path):
+        return cors(web.Response(
+            status=404,
+            text=(f'web/index.html not found at {path}. Open a specific '
+                  f'demo instead, e.g. /forge.html'),
+        ))
+    return cors(web.FileResponse(path))
 
 
 def _build_args(binary, system, model, streaming):
@@ -420,6 +439,12 @@ async def main():
     app.router.add_route('OPTIONS', '/{path_info:.*}', handle_options)
     app.router.add_get('/health', handle_health)
     app.router.add_post('/v1/chat', handle_chat)
+    # GET / serves the launcher; static files (forge.html, combat.html,
+    # evolve.html, future assets/) are served from web/ as a catch-all.
+    # Exact-match routes above take precedence over the static prefix.
+    app.router.add_get('/', handle_index)
+    if os.path.isdir(WEB_DIR):
+        app.router.add_static('/', WEB_DIR, show_index=False)
 
     runner = web.AppRunner(app)
     await runner.setup()
@@ -434,7 +459,8 @@ async def main():
     print(f'[RELAY] Model: {DEFAULT_MODEL or "(demo-supplied)"} (override with TMP_RELAY_MODEL=...)')
     print(f'[RELAY] Per-call timeout: {TIMEOUT_SEC}s (override with TMP_RELAY_TIMEOUT_SEC=...)')
     print(f'[RELAY] Listening on http://localhost:{PORT}')
-    print(f'[RELAY] Test: curl http://localhost:{PORT}/health')
+    print(f'[RELAY] Demos:   http://localhost:{PORT}/  (forge.html, combat.html, evolve.html)')
+    print(f'[RELAY] Test:    curl http://localhost:{PORT}/health')
     print('[RELAY] Ctrl+C to stop')
 
     await asyncio.Event().wait()
