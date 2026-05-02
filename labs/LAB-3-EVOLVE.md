@@ -28,7 +28,7 @@ The loop can repeat — export the RERUN result back to COMBAT and run it live t
 
 ### Step 1: Import the LAB-2 Result
 
-Open `demos/tmp-evolve-live.html`.
+Open `http://localhost:3001/evolve.html` (run `python3 relay.py` first if you haven't yet) — or `web/evolve.html` via `file://`.
 
 Select **CHAIN MODE** — the demo will detect the exported exercise in localStorage and show a preview card with a stage-by-stage table. Click **[ BEGIN ANALYSIS ]**.
 
@@ -68,7 +68,7 @@ At the end of the RERUN phase, the EVOLVE demo shows three buttons:
 - **[ RUN ANOTHER CYCLE ]** — runs another full ARBITER → SCULPTOR → CHALLENGER → RERUN iteration targeting the next-weakest agent
 - **[ COPY REFINED PROMPT ]** — copies the improved system prompt to clipboard
 
-Click **[ EXPORT TO COMBAT DEMO ]**, then open `demos/tmp-combat-live.html`. The demo will offer to reload with the exported state. Run the same scenario you ran in LAB-2 — does the detection hold?
+Click **[ EXPORT TO COMBAT DEMO ]**, then open `http://localhost:3001/combat.html` (or `web/combat.html`). The demo will offer to reload with the exported state. Run the same scenario you ran in LAB-2 — does the detection hold?
 
 ---
 

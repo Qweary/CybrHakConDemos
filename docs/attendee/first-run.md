@@ -76,15 +76,22 @@ OpenRouter is a vendor-neutral API gateway. It gives you access to Claude, GPT-4
 
 ### Step 2: Open a Demo
 
-Open `web/forge.html` directly in your browser. You can use `file://` paths (double-click the file) or serve it locally:
+Two ways to load the demos:
+
+**Recommended — via the relay** (single bound process, `127.0.0.1` only, no surprise network exposure):
 
 ```bash
-# If you have Python:
-python3 -m http.server 8080
-# Then open: http://localhost:8080/web/forge.html
+python3 relay.py
+# Then open: http://localhost:3001/
 ```
 
-**Note on CORS:** The demos call `https://openrouter.ai/api/v1/chat/completions` directly from the browser. This works fine from `file://` — no server required. If you see a CORS error in your browser console, switch to the `localhost:8080` approach above.
+The launcher page links to all three demos. Same-origin between the
+demo pages and `/v1/chat`, so no CORS issues.
+
+**Alternative — open the file directly:** double-click `web/forge.html`
+(or `web/combat.html` / `web/evolve.html`). DEMO MODE works fine from
+`file://`. For LIVE mode, the relay-based approach is safer and
+catches any browser-specific `file://` restrictions on `fetch()`.
 
 ---
 
@@ -101,7 +108,7 @@ python3 -m http.server 8080
 
 ### Step 4: First Run
 
-1. In `tmp-forge-live.html`, select the **RED** preset
+1. In `forge.html`, select the **RED** preset
 2. Click **[ LAUNCH FORGE ]**
 3. Watch the six phases run — each one is a separate API call (~10–30 seconds total)
 4. You should see agent names, system prompts, and fabricated outputs appear in sequence
@@ -110,7 +117,7 @@ If it works, you're ready for the labs. If it fails, check:
 
 - **"Invalid API key"** → re-paste the key; make sure OPENROUTER is selected (not ANTHROPIC)
 - **"Insufficient credits"** → add $5 at openrouter.ai → Credits
-- **"Network error"** → try the `localhost:8080` approach above
+- **"Network error"** → start the relay (`python3 relay.py`) and load the demo via `http://localhost:3001/forge.html` instead of `file://`
 - **Blank output after 30+ seconds** → your key may have been pasted with extra whitespace; clear and re-paste
 
 ---
