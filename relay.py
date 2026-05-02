@@ -49,6 +49,12 @@ WEB_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'web')
 # prompts; 600s gives enough headroom for slower laptops without making real
 # stalls take forever to surface. Override via TMP_RELAY_TIMEOUT_SEC.
 TIMEOUT_SEC = int(os.environ.get('TMP_RELAY_TIMEOUT_SEC', '600'))
+# Per-call ?timeout=N override bounds. Recovery banner's "Continue
+# waiting" can extend the budget within these limits without restarting
+# the relay. Out-of-bounds values clamp silently — every chat response
+# carries an X-Timeout-Used header so the caller can detect the override.
+MIN_PERCALL_TIMEOUT_SEC = 60
+MAX_PERCALL_TIMEOUT_SEC = 1800
 # Per-line buffer limit on the subprocess StreamReader. asyncio's default is
 # 64 KB, but `claude --output-format stream-json` emits assistant-message
 # snapshot lines that contain the FULL accumulated content for each chunk
@@ -68,6 +74,13 @@ def cors(response):
     response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
     response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
     return response
+
+
+def _chat_response(response, timeout):
+    """Stamp the effective per-call timeout on a chat response so a
+    caller can detect when their `?timeout=N` was clamped (FRG-07)."""
+    response.headers['X-Timeout-Used'] = str(timeout)
+    return cors(response)
 
 
 def claude_path():
@@ -166,7 +179,9 @@ def _build_args(binary, system, model, streaming):
 def _per_call_timeout(request) -> int:
     """Honor `?timeout=N` query param so a recovery banner's 'Continue
     waiting' button can extend the budget for one specific call without
-    restarting the relay. Clamped to [60, 1800] to avoid silly values."""
+    restarting the relay. Clamped to [MIN, MAX]; the X-Timeout-Used
+    response header always reports the effective value so a caller can
+    notice when their override was overridden."""
     raw = request.rel_url.query.get('timeout')
     if not raw:
         return TIMEOUT_SEC
@@ -174,7 +189,7 @@ def _per_call_timeout(request) -> int:
         n = int(raw)
     except ValueError:
         return TIMEOUT_SEC
-    return max(60, min(1800, n))
+    return max(MIN_PERCALL_TIMEOUT_SEC, min(MAX_PERCALL_TIMEOUT_SEC, n))
 
 
 async def handle_chat(request):
@@ -224,35 +239,35 @@ async def handle_chat(request):
                 proc.kill()
             except ProcessLookupError:
                 pass
-            return cors(web.json_response(
+            return _chat_response(web.json_response(
                 {'error': f'claude CLI timeout ({timeout}s)'}, status=504
-            ))
+            ), timeout)
 
         if proc.returncode != 0:
             err = (stderr.decode('utf-8', errors='replace').strip()
                    or f'claude exited with code {proc.returncode}')
-            return cors(web.json_response({'error': err}, status=502))
+            return _chat_response(web.json_response({'error': err}, status=502), timeout)
 
         try:
             data = json.loads(stdout.decode('utf-8', errors='replace'))
         except json.JSONDecodeError:
-            return cors(web.json_response(
+            return _chat_response(web.json_response(
                 {'error': 'claude returned non-JSON output (run `claude --version` to confirm CLI version supports --output-format json)'},
                 status=502
-            ))
+            ), timeout)
 
         content = data.get('result')
         if content is None:
-            return cors(web.json_response(
+            return _chat_response(web.json_response(
                 {'error': f'claude JSON missing "result" field: {list(data.keys())}'},
                 status=502
-            ))
-        return cors(web.json_response({'content': content}))
+            ), timeout)
+        return _chat_response(web.json_response({'content': content}), timeout)
     except FileNotFoundError:
-        return cors(web.json_response(
+        return _chat_response(web.json_response(
             {'error': 'Claude Code CLI not found on PATH. Install Claude Code to use this provider.'},
             status=500
-        ))
+        ), timeout)
     except Exception as e:
         return cors(web.json_response({'error': str(e)}, status=502))
 
@@ -269,6 +284,7 @@ async def _handle_chat_sse(request, binary, system, user, model, timeout=None):
             'Cache-Control': 'no-cache',
             'Connection': 'keep-alive',
             'X-Accel-Buffering': 'no',
+            'X-Timeout-Used': str(timeout),  # FRG-07
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
             'Access-Control-Allow-Headers': 'Content-Type, Accept',
