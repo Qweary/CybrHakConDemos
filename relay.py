@@ -35,7 +35,6 @@ Test: curl http://localhost:3001/health
 import asyncio
 import json
 import os
-import shutil
 import sys
 
 # Bootstrap: make the in-tree src/tmp_relay/ package importable without
@@ -47,6 +46,7 @@ sys.path.insert(0, os.path.join(_HERE, 'src'))
 
 from aiohttp import web
 
+from tmp_relay.claude_subprocess import build_args as _build_args, claude_path
 from tmp_relay.settings import (
     PORT,
     WEB_DIR,
@@ -89,10 +89,6 @@ def _chat_response(response, timeout):
     CORS headers are added by cors_middleware."""
     response.headers['X-Timeout-Used'] = str(timeout)
     return response
-
-
-def claude_path():
-    return shutil.which('claude')
 
 
 async def handle_options(request):
@@ -144,44 +140,6 @@ async def handle_index(request):
                   f'demo instead, e.g. /forge.html'),
         )
     return web.FileResponse(path)
-
-
-def _build_args(binary, system, model, streaming):
-    # --tools ""               : strip the entire built-in tool set so the
-    #                            model isn't reasoning about Read/Write/Bash/
-    #                            WebSearch/etc. on every call. Cuts input
-    #                            from ~30k cached tokens to ~3k.
-    # --disable-slash-commands : skip skill/slash-command resolution.
-    # --setting-sources ""     : skip CLAUDE.md auto-discovery and hooks.
-    # Together these turn `claude -p` into a thin LLM-completion endpoint
-    # rather than a full Claude-Code-as-agent invocation.
-    #
-    # The USER prompt is piped via stdin (not -p arg) — by Phase 3 the
-    # accumulated context (architecture doc + advisor outputs + collection
-    # design + research instructions) routinely exceeds the kernel's ARG_MAX
-    # when passed as an exec argument. The SYSTEM prompt stays as
-    # --system-prompt since it's bounded by the advisor template.
-    args = [
-        binary,
-        '-p',
-        '--model', model,
-        '--no-session-persistence',
-        '--permission-mode', 'bypassPermissions',
-        '--tools', '',
-        '--disable-slash-commands',
-        '--setting-sources', '',
-    ]
-    if streaming:
-        # stream-json + include-partial-messages emits NDJSON content_block_delta
-        # frames as the model produces them. --verbose is required by the CLI
-        # when combining stream-json with --print.
-        args += ['--output-format', 'stream-json',
-                 '--include-partial-messages', '--verbose']
-    else:
-        args += ['--output-format', 'json']
-    if system:
-        args += ['--system-prompt', system]
-    return args
 
 
 def _per_call_timeout(request) -> int:
