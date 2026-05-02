@@ -1,14 +1,18 @@
 #!/usr/bin/env bash
-# run_tests.sh — full workshop test suite (static + e2e).
+# run_tests.sh — full workshop test suite (static + snapshot + e2e).
 #
-# Runs both layers:
-#   1. test_workshop.py — fast static checks (HTML parse, regex lock-ins,
-#      hash parity, S46-S47.5d regression markers). ~2 sec.
-#   2. test_workshop_e2e.py — Playwright browser smoke (page loads,
-#      Ctrl+P/Ctrl+D toggles, phase tooltips, tok-count, CC button).
-#      ~10 sec on the operator's laptop.
+# Three layers:
+#   1. tests/test_workshop.py        — fast static / structural checks.
+#   2. tests/test_snapshots.py       — content-drift tripwires (whole-file
+#                                      hashes, per-prompt hashes + .md
+#                                      round-trip, /health schema).
+#   3. tests/e2e/test_browser_smoke.py — Playwright browser smoke.
 #
-# The e2e suite uses the venv at .venv-e2e/ — set up once with:
+# The live-API harness (tests/relay/test_relay_live.py, ~16 min, real
+# spend) is GATED — invoked only when RUN_LIVE_RELAY=1 is set, never
+# from this script.
+#
+# E2E venv setup (once):
 #   python3 -m venv .venv-e2e
 #   .venv-e2e/bin/pip install playwright pytest pytest-playwright
 #   .venv-e2e/bin/playwright install chromium
@@ -18,17 +22,17 @@ set -euo pipefail
 WORKSHOP="$(cd "$(dirname "$0")" && pwd)"
 cd "$WORKSHOP"
 
-echo "═══ Static suite (test_workshop.py) ═══"
-python3 test_workshop.py
+echo "═══ Static suite (tests/test_workshop.py) ═══"
+python3 tests/test_workshop.py
 STATIC_RC=$?
 
 echo
-echo "═══ Snapshot tripwires (test_snapshots.py) ═══"
-python3 test_snapshots.py
+echo "═══ Snapshot tripwires (tests/test_snapshots.py) ═══"
+python3 tests/test_snapshots.py
 SNAP_RC=$?
 
 echo
-echo "═══ Browser e2e suite (test_workshop_e2e.py) ═══"
+echo "═══ Browser e2e suite (tests/e2e/test_browser_smoke.py) ═══"
 if [ ! -x .venv-e2e/bin/pytest ]; then
   echo "✗ .venv-e2e/bin/pytest missing — first-time setup:"
   echo "    python3 -m venv .venv-e2e"
@@ -36,7 +40,7 @@ if [ ! -x .venv-e2e/bin/pytest ]; then
   echo "    .venv-e2e/bin/playwright install chromium"
   exit 1
 fi
-.venv-e2e/bin/pytest test_workshop_e2e.py -q --tb=short
+.venv-e2e/bin/pytest tests/e2e/test_browser_smoke.py -q --tb=short
 E2E_RC=$?
 
 echo
