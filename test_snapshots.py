@@ -121,11 +121,150 @@ def verify_whole_file() -> None:
                   f'expected {expected[label][:12]}…, got {actual[label][:12]}…' if not ok else '')
 
 
+# ── Snapshot 2: per-prompt SHA256 ────────────────────────────────────
+
+
+PROMPTS_PATH = os.path.join(SNAPSHOTS, 'prompts.json')
+
+
+def _scan_template(text: str, start: int) -> tuple[str, int] | None:
+    """From position `start` (just after the opening backtick), return
+    (body, end_index_exclusive). Walks the string respecting escaped
+    characters (\\\\, \\`) so that an escaped backtick doesn't prematurely
+    terminate the literal. Returns None if no closing backtick is found.
+
+    Does NOT track ${...} interpolation depth — our prompts use simple
+    interpolations with no nested template literals, so first unescaped
+    backtick is the end. If a future prompt embeds a nested template,
+    revisit this.
+    """
+    i = start
+    while i < len(text):
+        ch = text[i]
+        if ch == '\\' and i + 1 < len(text):
+            i += 2
+            continue
+        if ch == '`':
+            return text[start:i], i + 1
+        i += 1
+    return None
+
+
+def _extract_advisors_block(text: str) -> dict[str, str]:
+    """SYS.ADVISORS = { NEUTRON: `...`, SCINTILLATOR: `...`, ... } —
+    find the brace-balanced block, then extract each entry. Skips
+    backtick contents while balancing braces."""
+    m = re.search(r'SYS\.ADVISORS\s*=\s*\{', text)
+    if not m:
+        return {}
+    i = m.end()
+    depth = 1
+    n = len(text)
+    while i < n and depth > 0:
+        ch = text[i]
+        if ch == '`':
+            tpl = _scan_template(text, i + 1)
+            if tpl is None:
+                return {}
+            i = tpl[1]
+            continue
+        if ch == '{':
+            depth += 1
+        elif ch == '}':
+            depth -= 1
+            if depth == 0:
+                break
+        i += 1
+    if depth != 0:
+        return {}
+    block = text[m.end():i]
+    out: dict[str, str] = {}
+    for entry in re.finditer(r'(\w+)\s*:\s*`', block):
+        body = _scan_template(block, entry.end())
+        if body is None:
+            continue
+        out[f'SYS.ADVISORS.{entry.group(1)}'] = body[0]
+    return out
+
+
+def extract_prompts(text: str) -> dict[str, str]:
+    """Extract every SYS_* / SYS.* template literal from a demo HTML
+    body. Returns a dict mapping canonical name → prompt body."""
+    out: dict[str, str] = {}
+
+    # const SYS_X = `...`   or   const SYS_X = (args) => `...`
+    for m in re.finditer(
+        r'const\s+(SYS_\w+)\s*=\s*(?:\([^)]*\)\s*=>\s*)?`',
+        text,
+    ):
+        body = _scan_template(text, m.end())
+        if body is not None:
+            out[m.group(1)] = body[0]
+
+    # SYS.X = `...`   (excludes SYS.ADVISORS = {...} which has `=` followed by `{`)
+    for m in re.finditer(r'SYS\.(\w+)\s*=\s*`', text):
+        body = _scan_template(text, m.end())
+        if body is not None:
+            out[f'SYS.{m.group(1)}'] = body[0]
+
+    # SYS.ADVISORS = { NAME: `...`, ... }
+    out.update(_extract_advisors_block(text))
+
+    return out
+
+
+def collect_prompts() -> dict[str, dict[str, str]]:
+    out: dict[str, dict[str, str]] = {}
+    for label, path in DEMO_FILES:
+        text = read_text(path)
+        prompts = extract_prompts(text)
+        out[label] = {name: sha256_text(body) for name, body in prompts.items()}
+    return out
+
+
+def update_prompts() -> None:
+    write_json(PROMPTS_PATH, collect_prompts())
+    snap = collect_prompts()
+    counts = ', '.join(f'{label}={len(v)}' for label, v in snap.items())
+    print(f'  → wrote {PROMPTS_PATH} ({counts})')
+
+
+def verify_prompts() -> None:
+    print('\n── prompts: per-prompt SHA256 ─────────────────────────────')
+    if not os.path.exists(PROMPTS_PATH):
+        check('prompts snapshot exists', False,
+              f'no snapshot at {PROMPTS_PATH} — run with --update to create')
+        return
+    expected = read_json(PROMPTS_PATH)
+    actual = collect_prompts()
+    for label in sorted(set(expected) | set(actual)):
+        exp = expected.get(label, {})
+        act = actual.get(label, {})
+        # Count check first — catches accidentally-deleted prompt early.
+        check(f'{label}: prompt count matches ({len(exp)})',
+              len(exp) == len(act),
+              f'expected {len(exp)} prompts, found {len(act)}: '
+              f'missing={sorted(set(exp) - set(act))[:3]} '
+              f'extra={sorted(set(act) - set(exp))[:3]}'
+              if len(exp) != len(act) else '')
+        # Then individual hashes — narrows down which prompt drifted.
+        for name in sorted(set(exp) | set(act)):
+            if name not in exp:
+                check(f'{label}.{name}: in snapshot', False, 'new prompt — run --update if intentional')
+            elif name not in act:
+                check(f'{label}.{name}: still present', False, 'prompt was deleted')
+            else:
+                ok = exp[name] == act[name]
+                check(f'{label}.{name}: SHA256 matches', ok,
+                      f'prompt body changed (was {exp[name][:12]}…, now {act[name][:12]}…)' if not ok else '')
+
+
 # ── Driver ───────────────────────────────────────────────────────────
 
 
 SNAPSHOTS_REGISTRY = {
     'whole_file': (update_whole_file, verify_whole_file),
+    'prompts': (update_prompts, verify_prompts),
 }
 
 
