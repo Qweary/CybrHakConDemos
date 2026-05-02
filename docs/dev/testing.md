@@ -11,8 +11,8 @@ tests/
 ├── e2e/
 │   └── test_browser_smoke.py     Playwright browser smoke            ← suite 3
 └── relay/
-    ├── test_relay_unit.py        direct unit tests + fake claude     ← (Phase 7c)
-    └── test_relay_live.py        real-claude harness — manual only   ← suite 4
+    ├── test_relay_unit.py        in-process unit tests (no claude)   ← suite 4
+    └── test_relay_live.py        real-claude harness — manual only   ← suite 5
 ```
 
 ## Suite 1 — Static (`tests/test_workshop.py`)
@@ -49,6 +49,24 @@ python3 tests/test_snapshots.py              # verify
 python3 tests/test_snapshots.py --update     # regenerate all
 python3 tests/test_snapshots.py --update prompts   # one snapshot
 ```
+
+## Suite 4 — Relay unit tests (`tests/relay/test_relay_unit.py`)
+
+In-process tests against the `tmp_relay` package modules. Two slices:
+
+- **Pure functions** — `build_args`, `per_call_timeout`, `CORS_HEADERS`
+  shape. No event loop, no network, instant feedback.
+- **App integration** — `make_app()` against `aiohttp.test_utils.TestClient`.
+  Drives middlewares (CORS injection, dotfile filter), the `GET /v1/chat`
+  → 405 response, OPTIONS preflight, and the launcher route. **No claude
+  binary required** — POST `/v1/chat` (which spawns the subprocess) is
+  covered by the live harness instead.
+
+```
+.venv-e2e/bin/pytest tests/relay/test_relay_unit.py -v
+```
+
+~0.2 seconds. Wired into `run_tests.sh`.
 
 ## Suite 3 — Browser e2e (`tests/e2e/test_browser_smoke.py`)
 
