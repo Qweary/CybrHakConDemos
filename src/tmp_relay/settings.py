@@ -68,3 +68,14 @@ STALL_WARN_SEC = 30
 # the CLI starts reading; chunking with await drain() between blocks is
 # necessary on Windows and free on macOS/Linux.
 STDIN_CHUNK = 32 * 1024
+
+# Single source of truth for CORS headers. Applied by server.cors_middleware
+# on every regular Response and FileResponse (static layer included). The
+# SSE StreamResponse path duplicates these into its construction headers
+# because aiohttp middleware runs only after the handler returns — by which
+# time the SSE response has already been prepared and headers flushed.
+CORS_HEADERS = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Accept',
+}
