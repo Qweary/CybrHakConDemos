@@ -2595,7 +2595,7 @@ async function engage(){
     clearInterval(timerI);
     document.getElementById('r-stat').textContent='COMPLETE';document.getElementById('r-stat').className='pstat';
     document.getElementById('b-stat').textContent='COMPLETE';document.getElementById('b-stat').className='pstat';
-    document.getElementById('binfo').innerHTML='Exercise complete. See post-exercise hardening report in blue pane. &nbsp;<a href="tmp-evolve-live.html" style="color:var(--grn);font-family:\'Share Tech Mono\',monospace;font-size:10px;letter-spacing:1px;text-decoration:none;border:1px solid var(--grn);padding:3px 9px;white-space:nowrap">[ OPEN IN EVOLVE DEMO ]</a>';
+    document.getElementById('binfo').innerHTML='Exercise complete. See post-exercise hardening report in blue pane. &nbsp;<a href="evolve.html" style="color:var(--grn);font-family:\'Share Tech Mono\',monospace;font-size:10px;letter-spacing:1px;text-decoration:none;border:1px solid var(--grn);padding:3px 9px;white-space:nowrap">[ OPEN IN EVOLVE DEMO ]</a>';
 
   }catch(err){
     rT(`<div class="ts" style="color:var(--red)">EXERCISE FAULT: ${err.message}</div>`);

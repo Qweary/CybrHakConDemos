@@ -6,7 +6,7 @@ Exposes:
     so demos can be loaded via http://, not file:// (matters for SSE,
     fetch CORS, and getting the same behavior as a real attendee).
   - `demo_url(name)` (function): returns the absolute URL for a demo file
-    name (e.g. `demo_url('tmp-forge-live.html')`).
+    name (e.g. `demo_url('forge.html')`).
   - `page` (function, override): the standard pytest-playwright page
     fixture with console-error and pageerror listeners attached. Any
     console error during a test causes the test to fail at teardown —
@@ -64,7 +64,7 @@ def http_server():
 @pytest.fixture
 def demo_url(http_server):
     def _url(name):
-        return f'{http_server}/demos/{name}'
+        return f'{http_server}/web/{name}'
     return _url
 
 

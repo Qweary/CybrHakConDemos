@@ -40,12 +40,12 @@ from typing import Any
 
 WORKSHOP = os.path.dirname(os.path.abspath(__file__))
 SNAPSHOTS = os.path.join(WORKSHOP, 'tests', 'snapshots')
-DEMOS = os.path.join(WORKSHOP, 'demos')
+WEB = os.path.join(WORKSHOP, 'web')
 
 DEMO_FILES = [
-    ('forge', os.path.join(DEMOS, 'tmp-forge-live.html')),
-    ('combat', os.path.join(DEMOS, 'tmp-combat-live.html')),
-    ('evolve', os.path.join(DEMOS, 'tmp-evolve-live.html')),
+    ('forge', os.path.join(WEB, 'forge.html')),
+    ('combat', os.path.join(WEB, 'combat.html')),
+    ('evolve', os.path.join(WEB, 'evolve.html')),
 ]
 
 # ── Result tracking ──────────────────────────────────────────────────

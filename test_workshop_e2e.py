@@ -17,9 +17,9 @@ import re
 import pytest
 
 DEMOS = [
-    ('forge',  'tmp-forge-live.html'),
-    ('combat', 'tmp-combat-live.html'),
-    ('evolve', 'tmp-evolve-live.html'),
+    ('forge',  'forge.html'),
+    ('combat', 'combat.html'),
+    ('evolve', 'evolve.html'),
 ]
 
 
