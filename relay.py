@@ -416,20 +416,32 @@ async def _handle_chat_sse(request, binary, system, user, model, timeout=None):
                     canonical = obj.get('result')
                     if obj.get('is_error'):
                         # The CLI reported a post-completion error (e.g.
-                        # transient API hiccup at the very end of the stream).
-                        # If we already streamed visible text, treat the run
-                        # as successful and surface the streamed content —
-                        # the user saw it produced cleanly. Only surface the
-                        # error when we have no content to fall back on.
+                        # transient API hiccup, rate-limit at the tail,
+                        # max_tokens truncation). If we already streamed
+                        # visible text, surface what the user saw, but
+                        # ALWAYS emit a `warning` ahead of `done` so the
+                        # demo can render a "may be truncated" banner —
+                        # rate-limit / max-tokens errors look like
+                        # benign tail hiccups but are exactly the cases
+                        # the workshop should show transparently.
+                        # When we have no content to fall back on, fail.
                         if full_content:
                             completed = True
                             stall_task.cancel()  # FRG-05: prevent post-done warning
+                            err_text = str(canonical) if canonical else 'claude reported an error'
+                            await send_event({
+                                'warning': f'recovered after CLI error — output may be truncated: {err_text}',
+                            })
+                            # BUG-02: prefer canonical when available — same policy
+                            # as the non-error branch. Eliminates the double-count
+                            # risk if partial frames overlap on recovery.
+                            out_content = canonical if isinstance(canonical, str) and canonical else full_content
                             await send_event({
                                 'done': True,
-                                'content': full_content,
+                                'content': out_content,
                                 'deltas': delta_count,
                                 'recovered': True,
-                                'cli_error': str(canonical) if canonical else 'claude reported an error',
+                                'cli_error': err_text,
                             })
                             return
                         await send_event({'error': str(canonical) if canonical else 'claude reported an error'})
