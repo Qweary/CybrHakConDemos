@@ -78,6 +78,30 @@ async def handle_options(request):
     return cors(web.Response(status=204))
 
 
+async def handle_chat_get(request):
+    """Explicit 405 for `GET /v1/chat`. Without this, an attendee who
+    types the URL into a browser hits the static catch-all and sees a
+    confusing "404 Not Found" instead of "this endpoint is POST-only."
+    """
+    return cors(web.Response(
+        status=405,
+        text='POST a JSON body to /v1/chat. See docs/dev/testing.md.',
+        headers={'Allow': 'POST, OPTIONS'},
+    ))
+
+
+@web.middleware
+async def dotfile_filter(request, handler):
+    """Block any request whose path contains a dotfile segment. Static
+    handler serves dotfiles by default, which would expose a stray
+    .env / .git / .DS_Store dropped into web/. Cheaper than wrapping
+    aiohttp's StaticResource."""
+    for segment in request.path.split('/'):
+        if segment.startswith('.') and segment not in ('', '.'):
+            return cors(web.Response(status=404, text='Not Found'))
+    return await handler(request)
+
+
 async def handle_health(request):
     binary = claude_path()
     return cors(web.json_response({
@@ -435,10 +459,13 @@ async def _handle_chat_sse(request, binary, system, user, model, timeout=None):
 
 
 async def main():
-    app = web.Application()
+    app = web.Application(middlewares=[dotfile_filter])
     app.router.add_route('OPTIONS', '/{path_info:.*}', handle_options)
     app.router.add_get('/health', handle_health)
     app.router.add_post('/v1/chat', handle_chat)
+    # Friendly 405 for browser-typed GET /v1/chat (otherwise the static
+    # catch-all swallows it as a confusing 404).
+    app.router.add_get('/v1/chat', handle_chat_get)
     # GET / serves the launcher; static files (forge.html, combat.html,
     # evolve.html, future assets/) are served from web/ as a catch-all.
     # Exact-match routes above take precedence over the static prefix.
