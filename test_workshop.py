@@ -12,11 +12,11 @@ from html.parser import HTMLParser
 
 WORKSHOP    = os.path.dirname(os.path.abspath(__file__))
 
-DEMOS       = os.path.join(WORKSHOP, 'demos')
+WEB         = os.path.join(WORKSHOP, 'web')
 
-FORGE       = os.path.join(DEMOS, 'tmp-forge-live.html')
-COMBAT      = os.path.join(DEMOS, 'tmp-combat-live.html')
-EVOLVE      = os.path.join(DEMOS, 'tmp-evolve-live.html')
+FORGE       = os.path.join(WEB, 'forge.html')
+COMBAT      = os.path.join(WEB, 'combat.html')
+EVOLVE      = os.path.join(WEB, 'evolve.html')
 
 RELAY       = os.path.join(WORKSHOP, 'relay.py')
 README      = os.path.join(WORKSHOP, 'README.md')
