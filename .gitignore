@@ -21,6 +21,10 @@ env/
 .idea/
 *.swp
 
+# Claude Code per-user overrides (project-shared config is settings.json,
+# committed; this file is for the operator's machine-local additions)
+.claude/settings.local.json
+
 # OS
 .DS_Store
 Thumbs.db
