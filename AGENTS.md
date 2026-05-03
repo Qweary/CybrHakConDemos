@@ -43,29 +43,62 @@ unclear):
 | "I want to run it for real with AI" | LIVE MODE — needs a provider; pick one below |
 | "I want to do the labs" | Same as LIVE MODE plus the lab files |
 
-### Step 1 — start the relay
+### Step 1 — pick a runtime
 
-One command from the workshop root:
+**Before recommending a command, ask which runtime the user prefers.**
+The repo ships five wrappers because attendees show up with very
+different setups. Don't default to `bin/start.sh` if the user already
+mentioned Docker, has a devcontainer-equipped editor, or is on NixOS.
+
+One polite question if it's not obvious from context:
+
+> "Do you have a preference for how to run it locally — a shell script,
+> Docker, Nix, or VS Code with devcontainers? If you're not sure I can
+> recommend the simplest path."
+
+Map their answer:
+
+| User says / has | Recommend | Notes |
+|---|---|---|
+| "Just whatever's easiest" / unsure | `bin/start.sh` (Mac/Linux) or `bin\start.ps1` (Windows) | Auto-detects uv → venv-e2e → fresh venv. No commitment to any tooling. |
+| "I have Docker" / "I want isolation" | `docker build` + `docker run -p 3001:3001` | One image, zero host Python. Note: CLAUDE CODE provider needs `~/.config/claude` mounted (or use a different provider in-container). |
+| "I'm on NixOS" or "I use Nix" | `cd packaging && nix run .#relay` | Bypasses Phase 0 Playwright/Python pain on NixOS. Also gives a `nix develop` devshell. |
+| "I use VS Code" | "Reopen in Container" | `.devcontainer/devcontainer.json` is wired with port 3001 + auto-open. |
+| "I'm on Windows but want bash" | WSL2 + `bin/start.sh` | Loopback forwards transparently to Windows browser. |
+| "I just want to watch — no install" | Open `web/index.html` via `file://` | DEMO MODE only. Live providers won't work cross-origin from `file://`. |
+
+Then run the chosen one:
 
 ```bash
-bin/start.sh        # macOS / Linux
-bin\start.ps1       # Windows PowerShell
-```
+# Bash launcher (the default if no preference)
+bin/start.sh                              # macOS / Linux
+bin\start.ps1                             # Windows PowerShell
+# Optional flags: --port N --bind ADDR --no-browser --skip-checks
 
-The script runs `bin/doctor.sh` first to verify Python ≥ 3.10, aiohttp,
-port 3001 free, etc. If anything fails, doctor prints the exact fix.
-After the relay binds, it auto-opens the launcher in the user's default
-browser at `http://localhost:3001/`.
-
-If the user is on **NixOS** and `bin/start.sh` complains about missing
-deps, suggest `cd packaging && nix run .#relay` instead — that's the
-flake-managed path that bypasses the system Python.
-
-If the user is in **Docker / a container**:
-```bash
+# Docker
 docker build -t tmp-workshop -f packaging/Dockerfile .
 docker run --rm -p 3001:3001 tmp-workshop
+
+# Nix flake
+nix run path:packaging#relay
+cd packaging && nix develop               # devshell with chromium + pytest
+
+# VS Code devcontainer
+# Open the workshop folder → Cmd/Ctrl+Shift+P → "Reopen in Container"
 ```
+
+**All five wrappers end at the same place:** the relay listens on
+`http://localhost:3001/`, serves the demo launcher, and routes
+`/v1/chat` requests for the CLAUDE CODE provider. The browser-direct
+providers (Anthropic, OpenRouter, Ollama) work the same way regardless
+of which wrapper started the relay.
+
+If the chosen wrapper fails, fall back to `bin/start.sh` and run
+`bin/doctor.sh` first — it diagnoses Python version, aiohttp, port
+availability, and the `claude` CLI in one shot.
+
+The full wrapper inventory + env-var reference: `packaging/README.md`.
+Windows-specific gotchas: `packaging/windows-setup.md`.
 
 ### Step 2 — pick a provider
 
