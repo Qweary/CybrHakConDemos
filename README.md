@@ -22,13 +22,31 @@ They are connected. FORGE builds swarms. COMBAT runs them. EVOLVE improves them.
 
 ---
 
+## Quickstart — one command
+
+```bash
+bin/start.sh        # macOS / Linux
+bin\start.ps1       # Windows PowerShell
+```
+
+That's it. The script verifies your environment (Python ≥ 3.10, port
+3001 free), sets up dependencies if needed, starts the relay, and
+opens `http://localhost:3001/` in your browser. From the launcher,
+click any demo card.
+
+**Prefer Docker / Nix / VS Code devcontainer?** All four runtimes are
+documented in [`packaging/README.md`](packaging/README.md). They all
+end at the same `http://localhost:3001/`.
+
+---
+
 ## Three Ways to Engage
 
 ### Tier 1 — 15-Minute Observer
 
 You don't need an API key. Every demo has a **DEMO MODE** button that plays back a pre-scripted run with no network calls.
 
-1. Run `python3 relay.py` and open `http://localhost:3001/combat.html` in your browser (or open `web/combat.html` directly via `file://`)
+1. Run `bin/start.sh` (or open `web/combat.html` directly via `file://` if you'd rather skip the relay)
 2. Click **[ ◉ DEMO MODE ]** at the bottom
 3. Select **IRONCLAD** and click **[ LAUNCH EXERCISE ]**
 4. Watch the red and blue agents interact across six phases
@@ -87,9 +105,25 @@ You want to understand how this works and extend it.
 
 ## Cost Estimate
 
-If you run all three labs with a live API key, expect to spend **$0.05–0.15** total on API calls. DEMO MODE is always free.
+If you run all three labs with a live API key on Claude Sonnet 4.6 via
+OpenRouter, expect to spend **~$2** total on API calls. Measured: a
+single FORGE run lands around $0.40; COMBAT (which runs 24+ stages
+across both scenarios) is the biggest line item at ~$1.20; EVOLVE
+adds another ~$0.40 per cycle.
 
-Recommended model: `anthropic/claude-sonnet-4-6` via OpenRouter.
+| Lab | Demo | Estimated Cost (Sonnet via OR) |
+|---|---|---|
+| LAB-1 | FORGE — one CUSTOM run | ~$0.40 |
+| LAB-2 | COMBAT — IRONCLAD + PHANTOM FEED | ~$1.00–1.20 |
+| LAB-3 | EVOLVE — one improvement cycle | ~$0.40 |
+| **Full workshop** | All three labs | **~$2.00** |
+
+DEMO MODE is always free. **OR FREE** (`google/gemini-2.0-flash-exp:free`)
+is also $0. **Ollama** is $0 once the model is pulled. **CLAUDE CODE**
+provider is free if your Claude Code subscription already covers it —
+the relay reuses your existing OAuth, no separate metering.
+
+Recommended model for paid use: `anthropic/claude-sonnet-4-6` via OpenRouter.
 
 ---
 
