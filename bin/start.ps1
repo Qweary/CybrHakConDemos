@@ -136,12 +136,10 @@ if (-not $NoBrowser) {
     } -ArgumentList $url | Out-Null
 }
 
-if ($Port -ne 3001 -or $Bind -ne '127.0.0.1') {
-    Write-Host "NOTE: -Port and -Bind aren't yet plumbed through cli.py." -ForegroundColor Yellow
-    Write-Host "  The relay will listen on 127.0.0.1:3001 regardless."
-    Write-Host "  (Tracked as ARCH-14 in docs/dev/relay-review.md.)"
-    Write-Host ""
-}
+# -Port and -Bind are honored via env-var overrides understood by
+# settings.py (TMP_RELAY_PORT / TMP_RELAY_BIND).
+$env:TMP_RELAY_PORT = $Port
+$env:TMP_RELAY_BIND = $Bind
 
 if ($launchVia -eq 'uv') {
     & uv run --quiet python relay.py

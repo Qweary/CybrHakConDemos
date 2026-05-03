@@ -22,9 +22,18 @@ Env vars override the literals shown below.
 import os
 from pathlib import Path
 
-# Bind: 127.0.0.1:PORT — the relay never listens on a network-reachable
-# address by default. Phase 8 will plumb --bind/--port through cli.main().
-PORT = 3001
+# Bind: 127.0.0.1:PORT by default — the relay never listens on a
+# network-reachable address unless explicitly overridden. The bind
+# address is configurable via TMP_RELAY_BIND so a containerized run
+# (Dockerfile sets TMP_RELAY_BIND=0.0.0.0) can publish through host
+# port-forwarding without the relay being directly reachable in any
+# other context.
+#
+# Operators who set TMP_RELAY_BIND=0.0.0.0 outside a container expose
+# the relay (and the operator's claude CLI session) to anyone on the
+# LAN — bin/start.{sh,ps1} prints a 5-second warning before doing this.
+PORT = int(os.environ.get('TMP_RELAY_PORT', '3001'))
+BIND = os.environ.get('TMP_RELAY_BIND', '127.0.0.1')
 
 # Static web root — the relay serves the workshop's launcher and demo HTML
 # from here. Same-origin with /v1/chat eliminates the CORS surface for
