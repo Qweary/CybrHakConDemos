@@ -38,7 +38,14 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
 .ph.done{color:var(--a);background:rgba(240,165,0,.02)}
 .ph.done .pn{color:var(--ad)}
 
-.layout{display:grid;grid-template-columns:290px 1fr;flex:1;min-height:0;overflow:hidden}
+.layout{display:grid;grid-template-columns:290px 1fr;grid-template-rows:minmax(0,55fr) minmax(0,45fr);flex:1;min-height:0;overflow:hidden}
+.layout > .ctrl{grid-column:1;grid-row:1;min-height:0}
+.layout > .ctrl-col{grid-column:2;grid-row:1;display:flex;flex-direction:column;gap:10px;padding:12px;min-height:0;overflow-y:auto}
+.layout > #error-recovery-banner{grid-column:1 / -1}
+.layout > .tw{grid-column:1 / -1;grid-row:2;min-height:0;overflow:hidden}
+.btn-row{display:flex;gap:5px}
+.btn-row > .demo-btn{flex:1;margin-bottom:0}
+.ibtn.ctrl-aux-ibtn{width:auto;margin-top:0;position:static;bottom:auto}
 
 /* Controls */
 .ctrl{border-right:1px solid var(--bdr);overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:12px;padding-bottom:0}
@@ -1185,7 +1192,7 @@ Region blindness is documented as a known failure mode (30+ AWS regions) with th
     </div>
     <div id="orfree-notice" class="tier-note" style="display:none;color:var(--b);letter-spacing:1px;padding:2px 0">⚠ FREE TIER — output quality lower than Claude</div>
     <div id="ollama-notice" class="tier-note" style="display:none;color:#4fc3f7;letter-spacing:1px;padding:2px 0">⚡ LOCAL — offline capable, model quality varies</div>
-    </div></div>
+    </div>
     <div id="ak-row"><label id="ak-lbl">API KEY</label><input type="password" id="ak" placeholder="sk-ant-..."/><div class="kh" id="ak-hint">Blank = running inside Claude.ai</div></div>
     <div id="ak-conf" style="display:none"><div class="kconf">KEY CONFIGURED <span class="kc-clear" onclick="clearForgeKey()" title="Clear saved key">×</span></div></div>
     <div id="or-model-row" style="display:none">
@@ -1208,18 +1215,6 @@ Region blindness is documented as a known failure mode (30+ AWS regions) with th
     <div class="demo-note" id="demo-note">◉ DEMO MODE — NO API KEY REQUIRED</div>
   </div></div>
 
-  <div class="sec"><div class="sh">// MISSION TYPE</div><div class="sb2">
-    <div><label>SELECT SWARM</label>
-    <div class="sg">
-      <button class="swb sel" data-t="red" onclick="pick(this)"><span class="si">⚔</span><span class="sl">RED TEAM</span></button>
-      <button class="swb" data-t="blue" onclick="pick(this)"><span class="si">🛡</span><span class="sl">BLUE TEAM</span></button>
-      <button class="swb" data-t="infra" onclick="pick(this)"><span class="si">⚙</span><span class="sl">INFRA OPS</span></button>
-      <button class="swb" data-t="custom" onclick="pick(this)"><span class="si">⚛</span><span class="sl">CUSTOM</span></button>
-    </div></div>
-    <div id="cfd" class="cf"><div class="hr2"></div><label>CUSTOM BRIEF</label><textarea id="ct" placeholder="Describe your domain and mission..."></textarea></div>
-    <div><label>T2 ADVISOR ASSIGNED</label><div id="adv-lbl" style="font-size:11px;color:var(--t);text-shadow:var(--gt)">NEUTRON — Penetration Tester</div></div>
-  </div></div>
-
   <div class="sec"><div class="sh">// AGENT STATUS</div><div class="sb2"><div class="al">
     <div class="ar"><div class="dot do" id="d-o"></div><span>OPPENHEIMER</span><span class="ati">T1 DIRECTOR</span></div>
     <div class="ar"><div class="dot dl" id="d-l"></div><span>LATTICE</span><span class="ati">VRA+COLLECTIONS</span></div>
@@ -1230,11 +1225,6 @@ Region blindness is documented as a known failure mode (30+ AWS regions) with th
     <div class="ar"><div class="dot db" id="d-b"></div><span>BOHR</span><span class="ati">STRUCTURAL</span></div>
   </div></div></div>
 
-  <div class="sec"><div class="sh">// VECTOR READINESS</div><div class="sb2">
-    <div class="vb" id="vb"><div class="vs" id="vs" style="color:var(--a)">—</div><div class="vl" id="vl" style="color:var(--ad)">PENDING</div></div>
-    <div id="vp" style="font-size:10px;color:#6868a0">Assessed in Phase 1b</div>
-  </div></div>
-
   <div class="sec"><div class="sh">// REACTOR FILES</div><div class="sb2"><div class="rl">
     <div class="rf" id="rf0"><span>CHAIN-REACTION.md</span><span>IDLE</span></div>
     <div class="rf" id="rf1"><span>CRITICAL-MASS.md</span><span>IDLE</span></div>
@@ -1243,10 +1233,31 @@ Region blindness is documented as a known failure mode (30+ AWS regions) with th
     <div class="rf" id="rf4"><span>YIELD-METRICS.md</span><span>IDLE</span></div>
     <div class="rf" id="rf5"><span>SITUATION-ROOM.md</span><span>IDLE</span></div>
   </div></div></div>
+</div>
 
-  <button class="demo-btn" id="demo-btn" onclick="toggleDemoMode()" title="Pre-scripted forge playback — no API key required">[ ◉ DEMO MODE ]</button>
-  <button class="demo-btn" id="step-btn" onclick="toggleStepMode()" title="Pause between phases — click to advance. Use to explain each stage to the audience.">[ ⏸ STEP MODE ]</button>
-  <button class="ibtn" id="ibtn" onclick="runForge()">⚛ INITIATE FISSION</button>
+<div class="ctrl-col">
+  <div class="sec"><div class="sh">// MISSION TYPE</div><div class="sb2">
+      <div><label>SELECT SWARM</label>
+      <div class="sg">
+        <button class="swb sel" data-t="red" onclick="pick(this)"><span class="si">⚔</span><span class="sl">RED TEAM</span></button>
+        <button class="swb" data-t="blue" onclick="pick(this)"><span class="si">🛡</span><span class="sl">BLUE TEAM</span></button>
+        <button class="swb" data-t="infra" onclick="pick(this)"><span class="si">⚙</span><span class="sl">INFRA OPS</span></button>
+        <button class="swb" data-t="custom" onclick="pick(this)"><span class="si">⚛</span><span class="sl">CUSTOM</span></button>
+      </div></div>
+      <div id="cfd" class="cf"><div class="hr2"></div><label>CUSTOM BRIEF</label><textarea id="ct" placeholder="Describe your domain and mission..."></textarea></div>
+      <div><label>T2 ADVISOR ASSIGNED</label><div id="adv-lbl" style="font-size:11px;color:var(--t);text-shadow:var(--gt)">NEUTRON — Penetration Tester</div></div>
+    </div></div>
+
+  <div class="sec"><div class="sh">// VECTOR READINESS</div><div class="sb2">
+      <div class="vb" id="vb"><div class="vs" id="vs" style="color:var(--a)">—</div><div class="vl" id="vl" style="color:var(--ad)">PENDING</div></div>
+      <div id="vp" style="font-size:10px;color:#6868a0">Assessed in Phase 1b</div>
+    </div></div>
+
+  <div class="btn-row">
+    <button class="demo-btn" id="demo-btn" onclick="toggleDemoMode()" title="Pre-scripted forge playback — no API key required">[ ◉ DEMO MODE ]</button>
+    <button class="demo-btn" id="step-btn" onclick="toggleStepMode()" title="Pause between phases — click to advance. Use to explain each stage to the audience.">[ ⏸ STEP MODE ]</button>
+  </div>
+  <button class="ibtn ctrl-aux-ibtn" id="ibtn" onclick="runForge()">⚛ INITIATE FISSION</button>
 </div>
 
 <div id="error-recovery-banner" style="display:none">
