@@ -1,6 +1,6 @@
 # LAB-2 — Combat: Red vs. Blue AI Exercise
 
-**Time: ~45 minutes | Select your provider and confirm your key is loaded (see ATTENDEE-SETUP.md for all options); DEMO MODE is free**
+**Time: ~45 minutes | Select your provider and confirm your key is loaded (see docs/attendee/first-run.md for all options); DEMO MODE is free**
 
 ---
 
@@ -21,9 +21,9 @@ The two scenarios are deliberately different in what they attack:
 
 ### Setup
 
-Open `demos/tmp-combat-live.html`. At the top, confirm **IRONCLAD** is selected (the button should be highlighted). Enable **[ ⏸ STEP MODE ]** if you want to read each phase before advancing.
+Open `http://localhost:3001/combat.html` in your browser (run `python3 relay.py` from the workshop root first if you haven't yet). Or open `web/combat.html` directly via `file://`. At the top, confirm **IRONCLAD** is selected (the button should be highlighted). Enable **[ ⏸ STEP MODE ]** if you want to read each phase before advancing.
 
-For live mode: confirm your provider is selected and your key is loaded (see ATTENDEE-SETUP.md), then click **[ SETUP NETWORK ]** (wait for the topology to render), then click **[ ⚛ ENGAGE ]**.  
+For live mode: confirm your provider is selected and your key is loaded (see docs/attendee/first-run.md), then click **[ SETUP NETWORK ]** (wait for the topology to render), then click **[ ⚛ ENGAGE ]**.  
 For Demo Mode: click **[ ◉ DEMO MODE ]** first, then **[ SETUP NETWORK ]**, then **[ ⚛ ENGAGE ]**.
 
 ### What to Watch

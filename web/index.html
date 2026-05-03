@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE MANHATTAN PROJECT — DEMO LAUNCHER</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#040407;--bp:#07070e;--bi:#0a0a14;
+  --a:#f0a500;--ad:#b07800;--am:#d08800;
+  --g:#00e676;--r:#ff1744;--b:#4fc3f7;--p:#ce93d8;
+  --w:#d4d4e8;--gr:#8080aa;--bdr:#0e0e1c;
+  --ga:0 0 10px rgba(240,165,0,.38);
+  --gg:0 0 10px rgba(0,230,118,.38);
+  --gb:0 0 10px rgba(79,195,247,.28);
+  --gp:0 0 10px rgba(206,147,216,.28);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%}
+body{background:var(--bg);color:var(--a);font-family:'Share Tech Mono','Courier New',monospace;font-size:14px;display:flex;flex-direction:column;min-height:100vh}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.055) 3px,rgba(0,0,0,.055) 4px)}
+
+.banner{background:var(--r);color:#000;text-align:center;padding:4px;font-family:'Orbitron',sans-serif;font-weight:900;font-size:11px;letter-spacing:4px;flex-shrink:0}
+.hdr{display:flex;justify-content:space-between;align-items:flex-end;padding:14px 22px;border-bottom:1px solid var(--ad);background:linear-gradient(180deg,rgba(240,165,0,.05),transparent);flex-shrink:0}
+.ht{font-family:'Orbitron',sans-serif;font-weight:900;font-size:22px;letter-spacing:3px;text-shadow:var(--ga)}
+.hs{font-size:11px;color:var(--am);letter-spacing:2px;margin-top:4px}
+.hr{text-align:right;font-size:10px;color:#7070a8;line-height:1.7}
+.hr .ok{color:var(--g)}
+.bdg{display:inline-block;background:rgba(240,165,0,.07);border:1px solid var(--ad);color:var(--am);font-size:8.5px;letter-spacing:2px;padding:1px 6px;margin-left:5px}
+
+main{flex:1;padding:22px;display:flex;flex-direction:column;gap:22px;max-width:1100px;width:100%;margin:0 auto}
+
+.intro{border:1px solid var(--bdr);padding:14px 18px;background:var(--bp)}
+.intro h2{font-family:'Orbitron',sans-serif;font-weight:700;font-size:13px;letter-spacing:2px;color:var(--am);margin-bottom:6px}
+.intro p{font-size:12.5px;line-height:1.6;color:var(--w)}
+.intro p+p{margin-top:7px}
+.intro .pill{display:inline-block;background:rgba(0,230,118,.07);border:1px solid var(--g);color:var(--g);font-size:9.5px;letter-spacing:1.5px;padding:2px 7px;margin-right:6px}
+
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:900px){.cards{grid-template-columns:1fr}}
+
+.card{display:flex;flex-direction:column;border:1px solid var(--bdr);background:var(--bp);padding:18px 18px 14px;text-decoration:none;color:inherit;transition:border-color .2s,box-shadow .2s,transform .15s}
+.card:hover{border-color:var(--a);box-shadow:0 0 0 1px var(--ad) inset, var(--ga);transform:translateY(-1px)}
+.card .tag{font-size:9px;letter-spacing:2.5px;color:#5a5a82;margin-bottom:6px}
+.card .name{font-family:'Orbitron',sans-serif;font-weight:900;font-size:24px;letter-spacing:3px;margin-bottom:4px;text-shadow:var(--ga)}
+.card .role{font-size:10px;letter-spacing:1.5px;color:var(--am);margin-bottom:12px}
+.card p{font-size:12px;line-height:1.55;color:var(--w);flex:1}
+.card .cta{margin-top:14px;font-size:10px;letter-spacing:2px;color:var(--g);border-top:1px solid var(--bdr);padding-top:10px;text-align:right}
+
+.card.combat .name{color:var(--r);text-shadow:0 0 10px rgba(255,23,68,.45)}
+.card.combat:hover{border-color:var(--r);box-shadow:0 0 0 1px rgba(255,23,68,.6) inset,0 0 14px rgba(255,23,68,.35)}
+.card.combat .role{color:var(--r)}
+.card.combat .cta{color:var(--r)}
+.card.evolve .name{color:var(--p);text-shadow:var(--gp)}
+.card.evolve:hover{border-color:var(--p);box-shadow:0 0 0 1px rgba(206,147,216,.6) inset,var(--gp)}
+.card.evolve .role{color:var(--p)}
+.card.evolve .cta{color:var(--p)}
+
+.sidebar{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:700px){.sidebar{grid-template-columns:1fr}}
+.box{border:1px solid var(--bdr);background:var(--bp);padding:14px 16px}
+.box h3{font-family:'Orbitron',sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;color:var(--am);margin-bottom:8px}
+.box ul{list-style:none}
+.box li{font-size:12px;line-height:1.7;color:var(--w);padding-left:14px;position:relative}
+.box li::before{content:'›';position:absolute;left:0;color:var(--ad)}
+.box a{color:var(--b);text-decoration:none}
+.box a:hover{text-decoration:underline;text-shadow:var(--gb)}
+.box code{background:var(--bi);padding:1px 5px;border:1px solid var(--bdr);color:var(--am);font-family:inherit;font-size:11px}
+
+.foot{padding:10px 22px;border-top:1px solid var(--bdr);background:var(--bp);font-size:10px;color:#5a5a82;text-align:center;letter-spacing:1.5px;flex-shrink:0}
+</style>
+</head>
+<body>
+<div class="banner">⬥ THE MANHATTAN PROJECT — MULTI-AGENT AI DEMO PACKAGE — AI VILLAGE TRACK ⬥</div>
+
+<header class="hdr">
+  <div>
+    <div class="ht">DEMO LAUNCHER</div>
+    <div class="hs">three demos · one loop: BUILD → FIGHT → REFINE<span class="bdg">v3</span></div>
+  </div>
+  <div class="hr">
+    <div>relay: <span class="ok">localhost:3001 · operational</span></div>
+    <div>provider · selectable per demo · keys stay local</div>
+  </div>
+</header>
+
+<main>
+  <section class="intro">
+    <h2>WHAT THIS IS</h2>
+    <p>Three live demos that compose multi-agent AI swarms — agents that plan together, disagree, and rewrite each other to improve. Each demo is a self-contained HTML application backed by your choice of provider.</p>
+    <p><span class="pill">DEMO MODE</span> needs no API key — pre-recorded transcripts play back inside each demo. Free.</p>
+    <p><span class="pill" style="border-color:var(--a);color:var(--a);background:rgba(240,165,0,.07)">LIVE MODE</span> calls real models — Claude (via Claude Code, Anthropic direct, or OpenRouter), free OpenRouter, or Ollama (local). See the docs below for setup.</p>
+  </section>
+
+  <section class="cards">
+    <a class="card" href="/forge.html">
+      <div class="tag">DEMO 1 · BUILD</div>
+      <div class="name">FORGE</div>
+      <div class="role">swarm factory</div>
+      <p>Describe a domain in plain language. The 9-phase pipeline analyzes it, designs a roster of specialized agents, drafts each prompt, and runs structural review. Output is a deployable swarm package.</p>
+      <div class="cta">[ ENTER FORGE → ]</div>
+    </a>
+    <a class="card combat" href="/combat.html">
+      <div class="tag">DEMO 2 · FIGHT</div>
+      <div class="name">COMBAT</div>
+      <div class="role">red vs. blue exercise</div>
+      <p>Two swarms — attackers and defenders — run a 6-phase adversarial exercise. IRONCLAD is a classic enterprise compromise; PHANTOM FEED is an MLOps supply-chain poisoning. Same blue team, different threat model.</p>
+      <div class="cta">[ ENGAGE COMBAT → ]</div>
+    </a>
+    <a class="card evolve" href="/evolve.html">
+      <div class="tag">DEMO 3 · REFINE</div>
+      <div class="name">EVOLVE</div>
+      <div class="role">self-improvement loop</div>
+      <p>ARBITER scores the agents. SCULPTOR rewrites the weakest one. CHALLENGER designs a new test. RERUN simulates the rematch. Import a COMBAT result via CHAIN MODE; close the loop.</p>
+      <div class="cta">[ START REFINEMENT → ]</div>
+    </a>
+  </section>
+
+  <section class="sidebar">
+    <div class="box">
+      <h3>FIRST TIME HERE?</h3>
+      <ul>
+        <li>Pick a demo above and click <code>[ ◉ DEMO MODE ]</code> — no key, no cost.</li>
+        <li>Want live AI? See <a href="https://github.com/Qweary/The-Manhattan-Project">README → ATTENDEE-SETUP</a> for provider options.</li>
+        <li>Stuck? Open <code>docs/attendee/workshop-guide.md</code> and paste it into any chat LLM with your question.</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h3>HANDS-ON LABS</h3>
+      <ul>
+        <li><strong>LAB-1</strong> — Forge a swarm for your domain (~30 min)</li>
+        <li><strong>LAB-2</strong> — Run both COMBAT scenarios; compare blue detection (~45 min)</li>
+        <li><strong>LAB-3</strong> — Close the EVOLVE loop on the failing agent (stretch goal)</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  THE MANHATTAN PROJECT · CYBRHAKCON 2026 · AI VILLAGE TRACK · all keys stay in your browser; relay binds 127.0.0.1
+</footer>
+</body>
+</html>

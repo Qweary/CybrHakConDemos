@@ -1,0 +1,77 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 tests/test_workshop.py)",
+      "Bash(python3 tests/test_snapshots.py)",
+      "Bash(python3 tests/test_snapshots.py *)",
+      "Bash(.venv-e2e/bin/pytest *)",
+      "Bash(bash run_tests.sh)",
+      "Bash(./run_tests.sh)",
+
+      "Bash(python3 relay.py)",
+      "Bash(.venv-e2e/bin/python3 relay.py)",
+
+      "Bash(bin/doctor.sh)",
+      "Bash(bin/doctor.sh *)",
+      "Bash(bin/start.sh)",
+      "Bash(bin/start.sh *)",
+
+      "Bash(python3 -c *)",
+      "Bash(python3 -m venv *)",
+      "Bash(.venv-e2e/bin/pip install *)",
+      "Bash(.venv-e2e/bin/playwright install *)",
+
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git checkout *)",
+      "Bash(git branch *)",
+      "Bash(git mv *)",
+      "Bash(git rm *)",
+      "Bash(git switch *)",
+      "Bash(git restore *)",
+
+      "Bash(ls *)",
+      "Bash(cat *)",
+      "Bash(head *)",
+      "Bash(tail *)",
+      "Bash(wc *)",
+      "Bash(file *)",
+      "Bash(find *)",
+      "Bash(grep *)",
+      "Bash(rg *)",
+      "Bash(sed -n *)",
+      "Bash(awk *)",
+      "Bash(command -v *)",
+      "Bash(jq *)",
+
+      "Bash(mkdir *)",
+      "Bash(rmdir *)",
+      "Bash(chmod +x *)",
+      "Bash(touch *)",
+
+      "Bash(curl -s http://127.0.0.1:*)",
+      "Bash(curl -sI http://127.0.0.1:*)",
+      "Bash(curl -s http://localhost:*)",
+      "Bash(curl -sI http://localhost:*)",
+
+      "Bash(pgrep -af *)",
+      "Bash(pkill -f relay.py)",
+
+      "Bash(docker --version)",
+      "Bash(docker info *)",
+      "Bash(docker build *)",
+      "Bash(docker run *)",
+      "Bash(docker stop *)",
+      "Bash(docker logs *)",
+      "Bash(docker ps *)",
+      "Bash(docker image *)",
+      "Bash(docker rmi *)",
+
+      "Bash(nix --version)",
+      "Bash(nix flake *)"
+    ]
+  }
+}

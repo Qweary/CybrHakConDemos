@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tmp-relay"
+version = "0.1.0"
+description = "Local relay that bridges browser demos to the Claude Code CLI for The Manhattan Project workshop."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "The Manhattan Project workshop" }]
+dependencies = [
+    "aiohttp>=3.9",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8",
+    "playwright>=1.40",
+    "pytest-playwright>=0.4",
+]
+
+[project.scripts]
+# `pip install .` exposes this on PATH. Same binary as `python3 relay.py`
+# from the workshop root — the latter is the path attendees see in docs.
+tmp-relay = "tmp_relay.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+# Make the in-tree src/tmp_relay package importable to pytest without
+# requiring `pip install -e .`. Same effect as the sys.path bootstrap
+# in relay.py — keeps `pytest tests/` working out of the box.
+pythonpath = ["src"]
+testpaths = ["tests"]

@@ -1,0 +1,21 @@
+{
+  "endpoint": "/health",
+  "method": "GET",
+  "response": {
+    "schema": {
+      "claude_binary_path": {
+        "nullable": true,
+        "type": "str"
+      },
+      "claude_binary_present": {
+        "nullable": false,
+        "type": "bool"
+      },
+      "status": {
+        "nullable": false,
+        "type": "str"
+      }
+    },
+    "status_code": 200
+  }
+}

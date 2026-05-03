@@ -1,6 +1,6 @@
 # LAB-1 — Forge Your Own Swarm
 
-**Time: ~30 minutes | Select your provider and confirm your key is loaded (see ATTENDEE-SETUP.md for all options)**
+**Time: ~30 minutes | Select your provider and confirm your key is loaded (see docs/attendee/first-run.md for all options)**
 
 ---
 
@@ -28,7 +28,7 @@ The FORGE demo runs a 9-phase pipeline:
 
 ### Step 1: Open the Demo
 
-Open `demos/tmp-forge-live.html`. Select your provider and confirm your key is loaded (see ATTENDEE-SETUP.md). Enable **[ ⏸ STEP MODE ]** if you want to pause between phases and read each one before continuing.
+Open `http://localhost:3001/forge.html` in your browser (run `python3 relay.py` from the workshop root first if you haven't yet). Or open `web/forge.html` directly via `file://`. Select your provider and confirm your key is loaded (see `docs/attendee/first-run.md`). Enable **[ ⏸ STEP MODE ]** if you want to pause between phases and read each one before continuing.
 
 ### Step 2: Write Your Brief
 

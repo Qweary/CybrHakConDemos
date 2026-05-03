@@ -3,6 +3,12 @@ __pycache__/
 *.py[cod]
 *$py.class
 .pytest_cache/
+*.egg-info/
+build/
+dist/
+# uv generates this from pyproject.toml on first `uv run` — deterministic,
+# not worth committing for a workshop kit.
+uv.lock
 
 # Virtual environments
 .venv-e2e/
@@ -14,6 +20,10 @@ env/
 .vscode/
 .idea/
 *.swp
+
+# Claude Code per-user overrides (project-shared config is settings.json,
+# committed; this file is for the operator's machine-local additions)
+.claude/settings.local.json
 
 # OS
 .DS_Store
