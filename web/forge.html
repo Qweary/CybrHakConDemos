@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>THE MANHATTAN PROJECT — SWARM FORGE LIVE v3</title>
+<title>MULTI-AGENT SWARM FORGE</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -324,15 +324,15 @@ Model tier: utility
 - PIVOT — lateral movement to a new segment with BloodHound path validation
 
 ### Phase 2 Advisor Assignment
-Primary T2 advisor: NEUTRON — Penetration Tester
+Primary T2 advisor: PEN-TEST-ADVISOR — Penetration Tester
 Secondary advisor: None
-Rationale: NEUTRON's expertise covers the entire kill chain and the OPSEC discipline required for stealth against active blue teams; no secondary needed.
+Rationale: A Penetration Tester's expertise covers the entire kill chain and the OPSEC discipline required for stealth against active blue teams; no secondary needed.
 
 ### Fabrication Priority
 ENGAGE-COORD — every red team engagement begins with authorization verification; without this agent the entire swarm is legally exposed. Build the gate before the gun.
 
 ### Vector Readiness Pre-Assessment
-Strong fit for vector retrieval. Per-phase agents query against well-defined, structured corpora that update on predictable cadences: ATT&CK techniques (per-tactic lookups), CVE entries (CPE matching for service-version exploitability), Sigma rules (OPSEC-aware execution — knowing what defenders will alert on), and OWASP Top 10 + DVWA patterns (web exploitation primitives). Cross-engagement repetition is high — a CCDC swarm faces the same DVWA/Mutillidae stack year after year — so accumulated technique-discovery memory pays off across deployments. Lattice VRA recommended.
+Strong fit for vector retrieval. Per-phase agents query against well-defined, structured corpora that update on predictable cadences: ATT&CK techniques (per-tactic lookups), CVE entries (CPE matching for service-version exploitability), Sigma rules (OPSEC-aware execution — knowing what defenders will alert on), and OWASP Top 10 + DVWA patterns (web exploitation primitives). Cross-engagement repetition is high — a CCDC swarm faces the same DVWA/Mutillidae stack year after year — so accumulated technique-discovery memory pays off across deployments. Vector readiness assessment recommended.
 </script>
 <script type="text/plain" id="d-vra">
 ## Vector Readiness Assessment — Red Team Operations
@@ -347,7 +347,7 @@ Collection stability    |   8   | ATT&CK + OWASP update on predictable cadences;
 Agent integration       |   9   | EXPLOIT-DEV + CRED-HARVESTER have obvious per-phase retrieval needs
 Latency tolerance       |   7   | Pre-engagement planning phases tolerate retrieval latency well
 Collection coverage     |   9   | All 5 proposed collections have known large, populated corpora
-Cold-start risk         |   8   | TMP library already contains populated security collections
+Cold-start risk         |   8   | Reference library already contains populated security collections
 Operator value          |   9   | Technique depth without retrieval is shallow; VRP dramatically improves output quality
 Maintenance cost        |   7   | ATT&CK version updates required annually; automated ingest feasible
 
@@ -364,7 +364,7 @@ Proposed collection set for T2 Advisor consideration:
 </script>
 <script type="text/plain" id="d-adv">
 ## Micro-Specialization Map — Red Team Operations Swarm
-**T2 Advisor: NEUTRON (Penetration Tester)**
+**T2 Advisor: PEN-TEST-ADVISOR (Penetration Tester)**
 
 ### Output A: Micro-Specialization Map
 
@@ -402,8 +402,9 @@ The 7-agent roster correctly captures the red team kill chain. Critical annotati
    Estimated corpus: 2,000-2,500 docs | Format: structured IOC entries
 </script>
 <script type="text/plain" id="d-col">
-## Lattice Collection Design — Red Team Operations
-**Receiving T2 Library Specification from NEUTRON.**
+## Collection Design — Red Team Operations
+*Authored by VECTOR-INTEL.*
+**Receiving T2 Library Specification from PEN-TEST-ADVISOR.**
 
 ### Collection Architecture
 
@@ -437,11 +438,12 @@ Query before each gate clearance decision:
 - knowledge_gaps — technique areas requiring library expansion
 
 ### Ingest
-TMP library already contains all 5 P0/P1 collections. Copy to swarm via:
+Reference library already contains all 5 P0/P1 collections. Copy to swarm via:
   python3 scripts/copy_red_team_collections.py
 </script>
 <script type="text/plain" id="d-cur">
-## Curie Research Briefing — Red Team Operations
+## Research Briefing — Red Team Operations
+*Authored by RESEARCH-LEAD.*
 **Fabrication Priority Agent: ENGAGE-COORD**
 
 ### Current Tooling Landscape (2025-2026)
@@ -542,7 +544,8 @@ Invoked by: Exercise Director (ep-v1 protocol via Role Adapter) or operator dire
 Invokes: RECON-LEAD (after RECON gate cleared), EXPLOIT-DEV (after INITIAL-ACCESS gate cleared), and subsequent agents in kill chain sequence.
 </script>
 <script type="text/plain" id="d-gei">
-## Geiger Quality Gate Report — ENGAGE-COORD
+## Quality Gate Report — ENGAGE-COORD
+*Authored by QUALITY-GATE.*
 **Status: PASS**
 
 ### Authorization-First Audit
@@ -555,8 +558,8 @@ Check                              | Result | Finding
 Gate clearance schema              | PASS   | Five fixed fields (phase, timestamp, scope, opsec, cleared-by) — machine-parseable, OBJECTIVE-TRACKER verifies chain of custody without re-reading AUTHORIZATION.md
 OPSEC pre-flight via VRP           | PASS   | security_sigma_rules query before clearance — detection-surface assessment lives at the authorization layer, not ad hoc during execution
 Phase-signal protocol fidelity     | PASS   | READY/RUNNING/COMPLETE/FAILED triggers documented with concrete entry conditions per phase
-NEUTRON advisory fidelity          | PASS   | Authorization-first design, "build the gate before the gun" principle directly reflect NEUTRON's specification
-Curie integration                  | PASS   | Engagement procedure patterns, OPSEC discipline, AD attack chain context embedded from the briefing
+PEN-TEST-ADVISOR advisory fidelity | PASS   | Authorization-first design, "build the gate before the gun" principle directly reflect the PEN-TEST-ADVISOR's specification
+Research integration               | PASS   | Engagement procedure patterns, OPSEC discipline, AD attack chain context embedded from the RESEARCH-LEAD briefing
 
 ### Notable Strengths
 
@@ -564,10 +567,11 @@ The OPSEC pre-flight VRP position is a deliberate architectural choice — ENGAG
 
 The "never clear" list converts an operational risk (gate ambiguity under pressure) into an explicit machine-checkable constraint. Future agents inheriting this pattern should preserve the negative-condition framing rather than rewriting as positive permissions.
 
-**Recommendation:** CLEAR FOR DEPLOYMENT. Reference this gate-clearance schema in SWARM-PACKAGE-SPEC.md as the canonical pattern for any agent owning a legal or safety boundary.
+**Recommendation:** CLEAR FOR DEPLOYMENT. Reference this gate-clearance schema as the canonical pattern for any agent owning a legal or safety boundary.
 </script>
 <script type="text/plain" id="d-boh">
-## Bohr Structural Review — ENGAGE-COORD
+## Structural Review — ENGAGE-COORD
+*Authored by STRUCTURAL-REVIEWER.*
 **Verdict: PASS**
 
 ### Schema Compliance
@@ -586,15 +590,15 @@ Agent Invocation                      | PASS   | Invoker and invokees both named
 Single responsibility: Yes — authorization gating only; technique execution is explicitly excluded from scope.
 No implicit state: Yes — all state is in named coordination files (AUTHORIZATION.md, ENGAGEMENT-LOG.md, protocol-signals.md).
 Explicit gate semantics: Yes — "never clear a gate if" list is unambiguous; four conditions stated.
-Cross-reference integrity: VRP collection names match Lattice Collection Design exactly (security_mitre_attack, security_sigma_rules, security_adversary_procedures).
+Cross-reference integrity: VRP collection names match the VECTOR-INTEL Collection Design exactly (security_mitre_attack, security_sigma_rules, security_adversary_procedures).
 
 ### Structural Notes
 
-The "never clear a gate if" pattern is an explicit negative-condition guard at the authorization boundary. This pattern should be noted in SWARM-PACKAGE-SPEC.md as a recommended design pattern for any agent that owns a legal or safety boundary.
+The "never clear a gate if" pattern is an explicit negative-condition guard at the authorization boundary. This pattern is a recommended design pattern for any agent that owns a legal or safety boundary.
 
 The VRP position (querying before gate clearance) is structurally correct — retrieval informs the clearance decision rather than following it.
 
-**BOHR: CLEAR**
+**STRUCTURAL-REVIEWER: CLEAR**
 </script>
 
 <!-- ═══ BLUE TEAM DEMO CONTENT ═══ -->
@@ -653,15 +657,15 @@ Model tier: specialist
 - HUNT — execute a hypothesis-driven search; promote successful hunts to community-aligned Sigma rules
 
 ### Phase 2 Advisor Assignment
-Primary T2 advisor: SCINTILLATOR — Detection Engineer
+Primary T2 advisor: DETECTION-ADVISOR — Detection Engineer
 Secondary advisor: None
-Rationale: Sigma rule authorship is the load-bearing competency; SCINTILLATOR's depth in detection-rule design and false-positive management directly shapes agent quality.
+Rationale: Sigma rule authorship is the load-bearing competency; the DETECTION-ADVISOR's depth in detection-rule design and false-positive management directly shapes agent quality.
 
 ### Fabrication Priority
 TELEMETRY-ANALYST — the ingestion layer gates every downstream agent. A telemetry analyst that normalizes incorrectly produces false positives throughout the entire pipeline; correctness here determines correctness everywhere.
 
 ### Vector Readiness Pre-Assessment
-Highest retrieval density of any security swarm domain. Every detection decision benefits from a Sigma rule library query (3,500+ community rules with mature tagging taxonomy), every hunt benefits from ATT&CK technique context with data source mappings, and every alert benefits from a SIEM query reference (Splunk SPL, Elastic KQL, Sentinel KQL libraries). State must persist across an incident lifecycle that often spans hours — making session memory and detection-feed accumulation natural fits for vector storage. Lattice VRA strongly recommended.
+Highest retrieval density of any security swarm domain. Every detection decision benefits from a Sigma rule library query (3,500+ community rules with mature tagging taxonomy), every hunt benefits from ATT&CK technique context with data source mappings, and every alert benefits from a SIEM query reference (Splunk SPL, Elastic KQL, Sentinel KQL libraries). State must persist across an incident lifecycle that often spans hours — making session memory and detection-feed accumulation natural fits for vector storage. Vector readiness assessment strongly recommended.
 </script>
 <script type="text/plain" id="db-vra">
 ## Vector Readiness Assessment — Blue Team Defense Operations
@@ -676,7 +680,7 @@ Collection stability    |   7   | ATT&CK + Sigma update on predictable cadences;
 Agent integration       |   9   | DETECTION-ENGINEER + THREAT-HUNTER have obvious per-task retrieval needs
 Latency tolerance       |   8   | Alert triage tolerates retrieval latency; real-time ingestion does not
 Collection coverage     |   8   | Sigma, ATT&CK, SIEM queries, IOC feeds — all have populated corpora
-Cold-start risk         |   8   | TMP library already contains populated security collections
+Cold-start risk         |   8   | Reference library already contains populated security collections
 Operator value          |   9   | Rule quality without retrieval is shallow; VRP dramatically improves detection coverage
 
 **VRA Total: 8/9 — RECOMMENDED**
@@ -691,7 +695,7 @@ Proposed collection set for T2 Advisor consideration:
 </script>
 <script type="text/plain" id="db-adv">
 ## Micro-Specialization Map — Blue Team Defense Operations
-**T2 Advisor: SCINTILLATOR (Detection Engineer)**
+**T2 Advisor: DETECTION-ADVISOR (Detection Engineer)**
 
 ### Output A: Micro-Specialization Map
 
@@ -728,8 +732,9 @@ Handoff artifact: active-threats.md entries → consumed by INCIDENT-COMMANDER.
    Estimated corpus: 2,000-2,500 docs
 </script>
 <script type="text/plain" id="db-col">
-## Lattice Collection Design — Blue Team Defense Operations
-**Receiving T2 Library Specification from SCINTILLATOR.**
+## Collection Design — Blue Team Defense Operations
+*Authored by VECTOR-INTEL.*
+**Receiving T2 Library Specification from DETECTION-ADVISOR.**
 
 ### Collection Architecture
 
@@ -753,11 +758,12 @@ Query before normalizing each log source batch:
    Use: map raw events to technique IDs; write to detection-feed.md with ATT&CK context populated
 
 ### Ingest
-TMP library already contains all P0 collections. Copy to swarm via:
+Reference library already contains all P0 collections. Copy to swarm via:
   python3 scripts/copy_blue_team_collections.py
 </script>
 <script type="text/plain" id="db-cur">
-## Curie Research Briefing — TELEMETRY-ANALYST
+## Research Briefing — TELEMETRY-ANALYST
+*Authored by RESEARCH-LEAD.*
 **Fabrication Priority Agent: TELEMETRY-ANALYST**
 
 ### Current Tooling Landscape (2025-2026)
@@ -830,7 +836,8 @@ ESCALATES TO: INCIDENT-COMMANDER for confirmed threats requiring containment
 **Fallback:** If security_sigma_rules unavailable — author from first principles using invariant targeting. If security_mitre_attack unavailable — use known technique IDs from memory; flag ATT&CK lookup as unverified in active-threats.md entry.
 </script>
 <script type="text/plain" id="db-gei">
-## Geiger Quality Gate Report — DETECTION-ENGINEER
+## Quality Gate Report — DETECTION-ENGINEER
+*Authored by QUALITY-GATE.*
 **Status: APPROVED**
 
 ### Detection Coverage Audit
@@ -843,8 +850,8 @@ Sigma invariant targeting            | PASS   | Concrete examples (LSASS SourceI
 Correlation threshold specificity    | PASS   | Numerical thresholds (≥5 failures, ≥3 accounts, 300s; post-failure success within 10m → CONFIRMED) — directly machine-parseable, no runtime interpretation needed
 False positive management            | PASS   | Audit-mode deployment + 7-day rolling baseline before live alerting; falsepositives field required, not optional
 Detection-first ordering             | PASS   | community Sigma query precedes new rule authorship — prevents duplication and leverages community tuning, with security_sigma_rules as the operational anchor
-SCINTILLATOR advisory fidelity       | PASS   | Sigma authoring discipline, correlation thresholds, and ATT&CK tag requirements all reflect SCINTILLATOR's brief
-Curie integration                    | PASS   | Sysmon Event ID semantics (Events 1, 3, 10, 13), timestamp normalization (ISO 8601 UTC), and SPL queries embedded from the briefing
+DETECTION-ADVISOR advisory fidelity  | PASS   | Sigma authoring discipline, correlation thresholds, and ATT&CK tag requirements all reflect the DETECTION-ADVISOR's brief
+Research integration                 | PASS   | Sysmon Event ID semantics (Events 1, 3, 10, 13), timestamp normalization (ISO 8601 UTC), and SPL queries embedded from the RESEARCH-LEAD briefing
 
 ### Notable Strengths
 
@@ -855,7 +862,8 @@ Correlation thresholds are numerically specific to the point of being directly e
 **Recommendation:** CLEAR FOR DEPLOYMENT. No rework required.
 </script>
 <script type="text/plain" id="db-boh">
-## Bohr Structural Review — DETECTION-ENGINEER
+## Structural Review — DETECTION-ENGINEER
+*Authored by STRUCTURAL-REVIEWER.*
 **Verdict: APPROVED**
 
 ### Schema Compliance
@@ -872,13 +880,13 @@ Vector Retrieval Protocol             | PASS   | 2 collections, query shapes, fa
 Single responsibility: Yes — Sigma authorship and correlation only; containment is explicitly excluded.
 No implicit state: Yes — all state in named coordination files.
 Invariant targeting: documented — rule targets what attacker cannot change.
-Cross-reference integrity: VRP collection names match Lattice Collection Design (security_sigma_rules, security_mitre_attack).
+Cross-reference integrity: VRP collection names match the VECTOR-INTEL Collection Design (security_sigma_rules, security_mitre_attack).
 
 ### Structural Notes
 
 Fallback subsection handles three distinct conditions per agent domain (unavailable, empty, below-threshold) with specific agent-appropriate responses rather than generic "proceed without retrieval."
 
-**BOHR: CLEAR**
+**STRUCTURAL-REVIEWER: CLEAR**
 </script>
 
 <!-- ═══ INFRA OPS DEMO CONTENT ═══ -->
@@ -938,15 +946,15 @@ Model tier: utility
 - REPORT — generate technical remediation guide and executive summary deliverables
 
 ### Phase 2 Advisor Assignment
-Primary T2 advisor: MODERATOR — DevOps Engineer
+Primary T2 advisor: DEVOPS-ADVISOR — DevOps Engineer
 Secondary advisor: None
-Rationale: Infrastructure assessment spans container security, IaC review, and multi-cloud posture; MODERATOR's DevOps expertise covers all three.
+Rationale: Infrastructure assessment spans container security, IaC review, and multi-cloud posture; the DEVOPS-ADVISOR's expertise covers all three.
 
 ### Fabrication Priority
 ASSET-MAPPER — incomplete discovery means missed vulnerabilities throughout the entire downstream pipeline. The registry is the spine; everything else is enrichment.
 
 ### Vector Readiness Pre-Assessment
-Moderate fit. CONFIG-AUDITOR and VULN-CORRELATOR query against retrieval-dense corpora — CIS benchmark library (per-control checks across Linux, Windows Server, Docker, Kubernetes, AWS, GCP, Azure) and the CVE database (50,000+ entries with CPE matching and EPSS exploit probability scores). Cloud-specific baseline content varies by provider; not all cloud CSPM corpora are pre-populated in the TMP library. Discovery and reporting phases derive less retrieval value — they execute against environment state, not reference knowledge. Lattice VRA recommended with a known cold-start risk on cloud baselines; flag to operator before fabrication.
+Moderate fit. CONFIG-AUDITOR and VULN-CORRELATOR query against retrieval-dense corpora — CIS benchmark library (per-control checks across Linux, Windows Server, Docker, Kubernetes, AWS, GCP, Azure) and the CVE database (50,000+ entries with CPE matching and EPSS exploit probability scores). Cloud-specific baseline content varies by provider; not all cloud CSPM corpora are pre-populated in the reference library. Discovery and reporting phases derive less retrieval value — they execute against environment state, not reference knowledge. Vector readiness assessment recommended with a known cold-start risk on cloud baselines; flag to operator before fabrication.
 </script>
 <script type="text/plain" id="di-vra">
 ## Vector Readiness Assessment — Infrastructure Assessment
@@ -974,7 +982,7 @@ Proposed collection set for T2 Advisor consideration:
 </script>
 <script type="text/plain" id="di-adv">
 ## Micro-Specialization Map — Infrastructure Assessment Swarm
-**T2 Advisor: MODERATOR (DevOps Engineer)**
+**T2 Advisor: DEVOPS-ADVISOR (DevOps Engineer)**
 
 ### Output A: Micro-Specialization Map
 
@@ -1008,8 +1016,9 @@ Expertise for Fermi: CIS benchmark control format — control ID (e.g., CIS-DOCK
    Estimated corpus: 2,000-3,000 docs
 </script>
 <script type="text/plain" id="di-col">
-## Lattice Collection Design — Infrastructure Assessment
-**Receiving T2 Library Specification from MODERATOR.**
+## Collection Design — Infrastructure Assessment
+*Authored by VECTOR-INTEL.*
+**Receiving T2 Library Specification from DEVOPS-ADVISOR.**
 
 ### Collection Architecture
 
@@ -1033,7 +1042,8 @@ CIS benchmarks: CIS website (membership required) or Ansible lockdown roles as p
 Cloud baselines: AWS Security Hub findings export, Azure Defender recommendations, GCP SCC findings.
 </script>
 <script type="text/plain" id="di-cur">
-## Curie Research Briefing — ASSET-MAPPER
+## Research Briefing — ASSET-MAPPER
+*Authored by RESEARCH-LEAD.*
 **Fabrication Priority Agent: ASSET-MAPPER**
 
 ### Current Tooling Landscape (2025-2026)
@@ -1106,7 +1116,8 @@ ESCALATES TO: RISK-SCORER for scope boundary questions; REPORT-WRITER for engage
 **Fallback:** If infra_cis_benchmarks unavailable — enumerate using standard network/cloud/container discovery commands. Flag in ASSET-REGISTRY.md notes that benchmark-required asset classes may be incomplete.
 </script>
 <script type="text/plain" id="di-gei">
-## Geiger Quality Gate Report — ASSET-MAPPER
+## Quality Gate Report — ASSET-MAPPER
+*Authored by QUALITY-GATE.*
 **Status: APPROVED**
 
 ### Pipeline Integrity Review
@@ -1120,8 +1131,8 @@ Region iteration coverage              | PASS   | AWS 30+ region enumeration is 
 Cloud provider parity                  | PASS   | AWS, GCP, Azure covered without provider preference; managed identities (frequently missed in manual audits) and IaC drift detection both included
 Container exposure dual-check          | PASS   | LoadBalancer AND NodePort services queried separately — NodePort exposure undercount is the documented failure mode and the agent enforces both checks
 Handoff format to VULN-CORRELATOR      | PASS   | Container image one-liner produces exactly the input format VULN-CORRELATOR needs for CPE correlation
-MODERATOR advisory fidelity            | PASS   | Region iteration requirement, multi-cloud coverage, and CPE handoff specification all reflect MODERATOR's brief
-Curie integration                      | PASS   | AWS region iteration loop, GCP Cloud Asset API method, and Kubernetes service exposure check embedded from the briefing
+DEVOPS-ADVISOR advisory fidelity       | PASS   | Region iteration requirement, multi-cloud coverage, and CPE handoff specification all reflect the DEVOPS-ADVISOR's brief
+Research integration                   | PASS   | AWS region iteration loop, GCP Cloud Asset API method, and Kubernetes service exposure check embedded from the RESEARCH-LEAD briefing
 
 ### Notable Strengths
 
@@ -1132,7 +1143,8 @@ The container image extraction one-liner deserves attention: it produces a sorte
 **Recommendation:** CLEAR FOR DEPLOYMENT. No rework required.
 </script>
 <script type="text/plain" id="di-boh">
-## Bohr Structural Review — ASSET-MAPPER
+## Structural Review — ASSET-MAPPER
+*Authored by STRUCTURAL-REVIEWER.*
 **Verdict: APPROVED**
 
 ### Schema Compliance
@@ -1155,25 +1167,25 @@ No implicit state: Yes — all state in ASSET-REGISTRY.md and ENGAGEMENT-LOG.md.
 
 Region blindness is documented as a known failure mode (30+ AWS regions) with the correct remediation (iterate all regions via describe-regions API). This converts an operational risk into an explicit agent constraint.
 
-**BOHR: CLEAR**
+**STRUCTURAL-REVIEWER: CLEAR**
 </script>
 </head>
 <body class="pmode">
-<div class="banner">⬛ TOP SECRET // THE MANHATTAN PROJECT // SWARM FORGE LIVE v3.0 — FULL PIPELINE ⬛</div>
+<div class="banner">⬛ MULTI-AGENT SWARM FORGE // FULL PIPELINE ⬛</div>
 <div class="hdr">
-  <div><div class="ht">⚛ THE MANHATTAN PROJECT</div><div class="hs">SWARM FORGE LIVE — 9-PHASE PIPELINE WITH LATTICE INTEGRATION <span class="bdg">CONFERENCE DEMO v3.0</span></div></div>
-  <div class="hr"><div>FRAMEWORK v1.10.4 | IQ-0053 T2→LATTICE WORKFLOW</div><div>7 AGENTS — 9 PHASES — OPERATOR GATE</div><div id="ts">—</div><span id="tok-count" style="display:none;color:var(--g);font-size:9px;letter-spacing:1px;border:1px solid var(--g);padding:1px 5px;margin-left:8px;font-variant-numeric:tabular-nums">tokens: 0 ▌</span><span id="demo-hdr-badge" style="display:none;color:var(--b);font-size:9px;letter-spacing:2px;border:1px solid var(--b);padding:1px 5px;margin-left:8px">[DEMO]</span></div>
+  <div><div class="ht">⚛ MULTI-AGENT SWARM FORGE</div><div class="hs">9-PHASE PIPELINE WITH VECTOR-INTEL INTEGRATION <span class="bdg">CONFERENCE DEMO v3.0</span></div></div>
+  <div class="hr"><div>FRAMEWORK v1.10.4 | IQ-0053 T2→VECTOR-INTEL WORKFLOW</div><div>7 AGENTS — 9 PHASES — OPERATOR GATE</div><div id="ts">—</div><span id="tok-count" style="display:none;color:var(--g);font-size:9px;letter-spacing:1px;border:1px solid var(--g);padding:1px 5px;margin-left:8px;font-variant-numeric:tabular-nums">tokens: 0 ▌</span><span id="demo-hdr-badge" style="display:none;color:var(--b);font-size:9px;letter-spacing:2px;border:1px solid var(--b);padding:1px 5px;margin-left:8px">[DEMO]</span></div>
 </div>
 
 <div class="pbar">
   <div class="ph done" id="ph0" title="Phase 0: IGNITION — Session start, operator briefing, framework warm-up"><span class="pn">P0</span>IGNITION<span class="pa">standby</span></div>
-  <div class="ph" id="ph1" title="Phase 1: OPPENHEIMER — Domain analysis and swarm architecture document"><span class="pn">P1</span>OPPENHEIMER<span class="pa">arch+VRA</span></div>
-  <div class="ph" id="ph2" title="Phase 1b: LATTICE — Vector Readiness Assessment (goes to operator only)"><span class="pn">P1b</span>LATTICE VRA<span class="pa">readiness</span></div>
+  <div class="ph" id="ph1" title="Phase 1: DIRECTOR — Domain analysis and swarm architecture document"><span class="pn">P1</span>DIRECTOR<span class="pa">arch+VRA</span></div>
+  <div class="ph" id="ph2" title="Phase 1b: VECTOR-INTEL — Vector Readiness Assessment (goes to operator only)"><span class="pn">P1b</span>VECTOR-INTEL VRA<span class="pa">readiness</span></div>
   <div class="ph" id="ph3" title="Phase 2: T2 ADVISOR — Micro-specialization map + Library Specification"><span class="pn">P2</span>T2 ADVISOR<span class="pa">spec+libspec</span></div>
-  <div class="ph" id="ph4" title="Phase 2b: T2→LATTICE — Collection Design from Library Spec"><span class="pn">P2b</span>T2→LATTICE<span class="pa">collection design</span></div>
+  <div class="ph" id="ph4" title="Phase 2b: T2→VECTOR-INTEL — Collection Design from Library Spec"><span class="pn">P2b</span>T2→VECTOR-INTEL<span class="pa">collection design</span></div>
   <div class="ph" id="ph5" title="Phase 2c: OPERATOR GATE — Review and approve before fabrication begins"><span class="pn">P2c</span>OP GATE<span class="pa">approve</span></div>
-  <div class="ph" id="ph6" title="Phase 3: CURIE + FERMI — Tooling research, then agent fabrication with Vector Retrieval Protocol"><span class="pn">P3</span>CURIE+FERMI<span class="pa">research+fab</span></div>
-  <div class="ph" id="ph7" title="Phase 4: GEIGER + BOHR — Domain accuracy + structural review"><span class="pn">P4</span>GEIGER+BOHR<span class="pa">validation</span></div>
+  <div class="ph" id="ph6" title="Phase 3: RESEARCH-LEAD + AGENT-FABRICATOR — Tooling research, then agent fabrication with Vector Retrieval Protocol"><span class="pn">P3</span>RESEARCH+FAB<span class="pa">research+fab</span></div>
+  <div class="ph" id="ph7" title="Phase 4: QUALITY-GATE + STRUCTURAL-REVIEWER — Domain accuracy + structural review"><span class="pn">P4</span>QUALITY+STRUCT<span class="pa">validation</span></div>
   <div class="ph" id="ph8" title="Phase 5: CRITICAL MASS — Final package assembly, manifest, output"><span class="pn">P5</span>CRITICAL MASS<span class="pa">package</span></div>
 </div>
 
@@ -1216,13 +1228,13 @@ Region blindness is documented as a known failure mode (30+ AWS regions) with th
   </div></div>
 
   <div class="sec"><div class="sh">// AGENT STATUS</div><div class="sb2"><div class="al">
-    <div class="ar"><div class="dot do" id="d-o"></div><span>OPPENHEIMER</span><span class="ati">T1 DIRECTOR</span></div>
-    <div class="ar"><div class="dot dl" id="d-l"></div><span>LATTICE</span><span class="ati">VRA+COLLECTIONS</span></div>
-    <div class="ar"><div class="dot dt" id="d-t"></div><span id="t2n">NEUTRON</span><span class="ati" id="t2r">T2 SECURITY</span></div>
-    <div class="ar"><div class="dot dc" id="d-c"></div><span>CURIE</span><span class="ati">RESEARCH</span></div>
-    <div class="ar"><div class="dot df" id="d-f"></div><span>FERMI</span><span class="ati">FABRICATION</span></div>
-    <div class="ar"><div class="dot dg" id="d-g"></div><span>GEIGER</span><span class="ati">QUALITY GATE</span></div>
-    <div class="ar"><div class="dot db" id="d-b"></div><span>BOHR</span><span class="ati">STRUCTURAL</span></div>
+    <div class="ar"><div class="dot do" id="d-o"></div><span>DIRECTOR</span><span class="ati">T1 STRATEGIST</span></div>
+    <div class="ar"><div class="dot dl" id="d-l"></div><span>VECTOR-INTEL</span><span class="ati">VRA+COLLECTIONS</span></div>
+    <div class="ar"><div class="dot dt" id="d-t"></div><span id="t2n">PEN-TEST-ADVISOR</span><span class="ati" id="t2r">T2 SECURITY</span></div>
+    <div class="ar"><div class="dot dc" id="d-c"></div><span>RESEARCH-LEAD</span><span class="ati">RESEARCH</span></div>
+    <div class="ar"><div class="dot df" id="d-f"></div><span>AGENT-FABRICATOR</span><span class="ati">FABRICATION</span></div>
+    <div class="ar"><div class="dot dg" id="d-g"></div><span>QUALITY-GATE</span><span class="ati">QUALITY GATE</span></div>
+    <div class="ar"><div class="dot db" id="d-b"></div><span>STRUCTURAL-REVIEWER</span><span class="ati">STRUCTURAL</span></div>
   </div></div></div>
 
   <div class="sec"><div class="sh">// REACTOR FILES</div><div class="sb2"><div class="rl">
@@ -1245,7 +1257,7 @@ Region blindness is documented as a known failure mode (30+ AWS regions) with th
         <button class="swb" data-t="custom" onclick="pick(this)"><span class="si">⚛</span><span class="sl">CUSTOM</span></button>
       </div></div>
       <div id="cfd" class="cf"><div class="hr2"></div><label>CUSTOM BRIEF</label><textarea id="ct" placeholder="Describe your domain and mission..."></textarea></div>
-      <div><label>T2 ADVISOR ASSIGNED</label><div id="adv-lbl" style="font-size:11px;color:var(--t);text-shadow:var(--gt)">NEUTRON — Penetration Tester</div></div>
+      <div><label>T2 ADVISOR ASSIGNED</label><div id="adv-lbl" style="font-size:11px;color:var(--t);text-shadow:var(--gt)">PEN-TEST-ADVISOR — Penetration Tester</div></div>
     </div></div>
 
   <div class="sec"><div class="sh">// VECTOR READINESS</div><div class="sb2">
@@ -1269,21 +1281,21 @@ Region blindness is documented as a known failure mode (30+ AWS regions) with th
 
 <div class="tw">
   <div class="ttb"><div class="tds"><div class="td td-r"></div><div class="td td-y"></div><div class="td td-g"></div></div>
-    <span class="ttl">TMP-FORGE // 9-PHASE PIPELINE // T2→LATTICE→OPERATOR→FERMI+VRP</span></div>
+    <span class="ttl">FORGE // 9-PHASE PIPELINE // T2→VECTOR-INTEL→OPERATOR→AGENT-FABRICATOR+VRP</span></div>
   <div class="term" id="term">
     <div class="ts">Reactor Core initialized. 9-phase FORGE pipeline ready.</div>
     <div class="ts">Framework v1.10.4 | IQ-0053 T2→Lattice workflow</div>
     <div class="tg"></div>
     <div style="color:#6868a0;font-size:11px;line-height:2.1;">
-Phase 1&nbsp;&nbsp;→ <span style="color:var(--a)">OPPENHEIMER</span> — Domain analysis + Swarm Architecture Document<br>
-Phase 1b → <span style="color:var(--b)">LATTICE</span> — Vector Readiness Assessment (VRA → operator only, per TRAINING-DATA-INTEGRITY.md)<br>
+Phase 1&nbsp;&nbsp;→ <span style="color:var(--a)">DIRECTOR</span> — Domain analysis + Swarm Architecture Document<br>
+Phase 1b → <span style="color:var(--b)">VECTOR-INTEL</span> — Vector Readiness Assessment (VRA → operator only, per TRAINING-DATA-INTEGRITY.md)<br>
 Phase 2&nbsp;&nbsp;→ <span style="color:var(--t)">T2 ADVISOR</span> — Micro-Specialization Map <em>+ Library Specification</em> (IQ-0053)<br>
-Phase 2b → <span style="color:var(--b)">T2→LATTICE</span> — T2 Library Spec handed to Lattice; Lattice produces Collection Design<br>
+Phase 2b → <span style="color:var(--b)">T2→VECTOR-INTEL</span> — T2 Library Spec handed to VECTOR-INTEL; VECTOR-INTEL produces Collection Design<br>
 Phase 2c → <span style="color:var(--o)">OPERATOR GATE</span> — Review T2+Lattice output; approve or modify before fabrication<br>
-Phase 3a → <span style="color:var(--b)">CURIE</span> — Research briefing (current TTPs, tools, failure modes)<br>
-Phase 3b → <span style="color:var(--p)">FERMI</span> — Fabricate agent with VRP embedded (if vector-enabled)<br>
-Phase 4a → <span style="color:var(--g)">GEIGER</span> — Quality gate: domain accuracy, VRP completeness, deployment readiness<br>
-Phase 4b → <span style="color:var(--a)">BOHR</span> — Structural review: schema + design principles + cross-references<br>
+Phase 3a → <span style="color:var(--b)">RESEARCH-LEAD</span> — Research briefing (current TTPs, tools, failure modes)<br>
+Phase 3b → <span style="color:var(--p)">AGENT-FABRICATOR</span> — Fabricate agent with VRP embedded (if vector-enabled)<br>
+Phase 4a → <span style="color:var(--g)">QUALITY-GATE</span> — Quality gate: domain accuracy, VRP completeness, deployment readiness<br>
+Phase 4b → <span style="color:var(--a)">STRUCTURAL-REVIEWER</span> — Structural review: schema + design principles + cross-references<br>
     </div>
   </div>
   <div class="op" id="op">
@@ -1300,20 +1312,20 @@ Phase 4b → <span style="color:var(--a)">BOHR</span> — Structural review: sch
 
 <script>
 // ============================================================================
-// THE MANHATTAN PROJECT — SWARM FORGE LIVE v3.0
+// MULTI-AGENT SWARM FORGE v3.0
 // 9-phase pipeline including IQ-0053 T2→Lattice→Operator workflow.
-// 7 real API calls, each with unabridged TMP agent system prompts.
+// 7 real API calls, each with unabridged agent system prompts.
 //
 // Phase order:
-//  1  OPPENHEIMER  — domain analysis, swarm architecture
-//  1b LATTICE      — VRA (goes to operator only per TRAINING-DATA-INTEGRITY.md)
+//  1  DIRECTOR     — domain analysis, swarm architecture
+//  1b VECTOR-INTEL — VRA (goes to operator only per TRAINING-DATA-INTEGRITY.md)
 //  2  T2 ADVISOR   — micro-spec map + library specification (IQ-0053)
-//  2b T2→LATTICE   — lattice receives library spec, produces collection design
+//  2b T2→VEC-INTEL — VECTOR-INTEL receives library spec, produces collection design
 //  2c OP GATE      — operator reviews and approves before fabrication
-//  3a CURIE        — research briefing
-//  3b FERMI        — fabricates agent WITH VRP embedded (if vector-enabled)
-//  4a GEIGER       — quality gate
-//  4b BOHR         — structural review
+//  3a RESEARCH     — research briefing
+//  3b FABRICATOR   — fabricates agent WITH VRP embedded (if vector-enabled)
+//  4a QUALITY-GATE — quality gate
+//  4b STRUCT-REV   — structural review
 // ============================================================================
 
 let selSwarm = 'red', running = false, finalPkg = '', agentCN = 'AGENT';
@@ -1345,20 +1357,20 @@ const DEMO = {
 };
 
 const SWARMS = {
-  red:  { label:'Red Team Operations', adv:'NEUTRON', advR:'Penetration Tester', advT:'T2 SECURITY',
+  red:  { label:'Red Team Operations', adv:'NEUTRON', advName:'PEN-TEST-ADVISOR', advR:'Penetration Tester', advT:'T2 SECURITY',
     brief:`Offensive security operations swarm for red team engagements at competitions (CCDC, CPTC) and professional assessments. Mission covers the full kill chain: pre-engagement reconnaissance, initial access via exploitation and credential attacks, post-exploitation and lateral movement, privilege escalation, objective achievement, and operational reporting. Must operate stealthily against active defenders. All operations require documented authorizations within explicit scope boundaries.` },
-  blue: { label:'Blue Team Defense Ops', adv:'SCINTILLATOR', advR:'Detection Engineer', advT:'T2 SECURITY',
+  blue: { label:'Blue Team Defense Ops', adv:'SCINTILLATOR', advName:'DETECTION-ADVISOR', advR:'Detection Engineer', advT:'T2 SECURITY',
     brief:`Defensive security operations swarm for blue team competitions and enterprise SOC operations. Mission: detect adversarial activity in real time across log sources and network telemetry, triage and investigate alerts, hunt for threats that evaded automated detection, contain active incidents, and harden the environment against future attacks. Must operate under time pressure with incomplete information.` },
-  infra:{ label:'Infrastructure Assessment', adv:'MODERATOR', advR:'DevOps Engineer', advT:'T2 SOFTWARE',
+  infra:{ label:'Infrastructure Assessment', adv:'MODERATOR', advName:'DEVOPS-ADVISOR', advR:'DevOps Engineer', advT:'T2 SOFTWARE',
     brief:`Infrastructure security assessment and hardening swarm. Mission: enumerate the full attack surface, identify vulnerabilities and misconfigurations, correlate findings by exploitability and business impact, and produce actionable remediation guidance. Operations span asset enumeration, service fingerprinting, configuration review against security baselines, CVE correlation, risk scoring, and technical + executive reporting.` },
-  custom:{ label:'Custom Domain', adv:'CYCLOTRON', advR:'Research Analyst', advT:'T2 CONTENT', brief:'' }
+  custom:{ label:'Custom Domain', adv:'CYCLOTRON', advName:'RESEARCH-ADVISOR', advR:'Research Analyst', advT:'T2 CONTENT', brief:'' }
 };
 
-// ─── SYSTEM PROMPTS (unabridged, drawn from actual TMP cadre/reserves files) ───
+// ─── SYSTEM PROMPTS (role-based: cadre + Tier 2 domain advisors) ───
 
 const SYS = {};
 
-SYS.OPPENHEIMER = `You are Oppenheimer, the Director of The Manhattan Project. You are the strategic architect of multi-agent swarms — you analyze operational domains, design agent rosters with the minimum number of maximally specialized agents needed, and produce swarm architecture documents.
+SYS.OPPENHEIMER = `You are the DIRECTOR — the strategic architect of multi-agent swarms. You analyze operational domains, design agent rosters with the minimum number of maximally specialized agents needed, and produce swarm architecture documents.
 
 Your architecture principle: prefer narrow and deep over broad and shallow. Each agent owns the smallest independently executable slice of the domain. Agents must not overlap. When in doubt, split rather than combine.
 
@@ -1379,7 +1391,7 @@ Core mission: [one precise sentence — what and nothing else]
 Operational phase: [which phase this agent owns]
 Model tier: coordinator | specialist | utility
 
-Use generic role-based codenames that describe each agent's function (e.g., RECON-LEAD, EXPLOIT-DEV, PRIVESC-ENGINEER, TELEMETRY-ANALYST, DETECTION-ENGINEER, ASSET-MAPPER, RISK-SCORER, REPORT-WRITER). Codenames should be intuitively interpretable by a workshop attendee seeing them for the first time — descriptive role names beat thematic obscurity for educational clarity. Avoid thematic naming systems (Manhattan-physicist, Greek letters, military phonetic, etc.) for the fabricated agents. Note: this constraint applies only to the agents being designed; the framework cadre (Oppenheimer, Lattice, Curie, Fermi, Geiger, Bohr) and Tier 2 advisor codenames are framework-fixed and stay as-is.
+Use generic role-based codenames that describe each agent's function (e.g., RECON-LEAD, EXPLOIT-DEV, PRIVESC-ENGINEER, TELEMETRY-ANALYST, DETECTION-ENGINEER, ASSET-MAPPER, RISK-SCORER, REPORT-WRITER). Codenames should be intuitively interpretable by a workshop attendee seeing them for the first time — descriptive role names beat thematic obscurity for educational clarity. Avoid thematic naming systems (named-person, Greek letters, military phonetic, etc.) for the fabricated agents.
 
 ### Coordination Files
 3-5 shared markdown files. For each: name — one-line purpose.
@@ -1400,16 +1412,16 @@ Rationale: [one sentence]
 
 Keep total under 700 words.`;
 
-SYS.LATTICE_VRA = `You are Lattice, the Vector Intelligence Specialist of The Manhattan Project. You are performing Phase 1b: Vector Readiness Assessment (VRA).
+SYS.LATTICE_VRA = `You are VECTOR-INTEL — the vector intelligence specialist of this multi-agent forge. You are performing Phase 1b: Vector Readiness Assessment (VRA).
 
-You have received a Swarm Architecture Document from Oppenheimer. Run the VRA against it.
+You have received a Swarm Architecture Document from the DIRECTOR. Run the VRA against it.
 
 IMPORTANT — VRA OUTPUT ROUTING (per TRAINING-DATA-INTEGRITY.md Rule 1):
 This VRA output goes to the OPERATOR ONLY. The T2 domain advisor will NOT see this output unless the operator chooses to share it. The T2 advisor will receive a blank Library Specification template and author their own library requirements from domain knowledge. This sequencing prevents suggestion-confirmation loops that would degrade training data quality.
 
-Produce the LATTICE VRA REPORT:
+Produce the VRA REPORT:
 
-## LATTICE VRA: [SWARM NAME]
+## VRA REPORT: [SWARM NAME]
 *Vector Readiness Assessment — Phase 1b output*
 *Routing: OPERATOR ONLY — do not share with T2 advisor*
 
@@ -1448,21 +1460,21 @@ Score each question. Be honest about uncertainty.
 [What the operator should consider before or while sharing/not-sharing this with the T2 advisor]`;
 
 SYS.ADVISORS = {
-  NEUTRON: `You are Neutron, the Penetration Tester specialist of The Manhattan Project, serving as Phase 2 domain advisor for a FORGE operation.
+  NEUTRON: `You are the PEN-TEST-ADVISOR — a Penetration Tester specialist serving as Phase 2 domain advisor for this FORGE operation.
 
 Your expertise spans the full offensive security lifecycle: scoping and rules of engagement, passive OSINT (Shodan, Censys, certificate transparency, ASN enumeration, LinkedIn harvesting), active reconnaissance (nmap with OS/service fingerprinting, web application discovery, vhost enumeration, directory bruteforce, Active Directory enumeration with BloodHound/ldapsearch/kerbrute), web application testing (OWASP Top 10 with actual exploitation — SQLi, XSS, SSRF, XXE, insecure deserialization, auth bypass, IDOR, business logic), network exploitation (EternalBlue detection via nmap --script smb-vuln-ms17-010, Zerologon, PrintNightmare), credential attacks (password spraying with lockout-aware tooling, Kerberoasting with GetUserSPNs.py, AS-REP Roasting, Pass-the-Hash, Pass-the-Ticket), post-exploitation (privilege escalation with LinPEAS/WinPEAS, lateral movement via PsExec/WMI/SMB, persistence via scheduled tasks/registry/WMI subscriptions), evasion (AMSI bypass, EDR unhooking, traffic obfuscation via DNS-over-HTTPS, living off the land with LOLBins), and risk-prioritized reporting.
 
-Given a Swarm Architecture Document from Oppenheimer, produce TWO outputs:
+Given a Swarm Architecture Document from the DIRECTOR, produce TWO outputs:
 
 OUTPUT A: MICRO-SPECIALIZATION MAP
 ## MICRO-SPECIALIZATION MAP: [SWARM]
-*Produced by: Neutron (T2 Penetration Tester) — ADVISORY-PROTOCOL Phase 2*
+*Produced by: PEN-TEST-ADVISOR (T2 Penetration Tester) — ADVISORY-PROTOCOL Phase 2*
 
 For EACH agent:
 ### [CODENAME] — [Role]
 **Positive scope:** Concrete operational responsibility with specific tools and techniques. Not "does recon" but exact scope with named tools.
 **Negative scope:** Explicit exclusions naming adjacent agents by codename.
-**Expertise content for Fermi:** Specific techniques, tools, flags, CVE numbers, decision heuristics Fermi must embed. Real content, not categories.
+**Expertise content for AGENT-FABRICATOR:** Specific techniques, tools, flags, CVE numbers, decision heuristics the AGENT-FABRICATOR must embed. Real content, not categories.
 **Handoff artifact:** Output file name, format, consuming agent.
 
 ## Coordination File Design
@@ -1475,7 +1487,7 @@ Agent codename + one-sentence rationale.
 
 OUTPUT B: LIBRARY SPECIFICATION
 ## LIBRARY SPECIFICATION
-*Authored by: Neutron (T2 domain expert) — for Lattice to implement*
+*Authored by: PEN-TEST-ADVISOR (T2 domain expert) — for VECTOR-INTEL to implement*
 *This section answers: "What reference content, retrievable at query time, would make me and the agents I am designing significantly better at their jobs?"*
 
 ### Purpose Statement
@@ -1489,12 +1501,12 @@ OUTPUT B: LIBRARY SPECIFICATION
 [Ranked list: what kinds of documents, databases, or references matter most. Include format preferences.]
 
 ### Coverage Gaps
-[Where will content be sparse, inconsistent, or hard to ingest? Realistic honesty here prevents Lattice from building collections that won't work.]
+[Where will content be sparse, inconsistent, or hard to ingest? Realistic honesty here prevents VECTOR-INTEL from building collections that won't work.]
 
 ### Update Frequency
 [Per collection or overall — how fast does this knowledge go stale?]`,
 
-  SCINTILLATOR: `You are Scintillator, the Detection Engineer specialist of The Manhattan Project, serving as Phase 2 domain advisor for a FORGE operation.
+  SCINTILLATOR: `You are the DETECTION-ADVISOR — a Detection Engineer specialist serving as Phase 2 domain advisor for this FORGE operation.
 
 Your expertise: detection rule development in Sigma (SIEM-agnostic YAML format compiling to SPL/KQL/etc.), YARA (file/memory patterns), Snort/Suricata (network traffic); alert tuning and false positive management (audit-mode deployment, rolling 7-day median ±2σ baseline, progressive refinement); detection coverage assessment against MITRE ATT&CK (T-code mapping, heatmap generation, gap analysis); threat hunting (hypothesis-driven hunt, IOC pivoting via process tree analysis, behavioral analytics for lateral movement); log source management (Windows Security Event IDs: 4624/4625/4648/4688/4698/7045, Sysmon Events: 1/3/7/8/10/11/13/15/17/22, Zeek conn.log/dns.log/http.log/ssl.log, Suricata alerts, PowerShell script block logging, WMI activity); SIEM query construction (Splunk SPL, Elastic KQL, Microsoft Sentinel KQL, QRadar AQL); EDR telemetry interpretation (CrowdStrike Falcon, SentinelOne, Microsoft Defender for Endpoint); correlation patterns (credential attack differentiation: password spray = distributed sources, brute force = single source, credential stuffing = valid-user targeting).
 
@@ -1502,13 +1514,13 @@ Given a Swarm Architecture Document from Oppenheimer, produce TWO outputs:
 
 OUTPUT A: MICRO-SPECIALIZATION MAP
 ## MICRO-SPECIALIZATION MAP: [SWARM]
-*Produced by: Scintillator (T2 Detection Engineer) — ADVISORY-PROTOCOL Phase 2*
+*Produced by: DETECTION-ADVISOR (T2 Detection Engineer) — ADVISORY-PROTOCOL Phase 2*
 
 For EACH agent:
 ### [CODENAME] — [Role]
 **Positive scope:** Concrete responsibility with specific data sources, event IDs, query languages.
 **Negative scope:** Explicit exclusions naming adjacent agents.
-**Expertise content for Fermi:** Specific Sigma rule structure, event ID lists, correlation logic, thresholds. Real content Fermi embeds verbatim into Expertise Profile.
+**Expertise content for AGENT-FABRICATOR:** Specific Sigma rule structure, event ID lists, correlation logic, thresholds. Real content the AGENT-FABRICATOR embeds verbatim into Expertise Profile.
 **Handoff artifact:** Output file, format, consumer.
 
 ## Coordination File Design
@@ -1518,7 +1530,7 @@ For EACH agent:
 
 OUTPUT B: LIBRARY SPECIFICATION
 ## LIBRARY SPECIFICATION
-*Authored by: Scintillator (T2 domain expert) — for Lattice to implement*
+*Authored by: DETECTION-ADVISOR (T2 domain expert) — for VECTOR-INTEL to implement*
 
 ### Purpose Statement
 ### Suggested Collections
@@ -1526,7 +1538,7 @@ OUTPUT B: LIBRARY SPECIFICATION
 ### Coverage Gaps
 ### Update Frequency`,
 
-  MODERATOR: `You are Moderator, the DevOps Engineer specialist of The Manhattan Project, serving as Phase 2 domain advisor for a FORGE operation.
+  MODERATOR: `You are the DEVOPS-ADVISOR — a DevOps Engineer specialist serving as Phase 2 domain advisor for this FORGE operation.
 
 Your expertise: infrastructure enumeration (nmap, masscan, nuclei, cloud inventory via AWS CLI/gcloud/az); configuration review against CIS benchmarks (CIS Docker 1.x, CIS Kubernetes, CIS Linux) and DISA STIGs; container security (Trivy for image scanning, Grype for SBOMs, Falco for runtime monitoring, OPA/Gatekeeper for policy enforcement); Kubernetes hardening (RBAC review, network policies, pod security standards, etcd encryption, admission controllers, audit logging); CI/CD pipeline security (secret scanning with Gitleaks/TruffleHog, SAST integration, dependency review, signed commits, supply chain verification with SLSA); Infrastructure-as-Code review (Terraform static analysis with Checkov/tfsec, Helm chart security, Ansible playbook review); vulnerability management (CVE correlation with CVSS 3.x scoring, exploitability assessment with EPSS, patch prioritization matrices); cloud security posture management (Prowler, ScoutSuite, CloudMapper).
 
@@ -1534,13 +1546,13 @@ Given a Swarm Architecture Document from Oppenheimer, produce TWO outputs:
 
 OUTPUT A: MICRO-SPECIALIZATION MAP
 ## MICRO-SPECIALIZATION MAP: [SWARM]
-*Produced by: Moderator (T2 DevOps Engineer) — ADVISORY-PROTOCOL Phase 2*
+*Produced by: DEVOPS-ADVISOR (T2 DevOps Engineer) — ADVISORY-PROTOCOL Phase 2*
 
 For EACH agent:
 ### [CODENAME] — [Role]
 **Positive scope:** Concrete responsibility with specific tools, commands, and output formats.
 **Negative scope:** Explicit exclusions naming adjacent agents.
-**Expertise content for Fermi:** Specific scan commands, benchmark check IDs, CVSS scoring criteria, decision heuristics.
+**Expertise content for AGENT-FABRICATOR:** Specific scan commands, benchmark check IDs, CVSS scoring criteria, decision heuristics.
 **Handoff artifact:** Output file, format, consumer.
 
 ## Coordination File Design
@@ -1550,7 +1562,7 @@ For EACH agent:
 
 OUTPUT B: LIBRARY SPECIFICATION
 ## LIBRARY SPECIFICATION
-*Authored by: Moderator (T2 domain expert) — for Lattice to implement*
+*Authored by: DEVOPS-ADVISOR (T2 domain expert) — for VECTOR-INTEL to implement*
 
 ### Purpose Statement
 ### Suggested Collections
@@ -1558,7 +1570,7 @@ OUTPUT B: LIBRARY SPECIFICATION
 ### Coverage Gaps
 ### Update Frequency`,
 
-  CYCLOTRON: `You are Cyclotron, the Research Analyst specialist of The Manhattan Project, serving as Phase 2 domain advisor for a FORGE operation.
+  CYCLOTRON: `You are the RESEARCH-ADVISOR — a Research Analyst specialist serving as Phase 2 domain advisor for this FORGE operation.
 
 You analyze the operator's domain description and produce a domain-grounded Micro-Specialization Map using structured research methodology: decompose the operational workflow into discrete phases, identify the natural boundaries between phases (defined by handoff artifacts), design narrow agents that own exactly one phase, and specify the expertise content that makes each agent genuinely specialized.
 
@@ -1566,13 +1578,13 @@ Given a Swarm Architecture Document from Oppenheimer, produce TWO outputs:
 
 OUTPUT A: MICRO-SPECIALIZATION MAP
 ## MICRO-SPECIALIZATION MAP: [SWARM]
-*Produced by: Cyclotron (T2 Research Analyst) — ADVISORY-PROTOCOL Phase 2*
+*Produced by: RESEARCH-ADVISOR (T2 Research Analyst) — ADVISORY-PROTOCOL Phase 2*
 
 For EACH agent:
 ### [CODENAME] — [Role]
 **Positive scope:** Concrete, specific operational responsibility.
 **Negative scope:** Explicit exclusions naming adjacent agents.
-**Expertise content for Fermi:** Real knowledge, techniques, decision heuristics. Fermi embeds this into the Expertise Profile — vague content produces generic agents.
+**Expertise content for AGENT-FABRICATOR:** Real knowledge, techniques, decision heuristics. The AGENT-FABRICATOR embeds this into the Expertise Profile — vague content produces generic agents.
 **Handoff artifact:** Output file, format, consumer.
 
 ## Coordination File Design
@@ -1582,7 +1594,7 @@ For EACH agent:
 
 OUTPUT B: LIBRARY SPECIFICATION
 ## LIBRARY SPECIFICATION
-*Authored by: Cyclotron (T2 domain expert) — for Lattice to implement*
+*Authored by: RESEARCH-ADVISOR (T2 domain expert) — for VECTOR-INTEL to implement*
 
 ### Purpose Statement
 ### Suggested Collections
@@ -1591,15 +1603,15 @@ OUTPUT B: LIBRARY SPECIFICATION
 ### Update Frequency`
 };
 
-SYS.LATTICE_COLDESIGN = `You are Lattice, the Vector Intelligence Specialist of The Manhattan Project. You are performing Phase 2b: Collection Design.
+SYS.LATTICE_COLDESIGN = `You are VECTOR-INTEL — the vector intelligence specialist of this multi-agent forge. You are performing Phase 2b: Collection Design.
 
-You have received a Library Specification authored by the T2 domain advisor. Your role is to implement it — to transform the domain expert's description of what knowledge they need into a concrete collection architecture that ChromaDB can host and TMP agents can query.
+You have received a Library Specification authored by the T2 domain advisor. Your role is to implement it — to transform the domain expert's description of what knowledge they need into a concrete collection architecture that ChromaDB can host and the swarm's agents can query.
 
 DOMAIN-EXPERT-FIRST PRINCIPLE (mandatory): The Library Specification you received is authoritative. You are the implementation partner, not the architect. Where you disagree with the expert's collection design for technical reasons (e.g., a collection is too broad for meaningful retrieval, or a suggested source cannot be reliably ingested), flag it as a concern — do not override it unilaterally. Where you have uncertainty, ask rather than assume.
 
-Produce a LATTICE COLLECTION DESIGN:
+Produce a COLLECTION DESIGN:
 
-## LATTICE COLLECTION DESIGN: [SWARM]
+## VECTOR-INTEL COLLECTION DESIGN: [SWARM]
 *Phase 2b — T2 Library Specification → Lattice Collection Design*
 *For operator review and approval before fabrication*
 
@@ -1628,7 +1640,7 @@ For each collection the T2 advisor requested (plus any you recommend adding base
 [Anything that needs operator clarification before Fermi can embed a correct VRP in agent prompts]
 
 ### Vector Retrieval Protocol Skeleton
-[Pre-fill the VRP that Fermi will embed in agents. Agents should not invoke retrieval directly — the engine pre-fetches and injects. But the VRP still needs to specify which collections are relevant, query formulation guidance, injection point, citation format, and the MANDATORY fallback behavior.]
+[Pre-fill the VRP that the AGENT-FABRICATOR will embed in agents. Agents should not invoke retrieval directly — the engine pre-fetches and injects. But the VRP still needs to specify which collections are relevant, query formulation guidance, injection point, citation format, and the MANDATORY fallback behavior.]
 
 For each agent in the swarm that will use retrieval:
 **[Agent Codename]**
@@ -1639,11 +1651,11 @@ For each agent in the swarm that will use retrieval:
 - Citation format: [how retrieved content is attributed in output]
 - Fallback (MANDATORY): [what agent does when retrieval unavailable or below threshold]`;
 
-SYS.CURIE = `You are Curie, the Research Specialist of The Manhattan Project's fabrication team. Named for Marie Curie — the scientist whose contribution was rigorous investigation. Your function: perform pre-fabrication research so Fermi embeds current, accurate, specific domain knowledge rather than outdated training data.
+SYS.CURIE = `You are the RESEARCH-LEAD — the research specialist of the fabrication team. Your function: perform pre-fabrication research so the AGENT-FABRICATOR embeds current, accurate, specific domain knowledge rather than outdated training data.
 
-You have been given a Swarm Architecture Document, a Micro-Specialization Map, and a Collection Design. The fabrication priority agent has been identified. Produce a CURIE RESEARCH BRIEFING for that agent.
+You have been given a Swarm Architecture Document, a Micro-Specialization Map, and a Collection Design. The fabrication priority agent has been identified. Produce a RESEARCH BRIEFING for that agent.
 
-# CURIE RESEARCH BRIEFING — {AGENT CODENAME}
+# RESEARCH BRIEFING — {AGENT CODENAME}
 *Research Specialist — Fabrication pre-research*
 
 ## Terminology Map
@@ -1666,9 +1678,9 @@ You have been given a Swarm Architecture Document, a Micro-Specialization Map, a
 
 Target 400-600 words. Every claim should be embeddable directly into the agent's Expertise Profile. No preamble.`;
 
-SYS.FERMI = `You are Fermi, the Fabrication Agent of The Manhattan Project. Named for Enrico Fermi — the physicist who built the first nuclear reactor from theoretical principles. You build complete, immediately deployable specialist agent prompts.
+SYS.FERMI = `You are the AGENT-FABRICATOR — the fabrication agent of this multi-agent forge. You build complete, immediately deployable specialist agent prompts from theoretical inputs.
 
-You receive: a Swarm Architecture Document, a Micro-Specialization Map from the T2 advisor, a Curie Research Briefing, and (when vector-enabled) an approved Collection Design from Lattice with VRP skeleton. You synthesize all inputs into a finished agent prompt for the fabrication priority agent.
+You receive: a Swarm Architecture Document, a Micro-Specialization Map from the T2 advisor, a RESEARCH-LEAD Research Briefing, and (when vector-enabled) an approved Collection Design from VECTOR-INTEL with VRP skeleton. You synthesize all inputs into a finished agent prompt for the fabrication priority agent.
 
 Quality rule: the Expertise Profile is the most important section. It must embed real, specific, narrow domain knowledge from the advisory map and research briefing. Do not invent; synthesize. Do not generalize; be specific. An expertise profile that lists tool categories is not an expertise profile — it is a table of contents. The actual expertise is what practitioners do with those tools, when, and why.
 
@@ -1682,7 +1694,7 @@ Who this agent is, what it does, what it explicitly does NOT do, its authority i
 ## Expertise Profile
 Dense, narrow, genuine expertise synthesized from the advisory map and research briefing:
 - Core methodologies and decision frameworks
-- Specific tools with usage patterns, key flags, and version-aware notes drawn from Curie briefing
+- Specific tools with usage patterns, key flags, and version-aware notes drawn from the RESEARCH-LEAD briefing
 - Decision heuristics: when to do X vs Y, what signals indicate problems
 - Common failure modes and diagnostic approaches
 - Domain-specific knowledge that non-specialists would not have
@@ -1697,7 +1709,7 @@ ESCALATES TO: [specific agent(s) for blockers or out-of-scope requests]
 5 hard rules specific to this agent. Include: scope enforcement, output format requirement, escalation trigger, quality standard, domain-specific safety/compliance constraint. Rules must be enforceable, not aspirational.
 
 ## Validation Requirements
-3-5 domain-specific checks this agent performs before marking work complete. Drawn from the T2 advisor's handoff protocol and Curie's failure modes section.
+3-5 domain-specific checks this agent performs before marking work complete. Drawn from the T2 advisor's handoff protocol and the RESEARCH-LEAD's failure modes section.
 
 ## Library Specification
 [Include this section ONLY if a Collection Design was provided and operator-approved]
@@ -1705,7 +1717,7 @@ ESCALATES TO: [specific agent(s) for blockers or out-of-scope requests]
 
 ## Vector Retrieval Protocol
 [Include this section ONLY if a Collection Design was provided and operator-approved]
-[Use the VRP skeleton from Lattice's Collection Design for this agent. Fill in all subsections completely.]
+[Use the VRP skeleton from VECTOR-INTEL's Collection Design for this agent. Fill in all subsections completely.]
 
 ### Collections
 [Which collections this agent draws from, with query triggers for each]
@@ -1724,14 +1736,14 @@ ESCALATES TO: [specific agent(s) for blockers or out-of-scope requests]
 
 Output only the agent prompt. Begin with # [CODENAME] immediately.`;
 
-SYS.GEIGER = `You are Geiger, the Quality Gate Agent of The Manhattan Project. Named for the instrument that detects radiation — your purpose is to detect defects in work products. You are the last checkpoint before a deliverable is approved for deployment. Your independence is foundational — you have no stake in any outcome other than quality.
+SYS.GEIGER = `You are the QUALITY-GATE — the quality gate agent of this multi-agent forge. Your purpose is to detect defects in work products. You are the last checkpoint before a deliverable is approved for deployment. Your independence is foundational — you have no stake in any outcome other than quality.
 
-You have received: (1) Swarm Architecture Document, (2) Micro-Specialization Map, (3) Curie Research Briefing, (4) Lattice Collection Design (if present), and (5) the fabricated agent prompt.
+You have received: (1) Swarm Architecture Document, (2) Micro-Specialization Map, (3) RESEARCH-LEAD Research Briefing, (4) VECTOR-INTEL Collection Design (if present), and (5) the fabricated agent prompt.
 
-Produce a GEIGER VALIDATION REPORT:
+Produce a QUALITY-GATE VALIDATION REPORT:
 
 ---
-## GEIGER VALIDATION: [Agent Codename]
+## QUALITY-GATE VALIDATION: [Agent Codename]
 **Status:** APPROVED | APPROVED WITH CONCERNS | REVISION NEEDED
 
 ### Section Completeness
@@ -1745,9 +1757,9 @@ Vector Retrieval Protocol (if vector-enabled): PRESENT / ABSENT (acceptable if n
 VRP Fallback subsection: PRESENT / MISSING (hard failure if VRP present but Fallback absent)
 
 ### Quality Assessment
-**Advisory fidelity (HIGH/MEDIUM/LOW):** Did Fermi embed the specific expertise content the T2 advisor specified, or did it substitute generic descriptions? Name one example of high-fidelity embedding and one gap if it exists.
+**Advisory fidelity (HIGH/MEDIUM/LOW):** Did the AGENT-FABRICATOR embed the specific expertise content the T2 advisor specified, or did it substitute generic descriptions? Name one example of high-fidelity embedding and one gap if it exists.
 
-**Research integration (YES/PARTIAL/NO):** Are Curie's specific findings visible in the Expertise Profile — specific tool flags, failure modes, decision heuristics?
+**Research integration (YES/PARTIAL/NO):** Are the RESEARCH-LEAD's specific findings visible in the Expertise Profile — specific tool flags, failure modes, decision heuristics?
 
 **Expertise density (SPECIALIST/GENERALIST):** Would an LLM using this prompt perform at specialist level, or would it fall back to generic knowledge? Quote the strongest sentence in the Expertise Profile as evidence.
 
@@ -1764,12 +1776,12 @@ VRP Fallback subsection: PRESENT / MISSING (hard failure if VRP present but Fall
 [One sentence: why this verdict]
 ---`;
 
-SYS.BOHR = `You are Bohr, the Framework Review Agent of The Manhattan Project. Where Geiger validates domain quality, you validate structural conformance to TMP schema and design principles. Your reviews are honest and actionable. "APPROVED" means deployable. "APPROVED WITH CONCERNS" means deployable with documented gaps. "REVISION NEEDED" means a section is missing or structurally non-compliant.
+SYS.BOHR = `You are the STRUCTURAL-REVIEWER — the framework review agent of this multi-agent forge. Where the QUALITY-GATE validates domain quality, you validate structural conformance to the framework schema and design principles. Your reviews are honest and actionable. "APPROVED" means deployable. "APPROVED WITH CONCERNS" means deployable with documented gaps. "REVISION NEEDED" means a section is missing or structurally non-compliant.
 
-Produce a BOHR STRUCTURAL REVIEW:
+Produce a STRUCTURAL REVIEW:
 
 ---
-## BOHR REVIEW: [Agent Codename]
+## STRUCTURAL REVIEW: [Agent Codename]
 **Verdict:** APPROVED | APPROVED WITH CONCERNS | REVISION NEEDED
 
 ### Schema Compliance
@@ -1790,7 +1802,7 @@ Produce a BOHR STRUCTURAL REVIEW:
 ### Cross-Reference Quality
 - Coordination Protocol names actual files from Swarm Architecture: YES / PARTIAL / NO
 - Escalation targets named by codename (not "my supervisor"): YES / NO
-- VRP collections match Collection Design (if vector-enabled): YES / MISMATCH / N/A
+- VRP collections match VECTOR-INTEL Collection Design (if vector-enabled): YES / MISMATCH / N/A
 
 ### Concerns
 [C1: specific — section + exact gap]
@@ -1873,8 +1885,8 @@ function pick(btn){
   btn.classList.add('sel');selSwarm=btn.dataset.t;
   document.getElementById('cfd').className='cf'+(selSwarm==='custom'&&!demoMode?' show':'');
   const s=SWARMS[selSwarm];
-  document.getElementById('adv-lbl').textContent=`${s.adv} — ${s.advR}`;
-  document.getElementById('t2n').textContent=s.adv;
+  document.getElementById('adv-lbl').textContent=`${s.advName} — ${s.advR}`;
+  document.getElementById('t2n').textContent=s.advName;
   document.getElementById('t2r').textContent=s.advT;
 }
 function showVRA(txt){
@@ -2145,14 +2157,14 @@ async function runForge(){
   try{
     setP(0);
     t(`<div class="ts">FISSION initiated — ${new Date().toISOString()}</div>`);
-    t(`<div class="ts">Mission: ${sw.label} | T2 Advisor: ${sw.adv} | 9-phase pipeline</div>`);
+    t(`<div class="ts">Mission: ${sw.label} | T2 Advisor: ${sw.advName} | 9-phase pipeline</div>`);
     rf(0,'INITIALIZING','wr');rf(1,'INITIALIZING','wr');
     await sleep(300);
 
-    // ═══ PHASE 1: OPPENHEIMER ═══
+    // ═══ PHASE 1: DIRECTOR ═══
     setP(1);dot('o','active');
     rf(0,'WRITING','wr');rf(2,'WRITING','wr');rf(5,'WRITING','wr');
-    t(`<div class="tah co">OPPENHEIMER // T1 DIRECTOR — DOMAIN ANALYSIS</div>`);
+    t(`<div class="tah co">DIRECTOR // T1 STRATEGIST — DOMAIN ANALYSIS</div>`);
     t(`<div class="ts">Analyzing domain. Mapping workflow phases. Identifying agent roster...</div>`);
     {
       const e1=document.createElement('div');e1.innerHTML=`<div class="tc opp" id="e-opp"></div>`;term().appendChild(e1);
@@ -2162,35 +2174,35 @@ async function runForge(){
     }
     dot('o','done');rf(0,'UPDATED ✓','up');rf(1,'UPDATED ✓','up');rf(2,'UPDATED ✓','up');rf(5,'UPDATED ✓','up');
     await sleep(250);
-    await waitPhase('LATTICE VRA — Vector Readiness Assessment');
+    await waitPhase('VECTOR-INTEL VRA — Vector Readiness Assessment');
 
-    // ═══ PHASE 1b: LATTICE VRA ═══
+    // ═══ PHASE 1b: VECTOR-INTEL VRA ═══
     setP(2);dot('l','active');
     rf(3,'WRITING','wr');
-    t(`<div class="tah cl">LATTICE // VECTOR INTELLIGENCE — VRA (Phase 1b)</div>`);
+    t(`<div class="tah cl">VECTOR-INTEL // VECTOR INTELLIGENCE — VRA (Phase 1b)</div>`);
     t(`<div class="ts">Running Vector Readiness Assessment. Output: OPERATOR ONLY per TRAINING-DATA-INTEGRITY.md Rule 1...</div>`);
     {
       const e2=document.createElement('div');e2.innerHTML=`<div class="tc lat" id="e-vra"></div>`;term().appendChild(e2);
       const el=document.getElementById('e-vra');
-      vraDoc=await callWithRecovery('LATTICE VRA',
+      vraDoc=await callWithRecovery('VECTOR-INTEL VRA',
         opts=>writeInto(el,SYS.LATTICE_VRA,budget(`SWARM ARCHITECTURE DOCUMENT:\n\n${archDoc}\n\nDomain Brief:\n\n${brief}`,1200),ak,'LATTICE_VRA',opts),el);
     }
     dot('l','done');rf(3,'UPDATED ✓','up');
     showVRA(vraDoc);
     await sleep(250);
-    await waitPhase(`T2 ADVISOR — ${sw.adv} Micro-Spec Map + Library Spec`);
+    await waitPhase(`T2 ADVISOR — ${sw.advName} Micro-Spec Map + Library Spec`);
 
     // ═══ PHASE 2: T2 ADVISOR ═══
     setP(3);dot('t','active');
-    t(`<div class="tah ct">${sw.adv} // ${sw.advT} — MICRO-SPEC MAP + LIBRARY SPECIFICATION (Phase 2)</div>`);
-    t(`<div class="ts">Reviewing architecture. Applying domain expertise. Authoring Library Specification for Lattice...</div>`);
+    t(`<div class="tah ct">${sw.advName} // ${sw.advT} — MICRO-SPEC MAP + LIBRARY SPECIFICATION (Phase 2)</div>`);
+    t(`<div class="ts">Reviewing architecture. Applying domain expertise. Authoring Library Specification for VECTOR-INTEL...</div>`);
     const advSys=SYS.ADVISORS[sw.adv]||SYS.ADVISORS['CYCLOTRON'];
-    const vNotice=vectorEnabled?`\n\nNote: Lattice VRA scored ≥3 for this swarm. Please author a complete Library Specification (Output B) so Lattice can design vector collections for this swarm.`:`\n\nNote: Lattice VRA scored <3. You may still author a Library Specification for future reference, but vector support is not currently recommended.`;
+    const vNotice=vectorEnabled?`\n\nNote: VECTOR-INTEL VRA scored ≥3 for this swarm. Please author a complete Library Specification (Output B) so VECTOR-INTEL can design vector collections for this swarm.`:`\n\nNote: VECTOR-INTEL VRA scored <3. You may still author a Library Specification for future reference, but vector support is not currently recommended.`;
     const advUser=`SWARM ARCHITECTURE DOCUMENT:\n\n${archDoc}\n\nDomain Brief:\n\n${brief}${vNotice}`;
     if(demoMode){
       const e3=document.createElement('div');e3.innerHTML=`<div class="tc t2" id="e-t2"></div>`;term().appendChild(e3);
       const el=document.getElementById('e-t2');
-      advisorOut=await callWithRecovery(sw.adv,
+      advisorOut=await callWithRecovery(sw.advName,
         opts=>writeInto(el,advSys,budget(advUser,3000),ak,'ADVISOR',opts),el);
       await sleep(250);
     }else{
@@ -2205,29 +2217,29 @@ async function runForge(){
       let partA,partB;
       const e3a=document.createElement('div');e3a.innerHTML=`<div class="tc t2" id="e-t2a"></div>`;term().appendChild(e3a);
       const elA=document.getElementById('e-t2a');
-      partA=await callWithRecovery(`${sw.adv} (micro-spec)`,
+      partA=await callWithRecovery(`${sw.advName} (micro-spec)`,
         opts=>writeInto(elA,sysA,budget(advUser,1500),ak,'ADVISOR',opts),elA);
       await sleep(120);
       t(`<div class="ts">Micro-Specialization Map authored. Now authoring Library Specification for Lattice...</div>`);
       const e3b=document.createElement('div');e3b.innerHTML=`<div class="tc t2" id="e-t2b"></div>`;term().appendChild(e3b);
       const elB=document.getElementById('e-t2b');
-      partB=await callWithRecovery(`${sw.adv} (library spec)`,
+      partB=await callWithRecovery(`${sw.advName} (library spec)`,
         opts=>writeInto(elB,sysB,budget(advUser+`\n\nMICRO-SPECIALIZATION MAP (already authored, for context):\n\n${partA}`,1500),ak,'ADVISOR',opts),elB);
       await sleep(120);
       advisorOut=partA+`\n\n---\n\n`+partB;
     }
     dot('t','done');
-    await waitPhase('LATTICE — Collection Design from Library Spec');
+    await waitPhase('VECTOR-INTEL — Collection Design from Library Spec');
 
-    // ═══ PHASE 2b: T2 → LATTICE ═══
+    // ═══ PHASE 2b: T2 → VECTOR-INTEL ═══
     setP(4);dot('l','active');
-    t(`<div class="tah cl">LATTICE // T2→LATTICE COORDINATION — COLLECTION DESIGN (Phase 2b)</div>`);
-    t(`<div class="ts">Receiving Library Specification from ${sw.adv}. Designing collection architecture...</div>`);
+    t(`<div class="tah cl">VECTOR-INTEL // T2→VECTOR-INTEL COORDINATION — COLLECTION DESIGN (Phase 2b)</div>`);
+    t(`<div class="ts">Receiving Library Specification from ${sw.advName}. Designing collection architecture...</div>`);
     {
       const e4=document.createElement('div');e4.innerHTML=`<div class="tc lat" id="e-lat"></div>`;term().appendChild(e4);
       const el=document.getElementById('e-lat');
-      collDesign=await callWithRecovery('LATTICE Collection Design',
-        opts=>writeInto(el,SYS.LATTICE_COLDESIGN,budget(`T2 LIBRARY SPECIFICATION (from ${sw.adv}):\n\n${advisorOut}\n\nSWARM ARCHITECTURE:\n\n${archDoc}\n\nLATTICE VRA (your prior assessment):\n\n${vraDoc}`,1500),ak,'COLL_DESIGN',opts),el);
+      collDesign=await callWithRecovery('VECTOR-INTEL Collection Design',
+        opts=>writeInto(el,SYS.LATTICE_COLDESIGN,budget(`T2 LIBRARY SPECIFICATION (from ${sw.advName}):\n\n${advisorOut}\n\nSWARM ARCHITECTURE:\n\n${archDoc}\n\nVECTOR-INTEL VRA (your prior assessment):\n\n${vraDoc}`,1500),ak,'COLL_DESIGN',opts),el);
     }
     dot('l','done');
     await sleep(250);
@@ -2236,7 +2248,7 @@ async function runForge(){
     // ═══ PHASE 2c: OPERATOR GATE ═══
     setP(5);
     t(`<div class="tah" style="color:var(--o)">⬥ PHASE 2c — OPERATOR APPROVAL GATE</div>`);
-    const summary=`T2 ADVISOR (${sw.adv}) authored Library Specification\nLATTICE produced Collection Design based on T2 specification\n\nVRA Score: ${document.getElementById('vs').textContent} — ${document.getElementById('vl').textContent}\n\nReview the T2 Library Specification and Lattice Collection Design above.\nYou may add specific resources, databases, or modify collection scope below.\nOnce approved, Curie researches and Fermi fabricates agents WITH VRP embedded.`;
+    const summary=`T2 ADVISOR (${sw.advName}) authored Library Specification\nVECTOR-INTEL produced Collection Design based on T2 specification\n\nVRA Score: ${document.getElementById('vs').textContent} — ${document.getElementById('vl').textContent}\n\nReview the T2 Library Specification and VECTOR-INTEL Collection Design above.\nYou may add specific resources, databases, or modify collection scope below.\nOnce approved, the RESEARCH-LEAD researches and the AGENT-FABRICATOR fabricates agents WITH VRP embedded.`;
     let gateResult;
     if(demoMode){
       await sleep(700);
@@ -2248,61 +2260,61 @@ async function runForge(){
       await sleep(200);
     }
 
-    // ═══ PHASE 3a: CURIE ═══
+    // ═══ PHASE 3a: RESEARCH-LEAD ═══
     setP(6);dot('c','active');
-    t(`<div class="tah cc">CURIE // RESEARCH SPECIALIST — DOMAIN RESEARCH BRIEFING (Phase 3a)</div>`);
+    t(`<div class="tah cc">RESEARCH-LEAD // RESEARCH SPECIALIST — DOMAIN RESEARCH BRIEFING (Phase 3a)</div>`);
     t(`<div class="ts">Researching current tools, TTPs, failure modes for fabrication priority agent...</div>`);
     {
       const e5=document.createElement('div');e5.innerHTML=`<div class="tc cur" id="e-cur"></div>`;term().appendChild(e5);
       const el=document.getElementById('e-cur');
-      researchBrief=await callWithRecovery('CURIE',
-        opts=>writeInto(el,SYS.CURIE,budget(`SWARM ARCHITECTURE:\n\n${archDoc}\n\nMICRO-SPECIALIZATION MAP (${sw.adv}):\n\n${advisorOut}\n\nLATTICE COLLECTION DESIGN:\n\n${collDesign}\n\nProduce Curie Research Briefing for the fabrication priority agent.`,1200),ak,'CURIE',opts),el);
+      researchBrief=await callWithRecovery('RESEARCH-LEAD',
+        opts=>writeInto(el,SYS.CURIE,budget(`SWARM ARCHITECTURE:\n\n${archDoc}\n\nMICRO-SPECIALIZATION MAP (${sw.advName}):\n\n${advisorOut}\n\nVECTOR-INTEL COLLECTION DESIGN:\n\n${collDesign}\n\nProduce RESEARCH-LEAD Research Briefing for the fabrication priority agent.`,1200),ak,'CURIE',opts),el);
     }
     dot('c','done');
     await sleep(250);
-    await waitPhase('FERMI — Agent Fabrication');
+    await waitPhase('AGENT-FABRICATOR — Agent Fabrication');
 
-    // ═══ PHASE 3b: FERMI ═══
+    // ═══ PHASE 3b: AGENT-FABRICATOR ═══
     dot('f','active');rf(4,'WRITING','wr');
-    t(`<div class="tah cf2">FERMI // FABRICATION AGENT — AGENT CONSTRUCTION${vectorEnabled?' WITH VRP':''} (Phase 3b)</div>`);
+    t(`<div class="tah cf2">AGENT-FABRICATOR // FABRICATION AGENT — AGENT CONSTRUCTION${vectorEnabled?' WITH VRP':''} (Phase 3b)</div>`);
     t(`<div class="ts">Synthesizing advisory map + research briefing${vectorEnabled?' + Collection Design (VRP will be embedded)':''}...</div>`);
-    const fermiCtx=`SWARM ARCHITECTURE:\n\n${archDoc}\n\nMICRO-SPECIALIZATION MAP (${sw.adv}):\n\n${advisorOut}\n\nCURIE RESEARCH BRIEFING:\n\n${researchBrief}\n\nLATTICE COLLECTION DESIGN (APPROVED BY OPERATOR):\n\n${collDesign}\n\nOPERATOR NOTES: ${operatorNotes||'None — approved as-is'}\n\nVector-enabled swarm: ${vectorEnabled?'YES — embed Library Specification and Vector Retrieval Protocol sections in the fabricated agent':'NO — omit Library Specification and Vector Retrieval Protocol sections'}\n\nFabricate the agent designated as Fabrication Priority.`;
+    const fermiCtx=`SWARM ARCHITECTURE:\n\n${archDoc}\n\nMICRO-SPECIALIZATION MAP (${sw.advName}):\n\n${advisorOut}\n\nRESEARCH-LEAD RESEARCH BRIEFING:\n\n${researchBrief}\n\nVECTOR-INTEL COLLECTION DESIGN (APPROVED BY OPERATOR):\n\n${collDesign}\n\nOPERATOR NOTES: ${operatorNotes||'None — approved as-is'}\n\nVector-enabled swarm: ${vectorEnabled?'YES — embed Library Specification and Vector Retrieval Protocol sections in the fabricated agent':'NO — omit Library Specification and Vector Retrieval Protocol sections'}\n\nFabricate the agent designated as Fabrication Priority.`;
     {
       // Stream into a placeholder element first; rewrite the heading once the
       // fabricated agent's codename is parsed from the result.
       const e6=document.createElement('div');e6.innerHTML=`<div class="tah cf2" id="e-fer-h">FABRICATING…</div><div class="tc fer" id="e-fer"></div>`;term().appendChild(e6);
       const el=document.getElementById('e-fer');
-      fabricated=await callWithRecovery('FERMI',
+      fabricated=await callWithRecovery('AGENT-FABRICATOR',
         opts=>writeInto(el,SYS.FERMI,budget(fermiCtx,2000),ak,'FERMI',opts),el);
       const cn=fabricated.match(/^#\s+([A-Z][A-Z0-9\-]+)/m);if(cn)agentCN=cn[1];
       const eh=document.getElementById('e-fer-h');if(eh)eh.textContent=`${agentCN} FABRICATED`;
     }
     dot('f','done');rf(4,'UPDATED ✓','up');
     await sleep(250);
-    await waitPhase('GEIGER — Quality Gate Validation');
+    await waitPhase('QUALITY-GATE — Validation');
 
-    // ═══ PHASE 4a: GEIGER ═══
+    // ═══ PHASE 4a: QUALITY-GATE ═══
     setP(7);dot('g','active');rf(5,'WRITING','wr');
-    t(`<div class="tah cg">GEIGER // QUALITY GATE — VALIDATION (Phase 4a)</div>`);
+    t(`<div class="tah cg">QUALITY-GATE // VALIDATION (Phase 4a)</div>`);
     t(`<div class="ts">Validating advisory fidelity, research integration, VRP completeness, deployment readiness...</div>`);
     {
       const e7=document.createElement('div');e7.innerHTML=`<div class="tc gei" id="e-gei"></div>`;term().appendChild(e7);
       const el=document.getElementById('e-gei');
-      geigerRpt=await callWithRecovery('GEIGER',
+      geigerRpt=await callWithRecovery('QUALITY-GATE',
         opts=>writeInto(el,SYS.GEIGER,budget(`SWARM ARCHITECTURE:\n\n${archDoc}\n\nMICRO-SPEC MAP:\n\n${advisorOut}\n\nRESEARCH BRIEFING:\n\n${researchBrief}\n\nCOLLECTION DESIGN:\n\n${collDesign}\n\nFABRICATED AGENT:\n\n${fabricated}\n\nVector-enabled: ${vectorEnabled}`,800),ak,'GEIGER',opts),el);
     }
     dot('g','done');rf(5,'UPDATED ✓','up');
     await sleep(250);
-    await waitPhase('BOHR — Structural Compliance Review');
+    await waitPhase('STRUCTURAL-REVIEWER — Structural Compliance Review');
 
-    // ═══ PHASE 4b: BOHR ═══
+    // ═══ PHASE 4b: STRUCTURAL-REVIEWER ═══
     dot('b','active');
-    t(`<div class="tah cb">BOHR // FRAMEWORK REVIEW — STRUCTURAL COMPLIANCE (Phase 4b)</div>`);
+    t(`<div class="tah cb">STRUCTURAL-REVIEWER // FRAMEWORK REVIEW — STRUCTURAL COMPLIANCE (Phase 4b)</div>`);
     t(`<div class="ts">Checking schema, design principles, cross-references, VRP structural completeness...</div>`);
     {
       const e8=document.createElement('div');e8.innerHTML=`<div class="tc boh" id="e-boh"></div>`;term().appendChild(e8);
       const el=document.getElementById('e-boh');
-      bohrRpt=await callWithRecovery('BOHR',
+      bohrRpt=await callWithRecovery('STRUCTURAL-REVIEWER',
         opts=>writeInto(el,SYS.BOHR,budget(`FABRICATED AGENT PROMPT:\n\n${fabricated}\n\nVector-enabled: ${vectorEnabled}`,800),ak,'BOHR',opts),el);
     }
     dot('b','done');
@@ -2312,7 +2324,7 @@ async function runForge(){
     setP(8);
     t(`<div class="tg"></div>`);
     t(`<div class="tcrit">⬥ CRITICAL MASS — ${agentCN} CLEARED FOR DEPLOYMENT ⬥</div>`);
-    t(`<div class="ts">9-phase FORGE pipeline complete. Commit to swarms/ in your TMP repository.</div>`);
+    t(`<div class="ts">9-phase FORGE pipeline complete. Commit to swarms/ in your repository.</div>`);
     if(vectorEnabled)t(`<div class="ts">Vector-enabled: include vectors/ directory. Initialize VECTOR-CONFIG.md from Lattice Collection Design.</div>`);
 
     const ts=new Date().toISOString();
@@ -2321,25 +2333,25 @@ async function runForge(){
     const vraScore=(vraDoc.match(/VRA Total:\s*(\d+\/9)/i)||[])[1]||'N/A';
 
     finalPkg=[
-      `<!-- THE MANHATTAN PROJECT — SWARM FORGE LIVE v3.0`,
+      `<!-- MULTI-AGENT SWARM FORGE v3.0`,
       `  Generated: ${ts}`,
       `  Swarm: ${sw.label}`,
-      `  T2 Advisor: ${sw.adv} (${sw.advR})`,
+      `  T2 Advisor: ${sw.advName} (${sw.advR})`,
       `  VRA Score: ${vraScore} | Vector-enabled: ${vectorEnabled}`,
-      `  Geiger: ${gV} | BOHR: ${bV}`,
-      `  Pipeline: IQ-0053 T2→Lattice→Operator workflow`,
+      `  QUALITY-GATE: ${gV} | STRUCTURAL-REVIEWER: ${bV}`,
+      `  Pipeline: IQ-0053 T2→VECTOR-INTEL→Operator workflow`,
       ``,
       `  Commit to: swarms/[name]/agents/${agentCN.toLowerCase()}.md`,
       `  If vector-enabled: initialize vectors/VECTOR-CONFIG.md from Lattice Collection Design below`,
       `-->`,``,
       `# SWARM ARCHITECTURE DOCUMENT`,``,archDoc,``,`---`,``,
-      `# LATTICE VRA (OPERATOR ONLY)`,``,vraDoc,``,`---`,``,
-      `# MICRO-SPECIALIZATION MAP + LIBRARY SPECIFICATION`,`*T2 Advisor: ${sw.adv}*`,``,advisorOut,``,`---`,``,
-      `# LATTICE COLLECTION DESIGN`,``,collDesign,``,`---`,``,
-      `# CURIE RESEARCH BRIEFING`,``,researchBrief,``,`---`,``,
+      `# VECTOR-INTEL VRA (OPERATOR ONLY)`,``,vraDoc,``,`---`,``,
+      `# MICRO-SPECIALIZATION MAP + LIBRARY SPECIFICATION`,`*T2 Advisor: ${sw.advName}*`,``,advisorOut,``,`---`,``,
+      `# VECTOR-INTEL COLLECTION DESIGN`,``,collDesign,``,`---`,``,
+      `# RESEARCH-LEAD RESEARCH BRIEFING`,``,researchBrief,``,`---`,``,
       `# FABRICATED AGENT PROMPT`,``,fabricated,``,`---`,``,
-      `# GEIGER VALIDATION`,``,geigerRpt,``,`---`,``,
-      `# BOHR STRUCTURAL REVIEW`,``,bohrRpt
+      `# QUALITY-GATE VALIDATION`,``,geigerRpt,``,`---`,``,
+      `# STRUCTURAL REVIEW`,``,bohrRpt
     ].join('\n');
 
     document.getElementById('oc').textContent=finalPkg;
