@@ -1,0 +1,35 @@
+{
+  "//": "VS Code 'Reopen in Container' config for the workshop. Drop this file at .devcontainer/devcontainer.json (or symlink it from there) so VS Code's Dev Containers extension picks it up.",
+  "name": "TMP Workshop Relay",
+  "image": "mcr.microsoft.com/devcontainers/python:1-3.12-bookworm",
+  "containerEnv": {
+    "TMP_RELAY_BIND": "0.0.0.0",
+    "TMP_RELAY_PORT": "3001"
+  },
+  "forwardPorts": [3001],
+  "portsAttributes": {
+    "3001": {
+      "label": "TMP relay (demos + /v1/chat)",
+      "onAutoForward": "openBrowser",
+      "protocol": "http"
+    }
+  },
+  "postCreateCommand": "pip install --user --break-system-packages aiohttp && echo 'Devcontainer ready. Run: python3 relay.py'",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "redhat.vscode-yaml"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python3",
+        "files.exclude": {
+          "**/__pycache__": true,
+          "**/.pytest_cache": true,
+          "**/.venv-e2e": true
+        }
+      }
+    }
+  },
+  "remoteUser": "vscode"
+}
