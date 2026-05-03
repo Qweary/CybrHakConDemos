@@ -60,7 +60,7 @@ See **providers/claude-code.md** for installation prerequisites and troubleshoot
 
 ## Option C: OpenRouter (Paid — Best Quality)
 
-Full Claude Sonnet 4.6 quality via OpenRouter. ~$0.10–0.18 for the full workshop.
+Full Claude Sonnet 4.6 quality via OpenRouter. **~$2 for the full workshop** (measured: ~$0.40 per FORGE run, ~$1.00–1.20 for both COMBAT scenarios, ~$0.40 per EVOLVE cycle).
 
 OpenRouter is a vendor-neutral API gateway. It gives you access to Claude, GPT-4, Gemini, and others through a single key and a single billing account.
 
@@ -124,14 +124,20 @@ If it works, you're ready for the labs. If it fails, check:
 
 ## Cost Reference
 
-| Lab | Demo | Estimated Cost |
+| Lab | Demo | Estimated Cost (Sonnet 4.6 via OR) |
 |---|---|---|
-| LAB-1 | FORGE — one CUSTOM run | ~$0.01–0.02 |
-| LAB-2 | COMBAT — IRONCLAD + PHANTOM FEED | ~$0.08–0.12 |
-| LAB-3 | EVOLVE — one improvement cycle | ~$0.02–0.04 |
-| **Full workshop** | All three labs | **~$0.10–0.18** |
+| LAB-1 | FORGE — one CUSTOM run | ~$0.40 |
+| LAB-2 | COMBAT — IRONCLAD + PHANTOM FEED | ~$1.00–1.20 |
+| LAB-3 | EVOLVE — one improvement cycle | ~$0.40 |
+| **Full workshop** | All three labs | **~$2.00** |
 
-DEMO MODE is always $0.00.
+These numbers reflect Claude Sonnet 4.6 pricing on OpenRouter as of
+the workshop date. The earlier estimates (~$0.10–0.18) were based on
+Haiku and a partial run.
+
+DEMO MODE is always $0.00. **OR FREE** is also $0.00. **Ollama** is
+$0.00 once the model is pulled. **CLAUDE CODE** doesn't bill
+separately if your Claude Code subscription already covers your usage.
 
 ---
 

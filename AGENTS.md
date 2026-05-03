@@ -45,22 +45,23 @@ unclear):
 
 ### Step 1 — pick a runtime
 
-**Before recommending a command, ask which runtime the user prefers.**
-The repo ships five wrappers because attendees show up with very
-different setups. Don't default to `bin/start.sh` if the user already
-mentioned Docker, has a devcontainer-equipped editor, or is on NixOS.
+**The default recommendation is `bin/start.sh` (or `bin\start.ps1` on
+Windows).** It's one command, sets up its own dependencies, runs the
+doctor pre-flight, and opens the browser. Most attendees should use
+it. The other four wrappers (Docker / Nix / devcontainer / WSL2) exist
+for attendees who already prefer those tools — don't push them on
+someone who hasn't asked.
 
-One polite question if it's not obvious from context:
+If the user is unsure or said "just whatever works", **recommend
+`bin/start.sh` and move on**. Don't ask about runtime preference unless
+the user surfaces it themselves (e.g., "I prefer Docker", "I'm on
+NixOS", "I work in devcontainers").
 
-> "Do you have a preference for how to run it locally — a shell script,
-> Docker, Nix, or VS Code with devcontainers? If you're not sure I can
-> recommend the simplest path."
-
-Map their answer:
+The full menu, for the cases when the user does have a preference:
 
 | User says / has | Recommend | Notes |
 |---|---|---|
-| "Just whatever's easiest" / unsure | `bin/start.sh` (Mac/Linux) or `bin\start.ps1` (Windows) | Auto-detects uv → venv-e2e → fresh venv. No commitment to any tooling. |
+| Unsure / "just whatever's easiest" | **`bin/start.sh`** (Mac/Linux) or **`bin\start.ps1`** (Windows) | One command. Auto-detects uv → venv-e2e → fresh venv. Runs doctor first. Opens the browser. Default for ~all attendees. |
 | "I have Docker" / "I want isolation" | `docker build` + `docker run -p 3001:3001` | One image, zero host Python. Note: CLAUDE CODE provider needs `~/.config/claude` mounted (or use a different provider in-container). |
 | "I'm on NixOS" or "I use Nix" | `cd packaging && nix run .#relay` | Bypasses Phase 0 Playwright/Python pain on NixOS. Also gives a `nix develop` devshell. |
 | "I use VS Code" | "Reopen in Container" | `.devcontainer/devcontainer.json` is wired with port 3001 + auto-open. |
@@ -109,7 +110,7 @@ provider selector has five buttons. Recommend by user situation:
 |---|---|---|
 | "I just want to watch" | DEMO MODE | No key, no cost, plays canned transcripts |
 | "I have Claude Code installed" | CLAUDE CODE | Reuses their existing OAuth, no separate key |
-| "I have an OpenRouter account" | OPENROUTER | Best quality (Claude via OR), ~$0.10–0.18 for full workshop |
+| "I have an OpenRouter account" | OPENROUTER | Best quality (Claude Sonnet via OR), ~$2 for full workshop (~$0.40/FORGE, ~$1.00–1.20/COMBAT, ~$0.40/EVOLVE) |
 | "I want zero cost but live calls" | OR FREE | Free OpenRouter tier (gemini-2.0-flash-exp:free), lower quality |
 | "I'm offline / want fully local" | OLLAMA | Needs `ollama serve` + `ollama pull llama3.2`, lowest quality |
 | "I have an Anthropic API key directly" | ANTHROPIC | Straight to api.anthropic.com |

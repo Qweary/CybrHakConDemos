@@ -20,9 +20,9 @@ The three demos are connected: FORGE builds swarms → COMBAT runs them → EVOL
 
 There are four provider options in every demo. The option is selected using the provider buttons at the top (FORGE) or bottom bar (COMBAT, EVOLVE).
 
-**ANTHROPIC** (`ANT` / `ANTHROPIC`): Direct call to Anthropic API. Requires an Anthropic API key (`sk-ant-...`). Best output quality. Costs real money per call (~$0.01–0.02 per FORGE run).
+**ANTHROPIC** (`ANT` / `ANTHROPIC`): Direct call to Anthropic API. Requires an Anthropic API key (`sk-ant-...`). Best output quality. Costs real money per call (~$0.40 per FORGE run on Claude Sonnet 4.6).
 
-**OPENROUTER** (`OR` / `OPENROUTER`): Calls Claude (or any model) via OpenRouter, a vendor-neutral API gateway. Requires an OpenRouter key (`sk-or-v1-...`). Gives access to Claude Sonnet 4.6 at the same quality as direct Anthropic. ~$0.10–0.18 for the full workshop. Get a key at openrouter.ai.
+**OPENROUTER** (`OR` / `OPENROUTER`): Calls Claude (or any model) via OpenRouter, a vendor-neutral API gateway. Requires an OpenRouter key (`sk-or-v1-...`). Gives access to Claude Sonnet 4.6 at the same quality as direct Anthropic. ~$2 for the full workshop on Sonnet 4.6 (FORGE ~$0.40, COMBAT ~$1.00–1.20, EVOLVE ~$0.40). Get a key at openrouter.ai.
 
 **OR FREE** (`OR FREE`): OpenRouter free tier. Same key as OPENROUTER but uses a free model (`google/gemini-2.0-flash-exp:free` by default). No credits required — a free OpenRouter account is enough. Output quality is noticeably lower than Claude but the workflow is identical.
 
