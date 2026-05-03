@@ -376,6 +376,7 @@ body.pmode .ibtn,body.pmode .startbtn,body.pmode .begin-btn{min-height:48px}
   <div class="btm-row btm-actions">
     <button class="startbtn red-btn" id="setup-btn" onclick="setupInfra()">[ SETUP NETWORK ]</button>
     <button class="startbtn go-btn" id="engage-btn" onclick="engage()" disabled style="padding:10px 24px;font-size:13px">[ ⚛ ENGAGE ]</button>
+    <button class="startbtn" id="dl-transcript-btn" onclick="dlCombatTranscript()" style="border-color:var(--amb);color:var(--amb);display:none">[ ⬇ TRANSCRIPT ]</button>
     <button class="startbtn" id="reset-btn" onclick="resetCombat()" style="border-color:var(--gr);color:var(--gr)">[ RESET ]</button>
     <div class="binfo" id="binfo">Setup vulnerable network, then engage to begin the exercise.</div>
     <div id="evolve-badge" style="display:none;font-size:9px;font-family:'Orbitron',sans-serif;color:var(--grn);border:1px solid var(--grn);padding:4px 10px;letter-spacing:1px;text-shadow:var(--gr-g);white-space:nowrap"></div>
@@ -2158,6 +2159,7 @@ const PHANTOM_STAGES=[
 
 // ─── State ───
 let rTermHistory='', bTermHistory='', siemAlerts=[];
+let combatFinalRpt='', combatFinalScores={red:'',blue:'',verdict:''};
 
 function rT(h){const e=document.createElement('div');e.innerHTML=h;document.getElementById('r-term').appendChild(e);document.getElementById('r-term').scrollTop=1e9}
 function bT(h){const e=document.createElement('div');e.innerHTML=h;document.getElementById('b-term').appendChild(e);document.getElementById('b-term').scrollTop=1e9}
@@ -2474,6 +2476,8 @@ async function engage(){
   hideTokens();
   document.getElementById('engage-btn').disabled=true;
   document.getElementById('engage-btn').textContent='[ EXERCISE RUNNING ]';
+  document.getElementById('dl-transcript-btn').style.display='none';
+  combatFinalRpt=''; combatFinalScores={red:'',blue:'',verdict:''};
   document.getElementById('r-stat').className='pstat active-r';document.getElementById('r-stat').textContent='ATTACKING';
   document.getElementById('b-stat').className='pstat active-b';document.getElementById('b-stat').textContent='DEFENDING';
   startTimer();
@@ -2587,6 +2591,9 @@ async function engage(){
       rT(`<div class="te-crit">EXERCISE COMPLETE — RED ${rd?rd[1]:'?/10'}</div>`);
       bT(`<div class="te-crit">EXERCISE COMPLETE — BLUE ${bd?bd[1]:'?/10'} — ${vd?vd[1]:'SEE REPORT'}</div>`);
     }
+    combatFinalRpt=finalRpt;
+    combatFinalScores={red:rd?rd[1]:'?/10',blue:bd?bd[1]:'?/10',verdict:vd?vd[1]:'SEE REPORT'};
+    document.getElementById('dl-transcript-btn').style.display='';
     addSiem(ts(),'INFO','EXERCISE','SWARM',`Exercise complete. ${vd?vd[1]:'See report.'}`);
 
     // Export exercise state for evolve demo (bidirectional improvement loop)
@@ -2914,6 +2921,47 @@ function applyLiveState(st,net,red,blu,sc){
 applyLiveState._lastScoreRow='';
 rT._lastKey='';
 bT._lastKey='';
+
+function dlCombatTranscript(){
+  if(!combatFinalRpt){return;}
+  const ts=new Date().toISOString();
+  const scen=currentScenario==='phantom'?'OPERATION PHANTOM FEED':'OPERATION IRONCLAD';
+  const evolvedNote=evolvedAgent?` (EVOLVED ${evolvedAgent.name} loaded)`:'';
+  const siemRows=[...document.querySelectorAll('#siem-body .srow')].map(r=>{
+    const t=r.querySelector('.st')?.textContent||'';
+    const s=r.querySelector('.ss')?.textContent||'';
+    const d=r.querySelector('.sd')?.textContent||'';
+    const a=r.querySelector('.sa')?.textContent||'';
+    return `${t} | ${s} | ${a} | ${d}`;
+  }).filter(l=>!l.includes('No alerts')).join('\n');
+  const pkg=[
+    `<!-- THE MANHATTAN PROJECT — COMBAT EXERCISE TRANSCRIPT`,
+    `  Generated: ${ts}`,
+    `  Scenario: ${scen}${evolvedNote}`,
+    `  Red Score: ${combatFinalScores.red||'?/10'} | Blue Score: ${combatFinalScores.blue||'?/10'} | Verdict: ${combatFinalScores.verdict||'SEE REPORT'}`,
+    `  Mode: ${combatDemo?'DEMO':'LIVE'} | Provider: ${combatProvider||'anthropic'}`,
+    `-->`,``,
+    `# COMBAT EXERCISE TRANSCRIPT — ${scen}`,``,
+    `**Generated:** ${ts}  `,
+    `**Mode:** ${combatDemo?'DEMO':'LIVE'}  `,
+    `**Final Score:** Red ${combatFinalScores.red||'?/10'} / Blue ${combatFinalScores.blue||'?/10'}  `,
+    `**Verdict:** ${combatFinalScores.verdict||'SEE REPORT'}  `,
+    evolvedAgent?`**Evolved Agent Loaded:** ${evolvedAgent.name} (iter ${evolvedAgent.iteration||'?'})  `:'',
+    ``,`---`,``,
+    `## NETWORK SETUP`,``,(networkState||'(no setup capture)').trim(),``,`---`,``,
+    `## RED TEAM TRANSCRIPT`,``,(rTermHistory||'(no transcript)').trim(),``,`---`,``,
+    `## BLUE TEAM TRANSCRIPT`,``,(bTermHistory||'(no transcript)').trim(),``,`---`,``,
+    `## SIEM ALERTS`,``,siemRows||'(no alerts captured)',``,`---`,``,
+    `# POST-EXERCISE HARDENING REPORT`,``,combatFinalRpt
+  ].filter(Boolean).join('\n');
+  const fn=`combat-${currentScenario}-${Date.now()}.md`;
+  const b=new Blob([pkg],{type:'text/markdown;charset=utf-8'});
+  const u=URL.createObjectURL(b);const a=document.createElement('a');
+  a.href=u;a.download=fn;a.click();URL.revokeObjectURL(u);
+  const btn=document.getElementById('dl-transcript-btn');
+  const orig=btn.textContent;btn.textContent='[ ⬇ DOWNLOADED ✓ ]';
+  setTimeout(()=>btn.textContent=orig,2000);
+}
 
 // A7: Space bar advances STEP MODE gate
 document.addEventListener('keydown',function(e){if(e.code==='Space'&&e.target.tagName!=='INPUT'&&e.target.tagName!=='TEXTAREA'){const gates=document.querySelectorAll('.step-btn:not([style*="display:none"])');if(gates.length){e.preventDefault();gates[0].click();}}});
