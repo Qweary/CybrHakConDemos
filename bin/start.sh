@@ -128,15 +128,10 @@ if [ $OPEN_BROWSER -eq 1 ]; then
   }) &
 fi
 
-# Pass overrides through env vars where possible. PORT/bind aren't yet
-# CLI-overridable in cli.py — this is a Phase 5/8 follow-up. For now,
-# warn if --port or --bind differ from defaults.
-if [ "$PORT" != "3001" ] || [ "$BIND" != "127.0.0.1" ]; then
-  echo "⚠ NOTE: --port and --bind aren't yet plumbed through cli.py."
-  echo "  The relay will listen on 127.0.0.1:3001 regardless."
-  echo "  (Tracked as ARCH-14 in docs/dev/relay-review.md.)"
-  echo ""
-fi
+# --port and --bind are honored via env-var overrides understood by
+# settings.py (TMP_RELAY_PORT / TMP_RELAY_BIND).
+export TMP_RELAY_PORT="$PORT"
+export TMP_RELAY_BIND="$BIND"
 
 if [ "$LAUNCH_VIA" = "uv" ]; then
   exec uv run --quiet python3 relay.py
