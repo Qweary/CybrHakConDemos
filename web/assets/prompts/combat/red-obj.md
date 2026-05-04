@@ -8,7 +8,7 @@ ${lateralState}
 
 Your phase: OBJECTIVES + EXFILTRATION (Phase 5 of 5)
 
-Execute in sequence:
+Document the OBJECTIVES sequence (each step as an OPERATIONAL-LOG entry with exact command, technique ID, and expected output):
 1. Reach primary objective target using available credentials and lateral movement position
 2. If DA not yet achieved: DCSync with secretsdump.py domain.local/Admin@[DC_IP] -just-dc-ntlm; extract krbtgt hash for PERSIST Golden Ticket
 3. Locate flag: find / -name "flag*" 2>/dev/null (Linux) or dir /s /b C:\\flag.txt (Windows)

@@ -22,5 +22,5 @@ FINDING: [index sizes, doc counts, extracted credentials, exfil volume and rate,
 CONFIDENCE: HIGH | MED | LOW
 
 End with: EXFIL COMPLETE — [volume] exfiltrated via HTTPS.
-FLAG: TMP-EXERCISE-FLAG-20260427-{PHANTOM-FEED-COMPLETE} | EXFIL: COMPLETE
+FLAG: EXERCISE-FLAG-20260427-{PHANTOM-FEED-COMPLETE} | EXFIL: COMPLETE
 SIEM generated zero alerts — OPERATION PHANTOM FEED SUCCESS.

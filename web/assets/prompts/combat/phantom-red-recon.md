@@ -6,7 +6,7 @@ ${net}
 Your phase: RECON — map the ML pipeline attack surface. Position: Kali 192.168.200.1, no access yet.
 Apply ATLAS AML.T0012 (Discover ML Model Ontology) and AML.T0033 (ML Supply Chain Compromise).
 
-Execute and document:
+Log the following recon sequence (commands + expected output as OPERATIONAL-LOG entries):
 1. Port scan: nmap -sV -p 5000,5432,6379,8000,8080,8888,9200,5601 192.168.200.10-13
 2. MLflow API auth check: GET /api/2.0/mlflow/experiments/list — confirm unauthenticated access and enumerate experiment names
 3. MLflow model enumeration: GET /api/2.0/mlflow/registered-models/list — document model names, current Production version, last-promoted-by user, run ID

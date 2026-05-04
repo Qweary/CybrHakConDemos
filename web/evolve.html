@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>THE MANHATTAN PROJECT — EVOLVE LIVE</title>
+<title>MULTI-AGENT REFINEMENT LOOP</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -355,6 +355,10 @@ body.pmode .ibtn,body.pmode .startbtn,body.pmode .begin-btn{min-height:48px}
   .ibtn,.startbtn,.begin-btn{min-height:56px}
   .ibtn{font-size:16px}
 }
+.fw-attrib{position:fixed;bottom:3px;right:8px;font-size:9px;letter-spacing:1px;color:#3f3f5e;opacity:.55;z-index:5;font-family:'Share Tech Mono','Courier New',monospace}
+.fw-attrib a{color:#5a5a82;text-decoration:none}
+.fw-attrib a:hover{color:var(--am);text-decoration:underline;opacity:1}
+.fw-attrib:hover{opacity:1}
 </style>
 </head>
 <body class="pmode">
@@ -363,7 +367,7 @@ body.pmode .ibtn,body.pmode .startbtn,body.pmode .begin-btn{min-height:48px}
 
 <div class="hdr">
   <div>
-    <div class="ht">⚛ THE MANHATTAN PROJECT — EVOLVE LIVE</div>
+    <div class="ht">⚛ MULTI-AGENT REFINEMENT LOOP</div>
     <div class="hs">AUTONOMOUS IMPROVEMENT LOOP // SELF-REFINEMENT DEMONSTRATION</div>
   </div>
   <div class="hcyc" id="cycle-counter">CYCLE 1 / ∞</div>
@@ -1229,7 +1233,7 @@ The agent now follows a checklist of six specific conflict types to look for, ra
 
 <script>
 // ============================================================================
-// THE MANHATTAN PROJECT — EVOLVE LIVE
+// MULTI-AGENT REFINEMENT LOOP
 // Autonomous improvement loop: EXERCISE → ARBITER → SCULPTOR → RERUN → LOOP
 // ============================================================================
 
@@ -2541,5 +2545,6 @@ document.addEventListener('keydown', function(e) { if (e.code === 'Space' && e.t
 document.addEventListener('keydown', function(e) { if (e.ctrlKey && e.key === 'd') { e.preventDefault(); toggleDemo(); } });
 document.addEventListener('keydown', function(e) { if (e.ctrlKey && e.key === 'p') { e.preventDefault(); document.body.classList.toggle('pmode'); } });
 </script>
+<div class="fw-attrib">Powered by <a href="https://github.com/Qweary/The-Manhattan-Project" target="_blank" rel="noopener">The Manhattan Project</a> framework</div>
 </body>
 </html>

@@ -263,6 +263,10 @@ body.pmode .ibtn,body.pmode .startbtn,body.pmode .begin-btn{min-height:48px}
   .ibtn,.startbtn,.begin-btn{min-height:56px}
   .ibtn{font-size:16px}
 }
+.fw-attrib{position:fixed;bottom:3px;right:8px;font-size:9px;letter-spacing:1px;color:#3f3f5e;opacity:.55;z-index:5;font-family:'Share Tech Mono','Courier New',monospace}
+.fw-attrib a{color:#5a5a82;text-decoration:none}
+.fw-attrib a:hover{color:var(--am);text-decoration:underline;opacity:1}
+.fw-attrib:hover{opacity:1}
 </style>
 <!-- DEMO MODE pre-scripted forge output — red team ops, conference playback, no API key required -->
 <script type="text/plain" id="d-opp">
@@ -2546,5 +2550,6 @@ document.addEventListener('keydown',function(e){if(e.code==='Space'&&e.target.ta
 document.addEventListener('keydown',function(e){if(e.ctrlKey&&e.key==='d'){e.preventDefault();toggleDemoMode();}});
 document.addEventListener('keydown',function(e){if(e.ctrlKey&&e.key==='p'){e.preventDefault();document.body.classList.toggle('pmode');}});
 </script>
+<div class="fw-attrib">Powered by <a href="https://github.com/Qweary/The-Manhattan-Project" target="_blank" rel="noopener">The Manhattan Project</a> framework</div>
 </body>
 </html>

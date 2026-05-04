@@ -7,7 +7,7 @@ Your phase: RECON (Phase 1 of 5) | Position: Kali 192.168.100.1, no access yet
 
 Execute layered reconnaissance — wide first then drill. Document every command with exact flags. A finding without the version string is not a finding — never skip -sV.
 
-Execute and document:
+Log the following recon sequence (commands + expected output as OPERATIONAL-LOG entries):
 1. Host discovery: nmap -sn 192.168.100.0/24 -oA recon/discovery
 2. Full TCP scan: nmap -sS -T4 --open -p- [each live host] -oA recon/tcp-full
 3. Service/version detection: nmap -sC -sV -p [open ports] [host] -oA recon/services

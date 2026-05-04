@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>THE MANHATTAN PROJECT — COMBAT LIVE</title>
+<title>MULTI-AGENT RED-VS-BLUE COMBAT EXERCISE</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -241,6 +241,10 @@ body.pmode .ibtn,body.pmode .startbtn,body.pmode .begin-btn{min-height:48px}
   .ibtn,.startbtn,.begin-btn{min-height:56px}
   .ibtn{font-size:16px}
 }
+.fw-attrib{position:fixed;bottom:3px;right:8px;font-size:9px;letter-spacing:1px;color:#3f3f5e;opacity:.55;z-index:5;font-family:'Share Tech Mono','Courier New',monospace}
+.fw-attrib a{color:#5a5a82;text-decoration:none}
+.fw-attrib a:hover{color:var(--amb);text-decoration:underline;opacity:1}
+.fw-attrib:hover{opacity:1}
 </style>
 </head>
 <body class="pmode">
@@ -773,7 +777,7 @@ NEXT EXERCISE FOCUS: TELEMETRY-ANALYST refinement for Linux host-level visibilit
 
 <script>
 // ============================================================================
-// THE MANHATTAN PROJECT — COMBAT LIVE
+// MULTI-AGENT RED-VS-BLUE COMBAT EXERCISE
 //
 // Three-phase exercise:
 //  Phase 0: Infra swarm builds a vulnerable network (narrative + topology)
@@ -2781,7 +2785,7 @@ function dlCombatTranscript(){
     return `${t} | ${s} | ${a} | ${d}`;
   }).filter(l=>!l.includes('No alerts')).join('\n');
   const pkg=[
-    `<!-- THE MANHATTAN PROJECT — COMBAT EXERCISE TRANSCRIPT`,
+    `<!-- MULTI-AGENT RED-VS-BLUE COMBAT EXERCISE TRANSCRIPT`,
     `  Generated: ${ts}`,
     `  Scenario: ${scen}${evolvedNote}`,
     `  Red Score: ${combatFinalScores.red||'?/10'} | Blue Score: ${combatFinalScores.blue||'?/10'} | Verdict: ${combatFinalScores.verdict||'SEE REPORT'}`,
@@ -2815,5 +2819,6 @@ document.addEventListener('keydown',function(e){if(e.code==='Space'&&e.target.ta
 document.addEventListener('keydown',function(e){if(e.ctrlKey&&e.key==='d'){e.preventDefault();toggleCombatDemo();}});
 document.addEventListener('keydown',function(e){if(e.ctrlKey&&e.key==='p'){e.preventDefault();document.body.classList.toggle('pmode');}});
 </script>
+<div class="fw-attrib">Powered by <a href="https://github.com/Qweary/The-Manhattan-Project" target="_blank" rel="noopener">The Manhattan Project</a> framework</div>
 </body>
 </html>
