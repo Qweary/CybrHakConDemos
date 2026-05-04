@@ -251,7 +251,7 @@ body.pmode .ibtn,body.pmode .startbtn,body.pmode .begin-btn{min-height:48px}
     <div class="bts">OFFENSIVE OPERATIONS // ACTIVE ENGAGEMENT</div>
   </div>
   <div class="bm">
-    <div class="bmt">⚛ TMP COMBAT LIVE</div>
+    <div class="bmt">⚛ MULTI-AGENT RED-VS-BLUE COMBAT EXERCISE</div>
     <div style="font-size:9px;color:#5050a0;margin-top:3px;letter-spacing:1px" id="ts2">—</div>
     <span id="tok-count" style="display:none;font-size:9px;color:#3aa66f;letter-spacing:1px;border:1px solid #3aa66f;padding:1px 5px;margin-top:4px;font-variant-numeric:tabular-nums">tokens: 0 ▌</span>
   </div>
@@ -623,7 +623,7 @@ FINDING: C:\flag.txt — FILE LOCATED
 
 [09:21:12] PHASE: OBJECTIVES — flag capture
 TOOL: type C:\flag.txt
-FINDING: TMP-EXERCISE-FLAG-20260422-{IRONCLAD-COMPLETE}
+FINDING: EXERCISE-FLAG-20260422-{IRONCLAD-COMPLETE}
 
 [09:21:30] PHASE: EXFILTRATION
 TECHNIQUE: T1041 Exfiltration Over C2 Channel
@@ -637,7 +637,7 @@ Detection Evasion Used:
 - HTTPS exfiltration — avoids HTTP content inspection; port 443 is whitelisted outbound
 
 MISSION STATUS — OBJECTIVE: ACHIEVED
-FLAG: TMP-EXERCISE-FLAG-20260422-{IRONCLAD-COMPLETE} | EXFIL: COMPLETE via HTTPS
+FLAG: EXERCISE-FLAG-20260422-{IRONCLAD-COMPLETE} | EXFIL: COMPLETE via HTTPS
 </script>
 <script type="text/plain" id="cx-hunt">
 THREAT-HUNTER — Proactive Hypothesis-Driven Threat Hunting
@@ -780,7 +780,7 @@ NEXT EXERCISE FOCUS: TELEMETRY-ANALYST refinement for Linux host-level visibilit
 //  Phase 1: Blue team deploys and initializes monitoring
 //  Phase 2: Red team attacks stage-by-stage while blue team detects/responds
 //
-// Each stage is an API call to a specialized agent with TMP agent system prompts.
+// Each stage is an API call to a specialized agent with role-specific system prompts.
 // Red team and blue team API calls alternate, creating a realistic adversarial sim.
 // The battlefield state (network topology + event feed) is the shared context.
 //
@@ -1205,7 +1205,7 @@ Exfiltrating April alerts index (847,291 documents):
   SIEM ML score for this traffic during exfil: 0.31 (benign) — NO ALERTS GENERATED ✓
 
 EXFIL COMPLETE — 2.1GB siem-alerts-2026.04 index, API keys, SMTP credentials
-FLAG: TMP-EXERCISE-FLAG-20260427-{PHANTOM-FEED-COMPLETE} | EXFIL: COMPLETE via HTTPS
+FLAG: EXERCISE-FLAG-20260427-{PHANTOM-FEED-COMPLETE} | EXFIL: COMPLETE via HTTPS
 SIEM generated zero alerts for exfiltration activity — OPERATION PHANTOM FEED SUCCESS`,
    b:`[THREAT-HUNTER] Proactive hunt — INC-2026-0427-PHANTOM exposure window
 
@@ -2075,7 +2075,7 @@ FINDING: [index sizes, doc counts, extracted credentials, exfil volume and rate,
 CONFIDENCE: HIGH | MED | LOW
 
 End with: EXFIL COMPLETE — [volume] exfiltrated via HTTPS.
-FLAG: TMP-EXERCISE-FLAG-20260427-{PHANTOM-FEED-COMPLETE} | EXFIL: COMPLETE
+FLAG: EXERCISE-FLAG-20260427-{PHANTOM-FEED-COMPLETE} | EXFIL: COMPLETE
 SIEM generated zero alerts — OPERATION PHANTOM FEED SUCCESS.`;
 
 const SYS_PHANTOM_BLUE_HUNT=(net,prev,r)=>`You are THREAT-HUNTER, the threat hunter of blue-team-ops-v1, investigating the PHANTOM FEED exposure window retroactively.
@@ -2756,7 +2756,7 @@ function loadEvolvedAgent(){
   evolvedAgent=_evolveData.refined_agent;
   const normEvolved=evolvedAgent.name.toUpperCase().replace(/[\s_-]+/g,'-');
   const matched=typeof blueAgentNames!=='undefined'&&blueAgentNames.some(n=>n.toUpperCase().replace(/[\s_-]+/g,'-')===normEvolved);
-  if(!matched&&typeof blueAgentNames!=='undefined'){const w='⚠ Evolved agent name "'+evolvedAgent.name+'" did not match any blue team agent — check evolve output. Evolved prompt will not be injected.';document.getElementById('binfo').textContent=w;console.warn('[TMP]',w);}
+  if(!matched&&typeof blueAgentNames!=='undefined'){const w='⚠ Evolved agent name "'+evolvedAgent.name+'" did not match any blue team agent — check evolve output. Evolved prompt will not be injected.';document.getElementById('binfo').textContent=w;console.warn('[combat]',w);}
   const banner=document.getElementById('evolve-banner');
   if(banner)banner.style.display='none';
   const badge=document.getElementById('evolve-badge');
