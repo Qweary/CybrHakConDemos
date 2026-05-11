@@ -1,10 +1,10 @@
-"""Command-line entry point for tmp_relay.
+"""Command-line entry point for swarm_relay.
 
 Two callable surfaces:
   serve()  — async; the long-running coroutine. Use this if you're
              embedding the relay inside another asyncio program.
   main()   — sync; wraps serve() with asyncio.run + KeyboardInterrupt
-             handling. This is what `tmp-relay` (the console script)
+             handling. This is what `swarm-relay` (the console script)
              and `relay.py` (the workshop-root shim) both call.
 
 Bind is hardcoded to 127.0.0.1 today — Phase 8 will plumb --bind /
@@ -24,7 +24,7 @@ from .settings import BIND, DEFAULT_MODEL, PORT, TIMEOUT_SEC
 
 async def serve():
     """Build the app, bind BIND:PORT (127.0.0.1:3001 by default; both
-    overridable via TMP_RELAY_BIND / TMP_RELAY_PORT env vars), log a
+    overridable via SWARM_RELAY_BIND / SWARM_RELAY_PORT env vars), log a
     startup banner, and await forever. Cancellation (KeyboardInterrupt
     at the main() boundary) shuts down cleanly."""
     app = make_app()
@@ -39,8 +39,8 @@ async def serve():
         print(f'[RELAY] claude CLI: {binary}')
     else:
         print('[RELAY] WARNING: claude CLI not found on PATH — install Claude Code before running demos.')
-    print(f'[RELAY] Model: {DEFAULT_MODEL or "(demo-supplied)"} (override with TMP_RELAY_MODEL=...)')
-    print(f'[RELAY] Per-call timeout: {TIMEOUT_SEC}s (override with TMP_RELAY_TIMEOUT_SEC=...)')
+    print(f'[RELAY] Model: {DEFAULT_MODEL or "(demo-supplied)"} (override with SWARM_RELAY_MODEL=...)')
+    print(f'[RELAY] Per-call timeout: {TIMEOUT_SEC}s (override with SWARM_RELAY_TIMEOUT_SEC=...)')
     if BIND not in ('127.0.0.1', 'localhost'):
         print(f'[RELAY] ⚠ BIND={BIND}: relay reachable beyond loopback. Make sure you trust the network.')
     print(f'[RELAY] Listening on http://{BIND}:{PORT}')

@@ -88,7 +88,7 @@ DEMO_MODE_ON_VALUE = {
     'evolve': True,
 }
 DEMO_MODE_OFF_VALUE = {
-    'forge':  '⚛ INITIATE FISSION',
+    'forge':  '▶ INITIATE FORGE',
     'combat': False,
     'evolve': False,
 }
@@ -102,7 +102,7 @@ def test_ctrl_d_toggles_demo_mode(safe_page, demo_url, label, name):
     # default OFF
     initial = safe_page.evaluate(DEMO_MODE_PROBE[label])
     if label == 'forge':
-        # forge keeps demo OFF by default, ibtn shows ⚛ INITIATE FISSION
+        # forge keeps demo OFF by default, ibtn shows ▶ INITIATE FORGE
         assert DEMO_MODE_OFF_VALUE[label] in (initial or ''), \
             f'forge: ibtn label "{initial}" — expected "{DEMO_MODE_OFF_VALUE[label]}" before toggle'
     else:

@@ -1,4 +1,4 @@
-"""HTTP surface for tmp_relay.
+"""HTTP surface for swarm_relay.
 
 Owns:
   - Middlewares (cors_middleware, dotfile_filter)

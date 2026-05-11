@@ -21,7 +21,7 @@ COMBAT      = os.path.join(WEB, 'combat.html')
 EVOLVE      = os.path.join(WEB, 'evolve.html')
 
 RELAY       = os.path.join(WORKSHOP, 'relay.py')
-TMP_RELAY_SRC = os.path.join(WORKSHOP, 'src', 'tmp_relay')
+SWARM_RELAY_SRC = os.path.join(WORKSHOP, 'src', 'swarm_relay')
 README      = os.path.join(WORKSHOP, 'README.md')
 LAB1        = os.path.join(WORKSHOP, 'labs', 'LAB-1-FORGE.md')
 LAB2        = os.path.join(WORKSHOP, 'labs', 'LAB-2-COMBAT.md')
@@ -46,17 +46,17 @@ def read_text(path):
 
 
 def read_relay_sources():
-    """Concatenate relay.py + every Python file under src/tmp_relay/.
+    """Concatenate relay.py + every Python file under src/swarm_relay/.
     Lets substring invariant checks survive the Phase 5c module split
     without needing to know which module a constant or string ended up
     in. (Phase 7 will reshape these tests; this is the bridge until then.)"""
     chunks = []
     if os.path.exists(RELAY):
         chunks.append(read_text(RELAY))
-    if os.path.isdir(TMP_RELAY_SRC):
-        for name in sorted(os.listdir(TMP_RELAY_SRC)):
+    if os.path.isdir(SWARM_RELAY_SRC):
+        for name in sorted(os.listdir(SWARM_RELAY_SRC)):
             if name.endswith('.py'):
-                chunks.append(read_text(os.path.join(TMP_RELAY_SRC, name)))
+                chunks.append(read_text(os.path.join(SWARM_RELAY_SRC, name)))
     return '\n'.join(chunks)
 
 
@@ -127,7 +127,7 @@ for label, html in [
 # Anthropic API key" state.
 print('\n── CLAUDE CODE provider (S47.5a) ────────────────────────────────────')
 # One-line localStorage migration shim that maps pre-S47.5a saved values
-# (tmp_provider='local') to the new 'cc' value, so returning users don't land
+# (swarm_provider='local') to the new 'cc' value, so returning users don't land
 # on a broken UI. This is the only reference to 'local' that should remain.
 MIGRATION_SHIM_RE = re.compile(
     r"if\s*\(\s*\w*Provider\s*===\s*'local'\s*\)\s*\{[^}]*Provider\s*=\s*'cc'[^}]*\}"
@@ -169,7 +169,7 @@ for label, html, btn_id in [
           detail=f'Old provider check remains: {stale.group(0) if stale else ""}')
     check(f'{label}: localStorage migration shim from "local" → "cc" present',
           has_shim,
-          detail='Migration line missing; returning users with saved tmp_provider="local" will land on a broken UI')
+          detail='Migration line missing; returning users with saved swarm_provider="local" will land on a broken UI')
 
 # ── 5. No ../demos/ in workshop README ───────────────────────────────────────
 print('\n── README integrity ──────────────────────────────────────────────────')
@@ -356,7 +356,7 @@ check('forge: #demo-hdr-badge in header',
 check('forge: .ibtn position:sticky',
       'position:sticky' in forge_html and '.ibtn' in forge_html)
 check('forge: ▶ RUN DEMO label toggle',
-      '▶ RUN DEMO' in forge_html and '⚛ INITIATE FISSION' in forge_html)
+      '▶ RUN DEMO' in forge_html and '▶ INITIATE FORGE' in forge_html)
 
 # Combat-specific
 check('combat: [ CHECK IMPORT ] button',
@@ -365,8 +365,8 @@ check('combat: .btm-config row class',
       'class="btm-row btm-config"' in combat_html)
 check('combat: .btm-actions row class',
       'class="btm-row btm-actions"' in combat_html)
-check('combat: storage event listener for tmp_evolve_export',
-      "addEventListener('storage'" in combat_html and 'tmp_evolve_export' in combat_html)
+check('combat: storage event listener for swarm_evolve_export',
+      "addEventListener('storage'" in combat_html and 'swarm_evolve_export' in combat_html)
 check('combat: checkEvolveExport is named (not IIFE)',
       'function checkEvolveExport()' in combat_html)
 check('combat: pulse-border keyframes (banner pulse)',
@@ -419,8 +419,8 @@ else:
     check('S46 P0-1: LAB-1 has no "LAUNCH FORGE"',
           'LAUNCH FORGE' not in lab1_txt,
           detail='Lab still tells attendees to click a button that does not exist')
-    check('S46 P0-1: LAB-1 references INITIATE FISSION',
-          'INITIATE FISSION' in lab1_txt)
+    check('S46 P0-1: LAB-1 references INITIATE FORGE',
+          'INITIATE FORGE' in lab1_txt)
     check('S46 P0-1: LAB-2 has no "LAUNCH EXERCISE"',
           'LAUNCH EXERCISE' not in lab2_txt,
           detail='Lab still tells attendees to click a button that does not exist')
@@ -431,11 +431,11 @@ else:
     check('S46 P0-1: LAB-2 has no "EXPORT TO EVOLVE DEMO"',
           'EXPORT TO EVOLVE DEMO' not in lab2_txt,
           detail='Lab references a button that is actually a link labeled OPEN IN EVOLVE DEMO')
-    check('S46 P0-1: WORKSHOP-GUIDE has no "tmp_combat_export"',
-          'tmp_combat_export' not in guide_txt,
-          detail='Guide references the wrong localStorage key (real key is tmp_evolve_source)')
-    check('S46 P0-1: WORKSHOP-GUIDE references tmp_evolve_source',
-          'tmp_evolve_source' in guide_txt)
+    check('S46 P0-1: WORKSHOP-GUIDE has no "swarm_combat_export"',
+          'swarm_combat_export' not in guide_txt,
+          detail='Guide references the wrong localStorage key (real key is swarm_evolve_source)')
+    check('S46 P0-1: WORKSHOP-GUIDE references swarm_evolve_source',
+          'swarm_evolve_source' in guide_txt)
     check('S46 P0-1: WORKSHOP-GUIDE has no "LAUNCH FORGE"',
           'LAUNCH FORGE' not in guide_txt)
 
@@ -571,8 +571,8 @@ check('S46 P0-9: every var(--X) referenced in forge is defined in :root',
       len(forge_undef) == 0,
       detail=f'Undefined CSS vars used: {forge_undef}')
 
-# P0-11 — combat tmp_evolve_source export uses activeStages (scenario-aware)
-check('S46 P0-11: combat tmp_evolve_source export uses activeStages',
+# P0-11 — combat swarm_evolve_source export uses activeStages (scenario-aware)
+check('S46 P0-11: combat swarm_evolve_source export uses activeStages',
       'activeStages.map((st,idx)=>{' in combat_html.replace(' ', ''),
       detail='Hardcoded stages.map would mislabel PHANTOM FEED as IRONCLAD on export')
 

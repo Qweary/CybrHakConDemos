@@ -1,7 +1,7 @@
 # Phase 5a — `relay.py` Code Review
 
 Static review of `/home/tokugero/repos/github/Qweary/CybrHakConDemos/relay.py`
-ahead of the Phase 5c module split into `src/tmp_relay/`. Cross-referenced
+ahead of the Phase 5c module split into `src/swarm_relay/`. Cross-referenced
 against `docs/dev/audit-phase-0.md` section 9 (which previewed several of
 these items).
 

@@ -137,9 +137,9 @@ if (-not $NoBrowser) {
 }
 
 # -Port and -Bind are honored via env-var overrides understood by
-# settings.py (TMP_RELAY_PORT / TMP_RELAY_BIND).
-$env:TMP_RELAY_PORT = $Port
-$env:TMP_RELAY_BIND = $Bind
+# settings.py (SWARM_RELAY_PORT / SWARM_RELAY_BIND).
+$env:SWARM_RELAY_PORT = $Port
+$env:SWARM_RELAY_BIND = $Bind
 
 if ($launchVia -eq 'uv') {
     & uv run --quiet python relay.py

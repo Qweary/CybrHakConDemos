@@ -122,7 +122,7 @@ else
 fi
 
 # ── workshop layout sanity ────────────────────────────────────────────
-for required in relay.py src/tmp_relay/cli.py web/index.html; do
+for required in relay.py src/swarm_relay/cli.py web/index.html; do
   if [ -e "$required" ]; then
     pass "found $required"
   else

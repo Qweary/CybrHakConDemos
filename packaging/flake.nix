@@ -1,5 +1,5 @@
 {
-  description = "TMP workshop relay — local helper that bridges browser demos to the Claude Code CLI.";
+  description = "Swarm workshop relay — local helper that bridges browser demos to the Claude Code CLI.";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -26,7 +26,7 @@
         ]);
 
         # Source root — the flake's working tree. The relay needs this
-        # at runtime to find web/ and src/tmp_relay/. Repo root is the
+        # at runtime to find web/ and src/swarm_relay/. Repo root is the
         # parent of packaging/.
         repoRoot = ../.;
       in
@@ -34,12 +34,12 @@
         # ── Run targets: `nix run .#relay` (or `nix run .`) ───────────
         # Spawns python3 relay.py from the source tree with aiohttp
         # already in the environment. Solves the "pip install on NixOS"
-        # foot-gun. Honors TMP_RELAY_BIND / TMP_RELAY_PORT just like the
+        # foot-gun. Honors SWARM_RELAY_BIND / SWARM_RELAY_PORT just like the
         # bare invocation would.
         apps = rec {
           relay = {
             type = "app";
-            program = toString (pkgs.writeShellScript "tmp-relay-launch" ''
+            program = toString (pkgs.writeShellScript "swarm-relay-launch" ''
               cd ${repoRoot}
               exec ${pyRuntime}/bin/python3 relay.py "$@"
             '');
@@ -68,7 +68,7 @@
 
             cat <<'EOF'
 ╭──────────────────────────────────────────────────────────────╮
-│  tmp-relay devShell                                          │
+│  swarm-relay devShell                                        │
 │                                                              │
 │  python:    ${py.pythonVersion} (aiohttp, pytest, playwright)
 │  chromium:  ${pkgs.chromium.version} (system, NOT vendored)

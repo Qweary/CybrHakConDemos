@@ -1,4 +1,4 @@
-"""Configuration constants for tmp_relay.
+"""Configuration constants for swarm_relay.
 
 All tunables live here so a refactor caller can `from .settings import *`
 or pass a Settings object around. Today the constants are module-level
@@ -7,12 +7,12 @@ will introduce a Settings dataclass during a follow-up cleanup.
 
 Env vars override the literals shown below.
 
-  TMP_RELAY_TIMEOUT_SEC      — per-call wall-clock budget for the
+  SWARM_RELAY_TIMEOUT_SEC    — per-call wall-clock budget for the
                                claude subprocess (default 600s).
-  TMP_RELAY_SUBPROC_LIMIT    — bytes per stream-json line (default 4 MB).
+  SWARM_RELAY_SUBPROC_LIMIT  — bytes per stream-json line (default 4 MB).
                                Snapshot frames in --include-partial-messages
                                can exceed asyncio's default 64 KB.
-  TMP_RELAY_MODEL            — overrides the demo's requested model.
+  SWARM_RELAY_MODEL          — overrides the demo's requested model.
                                Default claude-haiku-4-5 is ~3-4x faster
                                than Sonnet 4.6 and adequate for the
                                workflow-focused demos. Set to empty
@@ -24,30 +24,30 @@ from pathlib import Path
 
 # Bind: 127.0.0.1:PORT by default — the relay never listens on a
 # network-reachable address unless explicitly overridden. The bind
-# address is configurable via TMP_RELAY_BIND so a containerized run
-# (Dockerfile sets TMP_RELAY_BIND=0.0.0.0) can publish through host
+# address is configurable via SWARM_RELAY_BIND so a containerized run
+# (Dockerfile sets SWARM_RELAY_BIND=0.0.0.0) can publish through host
 # port-forwarding without the relay being directly reachable in any
 # other context.
 #
-# Operators who set TMP_RELAY_BIND=0.0.0.0 outside a container expose
+# Operators who set SWARM_RELAY_BIND=0.0.0.0 outside a container expose
 # the relay (and the operator's claude CLI session) to anyone on the
 # LAN — bin/start.{sh,ps1} prints a 5-second warning before doing this.
-PORT = int(os.environ.get('TMP_RELAY_PORT', '3001'))
-BIND = os.environ.get('TMP_RELAY_BIND', '127.0.0.1')
+PORT = int(os.environ.get('SWARM_RELAY_PORT', '3001'))
+BIND = os.environ.get('SWARM_RELAY_BIND', '127.0.0.1')
 
 # Static web root — the relay serves the workshop's launcher and demo HTML
 # from here. Same-origin with /v1/chat eliminates the CORS surface for
 # the demos and replaces the python -m http.server pattern attendees
 # would otherwise be told to run (which binds 0.0.0.0 by default).
 # Resolved relative to the workshop root, two levels up from this file
-# (src/tmp_relay/settings.py → src/tmp_relay → src → <root>).
+# (src/swarm_relay/settings.py → src/swarm_relay → src → <root>).
 WEB_DIR = str(Path(__file__).resolve().parents[2] / 'web')
 
 # Each call spawns a fresh `claude -p` subprocess. CURIE and FERMI phases on
 # typical workshop hardware land at ~250-300s for the unabridged forge demo
 # prompts; 600s gives enough headroom for slower laptops without making real
 # stalls take forever to surface.
-TIMEOUT_SEC = int(os.environ.get('TMP_RELAY_TIMEOUT_SEC', '600'))
+TIMEOUT_SEC = int(os.environ.get('SWARM_RELAY_TIMEOUT_SEC', '600'))
 
 # Per-call ?timeout=N override bounds. Recovery banner's "Continue
 # waiting" can extend the budget within these limits without restarting
@@ -62,10 +62,10 @@ MAX_PERCALL_TIMEOUT_SEC = 1800
 # — those routinely exceed 64 KB once the model produces ~3K+ tokens of
 # structured output, which throws LimitOverrunError mid-stream. 4 MB gives
 # enough headroom for any realistic single-call output.
-SUBPROC_LIMIT = int(os.environ.get('TMP_RELAY_SUBPROC_LIMIT', str(4 * 1024 * 1024)))
+SUBPROC_LIMIT = int(os.environ.get('SWARM_RELAY_SUBPROC_LIMIT', str(4 * 1024 * 1024)))
 
 # Default model overrides the demo's request. See module docstring.
-DEFAULT_MODEL = os.environ.get('TMP_RELAY_MODEL', 'claude-haiku-4-5')
+DEFAULT_MODEL = os.environ.get('SWARM_RELAY_MODEL', 'claude-haiku-4-5')
 
 # Stall watcher: emit a non-fatal `warning` SSE event when no text_delta
 # arrives within this window. Keeps the operator's UI from going silent

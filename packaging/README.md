@@ -22,8 +22,8 @@ bin/start.sh --bind 0.0.0.0           # exposes on LAN (5s confirmation)
 bin/start.sh --skip-checks            # skip doctor
 
 # Docker
-docker build -t tmp-workshop -f packaging/Dockerfile .
-docker run --rm -p 3001:3001 tmp-workshop
+docker build -t swarm-workshop -f packaging/Dockerfile .
+docker run --rm -p 3001:3001 swarm-workshop
 
 # Nix flake
 nix run path:packaging#relay
@@ -37,11 +37,11 @@ cd packaging && nix develop           # dev shell with chromium + pytest
 
 | Var | Default | Notes |
 |---|---|---|
-| `TMP_RELAY_BIND` | `127.0.0.1` | Set to `0.0.0.0` to listen on all interfaces. Dockerfile sets this; bin/start.sh sets it from `--bind`. |
-| `TMP_RELAY_PORT` | `3001` | Match your `-p` host:container forwarding when in Docker. |
-| `TMP_RELAY_TIMEOUT_SEC` | `600` | Per-call subprocess wall-clock. |
-| `TMP_RELAY_SUBPROC_LIMIT` | `4194304` (4 MB) | Per-line stream-json buffer. |
-| `TMP_RELAY_MODEL` | `claude-haiku-4-5` | Override the default model. Empty = honor the body's `model` field. |
+| `SWARM_RELAY_BIND` | `127.0.0.1` | Set to `0.0.0.0` to listen on all interfaces. Dockerfile sets this; bin/start.sh sets it from `--bind`. |
+| `SWARM_RELAY_PORT` | `3001` | Match your `-p` host:container forwarding when in Docker. |
+| `SWARM_RELAY_TIMEOUT_SEC` | `600` | Per-call subprocess wall-clock. |
+| `SWARM_RELAY_SUBPROC_LIMIT` | `4194304` (4 MB) | Per-line stream-json buffer. |
+| `SWARM_RELAY_MODEL` | `claude-haiku-4-5` | Override the default model. Empty = honor the body's `model` field. |
 
 ## Windows-specific notes
 

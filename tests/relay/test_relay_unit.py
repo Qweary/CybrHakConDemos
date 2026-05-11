@@ -1,4 +1,4 @@
-"""Direct unit tests against tmp_relay modules.
+"""Direct unit tests against swarm_relay modules.
 
 Two slices:
   - Pure-function tests (build_args, per_call_timeout, CORS_HEADERS) —
@@ -9,7 +9,7 @@ Two slices:
     /health check + the live harness cover the subprocess path.
 
 Imports rely on pyproject.toml `pythonpath = ["src"]` so `pytest tests/`
-finds tmp_relay without `pip install -e .`.
+finds swarm_relay without `pip install -e .`.
 """
 
 from __future__ import annotations
@@ -21,9 +21,9 @@ from unittest.mock import MagicMock
 from aiohttp.test_utils import TestClient, TestServer
 from yarl import URL
 
-from tmp_relay.claude_subprocess import build_args
-from tmp_relay.server import make_app, per_call_timeout
-from tmp_relay.settings import (
+from swarm_relay.claude_subprocess import build_args
+from swarm_relay.server import make_app, per_call_timeout
+from swarm_relay.settings import (
     CORS_HEADERS,
     MAX_PERCALL_TIMEOUT_SEC,
     MIN_PERCALL_TIMEOUT_SEC,

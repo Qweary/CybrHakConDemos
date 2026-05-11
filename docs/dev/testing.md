@@ -52,7 +52,7 @@ python3 tests/test_snapshots.py --update prompts   # one snapshot
 
 ## Suite 4 — Relay unit tests (`tests/relay/test_relay_unit.py`)
 
-In-process tests against the `tmp_relay` package modules. Two slices:
+In-process tests against the `swarm_relay` package modules. Two slices:
 
 - **Pure functions** — `build_args`, `per_call_timeout`, `CORS_HEADERS`
   shape. No event loop, no network, instant feedback.

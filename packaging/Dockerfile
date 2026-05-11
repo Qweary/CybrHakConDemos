@@ -1,10 +1,10 @@
 # packaging/Dockerfile — workshop relay in a single container.
 #
 # Build:
-#   docker build -t tmp-workshop -f packaging/Dockerfile .
+#   docker build -t swarm-workshop -f packaging/Dockerfile .
 #
 # Run (from the workshop root or anywhere — image is self-contained):
-#   docker run --rm -p 3001:3001 tmp-workshop
+#   docker run --rm -p 3001:3001 swarm-workshop
 #   # → open http://localhost:3001/ in your host browser
 #
 # Providers in-container:
@@ -43,7 +43,7 @@ WORKDIR /workshop
 COPY pyproject.toml README.md ./
 COPY src/ ./src/
 
-# Install in editable mode so the in-tree src/tmp_relay/ is the
+# Install in editable mode so the in-tree src/swarm_relay/ is the
 # canonical Python package; aiohttp comes from pyproject.toml deps.
 RUN pip install --no-cache-dir .
 
@@ -59,8 +59,8 @@ COPY docs/ ./docs/
 # the operator's `-p` flag (e.g., `-p 127.0.0.1:3001:3001` keeps it
 # loopback-only on the host). Outside docker, the same env var is
 # what bin/start.{sh,ps1}'s --bind toggle uses.
-ENV TMP_RELAY_BIND=0.0.0.0
-ENV TMP_RELAY_PORT=3001
+ENV SWARM_RELAY_BIND=0.0.0.0
+ENV SWARM_RELAY_PORT=3001
 
 EXPOSE 3001
 

@@ -24,7 +24,7 @@ set -u
 WORKSHOP="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$WORKSHOP"
 
-PORT="${TMP_RELAY_PORT:-3001}"
+PORT="${SWARM_RELAY_PORT:-3001}"
 BIND="127.0.0.1"
 OPEN_BROWSER=1
 SKIP_CHECKS=0
@@ -129,9 +129,9 @@ if [ $OPEN_BROWSER -eq 1 ]; then
 fi
 
 # --port and --bind are honored via env-var overrides understood by
-# settings.py (TMP_RELAY_PORT / TMP_RELAY_BIND).
-export TMP_RELAY_PORT="$PORT"
-export TMP_RELAY_BIND="$BIND"
+# settings.py (SWARM_RELAY_PORT / SWARM_RELAY_BIND).
+export SWARM_RELAY_PORT="$PORT"
+export SWARM_RELAY_BIND="$BIND"
 
 if [ "$LAUNCH_VIA" = "uv" ]; then
   exec uv run --quiet python3 relay.py

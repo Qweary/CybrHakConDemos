@@ -75,7 +75,7 @@ If `claude_binary_present` is `false`, the relay started in a shell where `claud
 1. Open any demo in your browser (file:// or localhost:8080)
 2. Click the **[ CLAUDE CODE ]** button in the provider selector
 3. No key field appears — authentication flows through your Claude Code installation
-4. Click **[ ⚛ INITIATE FISSION ]** (or **[ SETUP NETWORK ]** / **[ ⚛ BEGIN ANALYSIS ]**) — the demo posts to `http://localhost:3001/v1/chat`
+4. Click **[ ▶ INITIATE FORGE ]** (or **[ SETUP NETWORK ]** / **[ ▶ BEGIN ANALYSIS ]**) — the demo posts to `http://localhost:3001/v1/chat`
 
 Each call spawns a one-shot `claude -p` subprocess. Expect the first call to take a few seconds longer than subsequent calls.
 
@@ -83,7 +83,7 @@ Each call spawns a one-shot `claude -p` subprocess. Expect the first call to tak
 
 ## What Attendees See
 
-LIVE MODE through the CLAUDE CODE provider streams tokens from the model as they are produced. Each long phase (OPPENHEIMER, NEUTRON A+B, CURIE, FERMI, GEIGER, BOHR for forge; red/blue stages for combat; ARBITER/SCULPTOR/RERUN for evolve) writes its output into the demo pane in real time, character by character — no more 60-300 second silent freeze while a phase generates.
+LIVE MODE through the CLAUDE CODE provider streams tokens from the model as they are produced. Each long phase (DIRECTOR, T2-ADVISOR A+B, RESEARCH-LEAD, AGENT-FABRICATOR, QUALITY-GATE, STRUCTURAL-REVIEWER for forge; red/blue stages for combat; ARBITER/SCULPTOR/RERUN for evolve) writes its output into the demo pane in real time, character by character — no more 60-300 second silent freeze while a phase generates.
 
 A small **`tokens: N ▌`** counter in the header increments while the model is producing output. If you see the counter advancing, the model is responding correctly even if a particular pane is still filling. The counter resets at the start of each phase.
 
@@ -114,9 +114,9 @@ Kill the process or change `PORT = 3001` in relay.py to a free port, then update
 → Should not happen — relay.py sends `Access-Control-Allow-Origin: *`. If you see one, confirm you are calling http://localhost:3001 (not https) and that the relay is actually running.
 
 **`claude CLI timeout (600s)`**
-→ A phase took longer than 600 seconds. The default already gives 10 minutes of headroom — the heavy phases (CURIE research, FERMI fabrication, NEUTRON Library Specification) run ~250-300s on typical workshop hardware. If you genuinely need more time, bump the timeout before starting the relay:
+→ A phase took longer than 600 seconds. The default already gives 10 minutes of headroom — the heavy phases (RESEARCH-LEAD research, AGENT-FABRICATOR fabrication, T2-ADVISOR Library Specification) run ~250-300s on typical workshop hardware. If you genuinely need more time, bump the timeout before starting the relay:
 ```bash
-TMP_RELAY_TIMEOUT_SEC=900 python3 relay.py
+SWARM_RELAY_TIMEOUT_SEC=900 python3 relay.py
 ```
 If a single phase needs more time without restarting the relay, the recovery banner's **[ ⏳ Continue waiting (+60s) ]** button bumps the budget for that one call — the demo posts to `?timeout=N` (clamped 60-1800) which overrides the per-call timeout for that single request only.
 If timeouts persist, run `time claude -p "ping" --output-format json` in a separate shell to measure your CLI's baseline latency — anything over ~30s for that minimal call indicates a Claude Code installation issue rather than a relay problem.

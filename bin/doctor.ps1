@@ -132,7 +132,7 @@ if (Get-Command uv -ErrorAction SilentlyContinue) {
 }
 
 # --- workshop layout sanity ----------------------------------------------
-foreach ($required in @('relay.py', 'src\tmp_relay\cli.py', 'web\index.html')) {
+foreach ($required in @('relay.py', 'src\swarm_relay\cli.py', 'web\index.html')) {
     if (Test-Path $required) {
         Pass "found $required"
     } else {
