@@ -93,6 +93,6 @@ After running both scenarios, answer these comparison questions:
 
 ## Optional: Export to EVOLVE
 
-When the exercise finishes, the COMBAT status bar (under the blue pane) shows an **[ OPEN IN EVOLVE DEMO ]** link. Clicking it opens EVOLVE in the same tab; the exercise transcript was already written to `localStorage` (key `tmp_evolve_source`) when the exercise completed, so EVOLVE picks it up automatically.
+When the exercise finishes, the COMBAT status bar (under the blue pane) shows an **[ OPEN IN EVOLVE DEMO ]** link. Clicking it opens EVOLVE in the same tab; the exercise transcript was already written to `localStorage` (key `swarm_evolve_source`) when the exercise completed, so EVOLVE picks it up automatically.
 
 In EVOLVE, click **CHAIN MODE** — it will show the imported exercise ready to load. This is the starting point for LAB-3.

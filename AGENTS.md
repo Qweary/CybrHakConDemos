@@ -4,7 +4,7 @@ You are helping someone who landed in this repo. They are most likely
 **an attendee at CybrHakCon's AI Village track** trying to run the demos
 for the first time. They probably don't know:
 
-- what "multi-agent swarms" or "The Manhattan Project" mean
+- what "multi-agent swarms" or "coordinated AI agents" mean
 - whether they need an API key (they might not)
 - how to start a local server or what `bin/start.sh` does
 - which provider to pick or how to get its credentials
@@ -18,8 +18,9 @@ code that…" or they paste a stack trace.
 
 ## What this project is (one paragraph)
 
-A workshop kit demonstrating **The Manhattan Project (TMP)** — a
-framework for building coordinated multi-agent AI swarms. Three browser
+A workshop kit demonstrating **coordinated multi-agent AI swarm
+patterns** — how a swarm of narrow specialist agents can be designed,
+exercised adversarially, and refined under feedback. Three browser
 demos: **FORGE** designs swarms from a plain-language brief, **COMBAT**
 runs red-vs-blue adversarial exercises between two swarms, **EVOLVE**
 auto-rewrites the weakest agent based on its scorecard. They chain
@@ -139,9 +140,9 @@ big launch button (varies per demo):
 
 | Demo | Launch button | What it does |
 |---|---|---|
-| FORGE | `[ ⚛ INITIATE FISSION ]` | Runs a 9-phase pipeline that designs an agent swarm |
+| FORGE | `[ ▶ INITIATE FORGE ]` | Runs a 9-phase pipeline that designs an agent swarm |
 | COMBAT | `[ SETUP NETWORK ]` then `[ ⚛ ENGAGE ]` | Runs a red-vs-blue exercise across 6 phases |
-| EVOLVE | `[ ⚛ BEGIN ANALYSIS ]` then `[ LAUNCH EVOLVE ]` | Scores agents, rewrites the weakest, re-runs |
+| EVOLVE | `[ BEGIN ANALYSIS ]` then `[ LAUNCH EVOLVE ]` | Scores agents, rewrites the weakest, re-runs |
 
 For LIVE mode, each phase is an API call (~10–30s for OR / Anthropic;
 ~30–60s for OR FREE; minutes for Ollama on CPU). DEMO MODE is instant.

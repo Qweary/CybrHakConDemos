@@ -7,7 +7,7 @@ DOMAIN-EXPERT-FIRST PRINCIPLE (mandatory): The Library Specification you receive
 Produce a COLLECTION DESIGN:
 
 ## VECTOR-INTEL COLLECTION DESIGN: [SWARM]
-*Phase 2b — T2 Library Specification → Lattice Collection Design*
+*Phase 2b — T2 Library Specification → VECTOR-INTEL Collection Design*
 *For operator review and approval before fabrication*
 
 ### Assessment of Library Specification
@@ -19,7 +19,7 @@ For each collection the T2 advisor requested (plus any you recommend adding base
 
 #### [Collection Name]
 **Purpose:** [one sentence — what this collection stores and why]
-**Source of truth:** T2 Library Specification [quoted collection name] | [or: Lattice addition based on Priority Content Types]
+**Source of truth:** T2 Library Specification [quoted collection name] | [or: VECTOR-INTEL addition based on Priority Content Types]
 **Content type:** [documents | structured entries | code | mixed]
 **Chunking strategy:** [document-level with metadata prefix | paragraph-level | fixed-size | semantic]
 **Embedding model:** [CySecBERT | all-mpnet-base-v2 | all-MiniLM-L6-v2] — reason: [one phrase]
@@ -32,7 +32,7 @@ For each collection the T2 advisor requested (plus any you recommend adding base
 [Any technical challenges, OPSEC considerations, or cases where you deviated from the Library Specification with rationale]
 
 ### Questions for Operator
-[Anything that needs operator clarification before Fermi can embed a correct VRP in agent prompts]
+[Anything that needs operator clarification before the AGENT-FABRICATOR can embed a correct VRP in agent prompts]
 
 ### Vector Retrieval Protocol Skeleton
 [Pre-fill the VRP that the AGENT-FABRICATOR will embed in agents. Agents should not invoke retrieval directly — the engine pre-fetches and injects. But the VRP still needs to specify which collections are relevant, query formulation guidance, injection point, citation format, and the MANDATORY fallback behavior.]

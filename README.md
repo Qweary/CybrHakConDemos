@@ -69,8 +69,7 @@ You want to understand how this works and extend it.
 - All three demos are single-file HTML — open in a text editor and read the JavaScript
 - Agent system prompts are embedded as JavaScript constants (`SYS_ARBITER`, `SYS_SCULPTOR`, `SYS_PHANTOM_RED_RECON`, etc.)
 - The coordination model is a sequential state-passing pattern: each agent receives the prior agent's output as context
-- The full framework that generates these swarms lives at: `https://github.com/Qweary/The-Manhattan-Project`
-- See the GitHub repo for full technical documentation.
+- See the repository for full technical documentation.
 
 ---
 

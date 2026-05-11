@@ -275,7 +275,7 @@ body.pmode .ibtn,body.pmode .startbtn,body.pmode .begin-btn{min-height:48px}
 ### Mission Parameters
 Offensive security operations against authorized targets at competitions (CCDC, CPTC) and professional engagements. The swarm executes the full kill chain — pre-engagement reconnaissance through objective achievement and reporting — under a documented authorization scope, with stealth posture against active defenders. Time pressure is severe; competition rounds run 4-8 hours and engagement windows are typically narrow.
 
-### Critical Mass Calculation
+### Agent Count Rationale
 Seven agents. The kill chain has six functional phases (RECON / INITIAL ACCESS / PRIVESC / CRED HARVEST / LATERAL / OBJECTIVES) plus one accountability gate (ENGAGE-COORD) that must own authorization verification independent of any phase agent. Combining the gate into another agent risks legal exposure when scope drifts mid-engagement; combining any two phase agents loses the per-phase artifact handoff that makes the post-engagement report defensible.
 
 ### Agent Roster (7 agents)
@@ -612,7 +612,7 @@ The VRP position (querying before gate clearance) is structurally correct — re
 ### Mission Parameters
 Defensive security for blue team competitions and enterprise SOCs. The swarm runs the detect → investigate → contain → harden cycle against unknown adversaries in real time. Detection speed is the primary success metric — MTTD and MTTR determine whether the adversary achieves objectives before defenders contain them. Operates with incomplete information; must triage under sustained alert volume.
 
-### Critical Mass Calculation
+### Agent Count Rationale
 Six agents. The detection lifecycle requires strict separation between telemetry ingestion (TELEMETRY-ANALYST owns log source health), rule authorship (DETECTION-ENGINEER owns Sigma authoring and correlation), incident command (INCIDENT-COMMANDER owns NIST-aligned containment decisions), evidence handling (FORENSIC-COLLECTOR owns chain-of-custody), proactive hunting (THREAT-HUNTER owns hypothesis-driven searches the rules missed), and intelligence integration (INTEL-ANALYST correlates IOCs to actors). Folding hunt into detection collapses the rule-vs-hunt cognitive separation that makes hunts produce new rules; folding intel into command collapses the sourcing distinction NIST requires for attribution.
 
 ### Agent Roster (6 agents)
@@ -709,13 +709,13 @@ Positive scope: log ingestion from Sysmon (Event IDs 1, 3, 7, 8, 10, 11, 13, 15,
 
 Negative scope: does NOT write Sigma rules (DETECTION-ENGINEER), does NOT make containment decisions (INCIDENT-COMMANDER), does NOT hunt proactively (THREAT-HUNTER).
 
-Expertise content for Fermi: Sysmon Event 1 (process creation) — CommandLine and ParentImage fields are highest-value. Event 3 (network connection) — DestinationIp and DestinationPort. Event 10 (process access) — TargetImage="*lsass.exe" is the credential theft signal. Event 13 (registry modification) — persistence mechanism signal. Zeek conn.log field order: ts, uid, id.orig_h, id.orig_p, id.resp_h, id.resp_p, proto, service, duration, orig_bytes, resp_bytes, conn_state. Port scan SPL: index=zeek sourcetype=conn src_ip=[attacker] | stats dc(dest_port) as unique_ports count by src_ip | where unique_ports > 50.
+Expertise content for AGENT-FABRICATOR: Sysmon Event 1 (process creation) — CommandLine and ParentImage fields are highest-value. Event 3 (network connection) — DestinationIp and DestinationPort. Event 10 (process access) — TargetImage="*lsass.exe" is the credential theft signal. Event 13 (registry modification) — persistence mechanism signal. Zeek conn.log field order: ts, uid, id.orig_h, id.orig_p, id.resp_h, id.resp_p, proto, service, duration, orig_bytes, resp_bytes, conn_state. Port scan SPL: index=zeek sourcetype=conn src_ip=[attacker] | stats dc(dest_port) as unique_ports count by src_ip | where unique_ports > 50.
 
 **DETECTION-ENGINEER** — Sigma rule authorship and event correlation.
 
 Positive scope: Sigma YAML authoring against INVARIANT adversary behaviors (what attacker cannot change). Correlation of detection-feed.md events into active-threats.md entries with confidence ratings.
 
-Expertise for Fermi: Invariant targeting principle — target the behavior attacker cannot change. LSASS access by non-whitelisted SourceImage is invariant; mimikatz.exe filename is variant. Sigma structure: title, id (UUID v4), status (experimental/test/stable), tags (attack.t{id}), logsource (category + product), detection (selection + filter_main + condition), level, falsepositives. Correlation thresholds: password spray = ≥5 Event 4625 failures against ≥3 accounts from 1 IP within 300s; post-failure success = failed auth followed by 4624 from same IP within 10min = CONFIRMED.
+Expertise for AGENT-FABRICATOR: Invariant targeting principle — target the behavior attacker cannot change. LSASS access by non-whitelisted SourceImage is invariant; mimikatz.exe filename is variant. Sigma structure: title, id (UUID v4), status (experimental/test/stable), tags (attack.t{id}), logsource (category + product), detection (selection + filter_main + condition), level, falsepositives. Correlation thresholds: password spray = ≥5 Event 4625 failures against ≥3 accounts from 1 IP within 300s; post-failure success = failed auth followed by 4624 from same IP within 10min = CONFIRMED.
 
 Handoff artifact: active-threats.md entries → consumed by INCIDENT-COMMANDER.
 
@@ -850,7 +850,7 @@ For a rule-authoring agent, the audit weights detection-surface coverage and fal
 
 Check                                | Result | Finding
 -------------------------------------|--------|---------------------------------------------------------
-Sigma invariant targeting            | PASS   | Concrete examples (LSASS SourceImage as invariant; mimikatz.exe as variant) embedded at the expertise level — Fermi internalized the principle, not just the rule
+Sigma invariant targeting            | PASS   | Concrete examples (LSASS SourceImage as invariant; mimikatz.exe as variant) embedded at the expertise level — AGENT-FABRICATOR internalized the principle, not just the rule
 Correlation threshold specificity    | PASS   | Numerical thresholds (≥5 failures, ≥3 accounts, 300s; post-failure success within 10m → CONFIRMED) — directly machine-parseable, no runtime interpretation needed
 False positive management            | PASS   | Audit-mode deployment + 7-day rolling baseline before live alerting; falsepositives field required, not optional
 Detection-first ordering             | PASS   | community Sigma query precedes new rule authorship — prevents duplication and leverages community tuning, with security_sigma_rules as the operational anchor
@@ -859,7 +859,7 @@ Research integration                 | PASS   | Sysmon Event ID semantics (Event
 
 ### Notable Strengths
 
-Invariant-vs-variant guidance is operationalized rather than abstracted. The agent will reach for behavior-based selectors (process access patterns, command-line flags) over filename-based selectors (binary names) without prompting — Fermi got the principle into the expertise profile, not the rules section.
+Invariant-vs-variant guidance is operationalized rather than abstracted. The agent will reach for behavior-based selectors (process access patterns, command-line flags) over filename-based selectors (binary names) without prompting — AGENT-FABRICATOR got the principle into the expertise profile, not the rules section.
 
 Correlation thresholds are numerically specific to the point of being directly executable: an agent receiving "≥5 failures, ≥3 accounts, 300s" needs no further specification to write the SPL or KQL query. This is the correct depth.
 
@@ -900,7 +900,7 @@ Fallback subsection handles three distinct conditions per agent domain (unavaila
 ### Mission Parameters
 Infrastructure security assessment and hardening across cloud-native and on-premise estates. The swarm enumerates the full attack surface, audits configuration against security baselines, correlates findings against CVE exploitability, and produces both a technical remediation guide and an executive summary. Operations must function on heterogeneous environments without protocol assumptions; deliverables target two distinct audiences.
 
-### Critical Mass Calculation
+### Agent Count Rationale
 Six agents covering an enrichment pipeline rather than a kill chain. Asset discovery (ASSET-MAPPER), service fingerprinting (SERVICE-PROBER), configuration audit (CONFIG-AUDITOR), CVE correlation (VULN-CORRELATOR), risk prioritization (RISK-SCORER), and reporting (REPORT-WRITER) each enrich the registry with a different data class. Folding fingerprinting into discovery introduces noise (port scans during asset enumeration); folding correlation into audit conflates CIS compliance with CVE exploitability — different remediation owners, different SLAs.
 
 ### Agent Roster (6 agents)
@@ -1000,11 +1000,11 @@ ASSET-REGISTRY.md schema: hostname | IP | OS | cloud_provider | region | service
 
 **VULN-CORRELATOR** — CVE correlation is high-value and retrieval-dense.
 
-Expertise for Fermi: CVSS 3.x scoring — base score from AV/AC/PR/UI/S/C/I/A vectors. EPSS (Exploit Prediction Scoring System) provides probability of exploitation within 30 days — EPSS > 0.5 elevates any CVSS Medium to High priority regardless of base score. Nuclei template matching: `nuclei -l targets.txt -t cves/ -severity critical,high -o vuln-scan.json`. Correlation: match service/version from SERVICE-PROBER against CVE CPE entries using CPE match strings — do not manual-match version strings.
+Expertise for AGENT-FABRICATOR: CVSS 3.x scoring — base score from AV/AC/PR/UI/S/C/I/A vectors. EPSS (Exploit Prediction Scoring System) provides probability of exploitation within 30 days — EPSS > 0.5 elevates any CVSS Medium to High priority regardless of base score. Nuclei template matching: `nuclei -l targets.txt -t cves/ -severity critical,high -o vuln-scan.json`. Correlation: match service/version from SERVICE-PROBER against CVE CPE entries using CPE match strings — do not manual-match version strings.
 
 **CONFIG-AUDITOR** — CIS benchmark compliance review.
 
-Expertise for Fermi: CIS benchmark control format — control ID (e.g., CIS-DOCKER-2.1), scoring status (Scored/Not Scored), audit command, remediation command. Docker: `docker info --format '{{.SecurityOptions}}'` for seccomp/AppArmor; `docker inspect [container] --format '{{.HostConfig.Privileged}}'` for privilege escalation check. Kubernetes: `kubectl get clusterrolebinding -o json | jq '.items[] | select(.subjects[].kind=="ServiceAccount") | .metadata.name'` for excessive RBAC. Cloud: AWS Security Hub findings via `aws securityhub get-findings --filters '{}'`.
+Expertise for AGENT-FABRICATOR: CIS benchmark control format — control ID (e.g., CIS-DOCKER-2.1), scoring status (Scored/Not Scored), audit command, remediation command. Docker: `docker info --format '{{.SecurityOptions}}'` for seccomp/AppArmor; `docker inspect [container] --format '{{.HostConfig.Privileged}}'` for privilege escalation check. Kubernetes: `kubectl get clusterrolebinding -o json | jq '.items[] | select(.subjects[].kind=="ServiceAccount") | .metadata.name'` for excessive RBAC. Cloud: AWS Security Hub findings via `aws securityhub get-findings --filters '{}'`.
 
 ### Output B: Library Specification
 
@@ -1177,12 +1177,12 @@ Region blindness is documented as a known failure mode (30+ AWS regions) with th
 <body class="pmode">
 <div class="banner">⬛ MULTI-AGENT SWARM FORGE // FULL PIPELINE ⬛</div>
 <div class="hdr">
-  <div><div class="ht">⚛ MULTI-AGENT SWARM FORGE</div><div class="hs">9-PHASE PIPELINE WITH VECTOR-INTEL INTEGRATION <span class="bdg">CONFERENCE DEMO v3.0</span></div></div>
+  <div><div class="ht">◆ MULTI-AGENT SWARM FORGE</div><div class="hs">9-PHASE PIPELINE WITH VECTOR-INTEL INTEGRATION <span class="bdg">CONFERENCE DEMO v3.0</span></div></div>
   <div class="hr"><div>FRAMEWORK v1.10.4 | IQ-0053 T2→VECTOR-INTEL WORKFLOW</div><div>7 AGENTS — 9 PHASES — OPERATOR GATE</div><div id="ts">—</div><span id="tok-count" style="display:none;color:var(--g);font-size:9px;letter-spacing:1px;border:1px solid var(--g);padding:1px 5px;margin-left:8px;font-variant-numeric:tabular-nums">tokens: 0 ▌</span><span id="demo-hdr-badge" style="display:none;color:var(--b);font-size:9px;letter-spacing:2px;border:1px solid var(--b);padding:1px 5px;margin-left:8px">[DEMO]</span></div>
 </div>
 
 <div class="pbar">
-  <div class="ph done" id="ph0" title="Phase 0: IGNITION — Session start, operator briefing, framework warm-up"><span class="pn">P0</span>IGNITION<span class="pa">standby</span></div>
+  <div class="ph done" id="ph0" title="Phase 0: STARTUP — Session start, operator briefing, framework warm-up"><span class="pn">P0</span>STARTUP<span class="pa">standby</span></div>
   <div class="ph" id="ph1" title="Phase 1: DIRECTOR — Domain analysis and swarm architecture document"><span class="pn">P1</span>DIRECTOR<span class="pa">arch+VRA</span></div>
   <div class="ph" id="ph2" title="Phase 1b: VECTOR-INTEL — Vector Readiness Assessment (goes to operator only)"><span class="pn">P1b</span>VECTOR-INTEL VRA<span class="pa">readiness</span></div>
   <div class="ph" id="ph3" title="Phase 2: T2 ADVISOR — Micro-specialization map + Library Specification"><span class="pn">P2</span>T2 ADVISOR<span class="pa">spec+libspec</span></div>
@@ -1190,7 +1190,7 @@ Region blindness is documented as a known failure mode (30+ AWS regions) with th
   <div class="ph" id="ph5" title="Phase 2c: OPERATOR GATE — Review and approve before fabrication begins"><span class="pn">P2c</span>OP GATE<span class="pa">approve</span></div>
   <div class="ph" id="ph6" title="Phase 3: RESEARCH-LEAD + AGENT-FABRICATOR — Tooling research, then agent fabrication with Vector Retrieval Protocol"><span class="pn">P3</span>RESEARCH+FAB<span class="pa">research+fab</span></div>
   <div class="ph" id="ph7" title="Phase 4: QUALITY-GATE + STRUCTURAL-REVIEWER — Domain accuracy + structural review"><span class="pn">P4</span>QUALITY+STRUCT<span class="pa">validation</span></div>
-  <div class="ph" id="ph8" title="Phase 5: CRITICAL MASS — Final package assembly, manifest, output"><span class="pn">P5</span>CRITICAL MASS<span class="pa">package</span></div>
+  <div class="ph" id="ph8" title="Phase 5: PACKAGE — Final package assembly, manifest, output"><span class="pn">P5</span>PACKAGE<span class="pa">package</span></div>
 </div>
 
 <div class="layout">
@@ -1241,13 +1241,13 @@ Region blindness is documented as a known failure mode (30+ AWS regions) with th
     <div class="ar"><div class="dot db" id="d-b"></div><span>STRUCTURAL-REVIEWER</span><span class="ati">STRUCTURAL</span></div>
   </div></div></div>
 
-  <div class="sec"><div class="sh">// REACTOR FILES</div><div class="sb2"><div class="rl">
-    <div class="rf" id="rf0"><span>CHAIN-REACTION.md</span><span>IDLE</span></div>
-    <div class="rf" id="rf1"><span>CRITICAL-MASS.md</span><span>IDLE</span></div>
-    <div class="rf" id="rf2"><span>ISOTOPE-LOG.md</span><span>IDLE</span></div>
-    <div class="rf" id="rf3"><span>THE-PILE.md</span><span>IDLE</span></div>
-    <div class="rf" id="rf4"><span>YIELD-METRICS.md</span><span>IDLE</span></div>
-    <div class="rf" id="rf5"><span>SITUATION-ROOM.md</span><span>IDLE</span></div>
+  <div class="sec"><div class="sh">// COORDINATION FILES</div><div class="sb2"><div class="rl">
+    <div class="rf" id="rf0"><span>TASK-TREE.md</span><span>IDLE</span></div>
+    <div class="rf" id="rf1"><span>AGENT-ROSTER.md</span><span>IDLE</span></div>
+    <div class="rf" id="rf2"><span>DECISION-LOG.md</span><span>IDLE</span></div>
+    <div class="rf" id="rf3"><span>KNOWLEDGE.md</span><span>IDLE</span></div>
+    <div class="rf" id="rf4"><span>QUALITY-METRICS.md</span><span>IDLE</span></div>
+    <div class="rf" id="rf5"><span>STATUS-DASHBOARD.md</span><span>IDLE</span></div>
   </div></div></div>
 </div>
 
@@ -1258,7 +1258,7 @@ Region blindness is documented as a known failure mode (30+ AWS regions) with th
         <button class="swb sel" data-t="red" onclick="pick(this)"><span class="si">⚔</span><span class="sl">RED TEAM</span></button>
         <button class="swb" data-t="blue" onclick="pick(this)"><span class="si">🛡</span><span class="sl">BLUE TEAM</span></button>
         <button class="swb" data-t="infra" onclick="pick(this)"><span class="si">⚙</span><span class="sl">INFRA OPS</span></button>
-        <button class="swb" data-t="custom" onclick="pick(this)"><span class="si">⚛</span><span class="sl">CUSTOM</span></button>
+        <button class="swb" data-t="custom" onclick="pick(this)"><span class="si">◆</span><span class="sl">CUSTOM</span></button>
       </div></div>
       <div id="cfd" class="cf"><div class="hr2"></div><label>CUSTOM BRIEF</label><textarea id="ct" placeholder="Describe your domain and mission..."></textarea></div>
       <div><label>T2 ADVISOR ASSIGNED</label><div id="adv-lbl" style="font-size:11px;color:var(--t);text-shadow:var(--gt)">PEN-TEST-ADVISOR — Penetration Tester</div></div>
@@ -1273,7 +1273,7 @@ Region blindness is documented as a known failure mode (30+ AWS regions) with th
     <button class="demo-btn" id="demo-btn" onclick="toggleDemoMode()" title="Pre-scripted forge playback — no API key required">[ ◉ DEMO MODE ]</button>
     <button class="demo-btn" id="step-btn" onclick="toggleStepMode()" title="Pause between phases — click to advance. Use to explain each stage to the audience.">[ ⏸ STEP MODE ]</button>
   </div>
-  <button class="ibtn ctrl-aux-ibtn" id="ibtn" onclick="runForge()">⚛ INITIATE FISSION</button>
+  <button class="ibtn ctrl-aux-ibtn" id="ibtn" onclick="runForge()">▶ INITIATE FORGE</button>
 </div>
 
 <div id="error-recovery-banner" style="display:none">
@@ -1287,15 +1287,15 @@ Region blindness is documented as a known failure mode (30+ AWS regions) with th
   <div class="ttb"><div class="tds"><div class="td td-r"></div><div class="td td-y"></div><div class="td td-g"></div></div>
     <span class="ttl">FORGE // 9-PHASE PIPELINE // T2→VECTOR-INTEL→OPERATOR→AGENT-FABRICATOR+VRP</span></div>
   <div class="term" id="term">
-    <div class="ts">Reactor Core initialized. 9-phase FORGE pipeline ready.</div>
-    <div class="ts">Framework v1.10.4 | IQ-0053 T2→Lattice workflow</div>
+    <div class="ts">Forge Core initialized. 9-phase FORGE pipeline ready.</div>
+    <div class="ts">Framework v1.10.4 | IQ-0053 T2→VECTOR-INTEL workflow</div>
     <div class="tg"></div>
     <div style="color:#6868a0;font-size:11px;line-height:2.1;">
 Phase 1&nbsp;&nbsp;→ <span style="color:var(--a)">DIRECTOR</span> — Domain analysis + Swarm Architecture Document<br>
-Phase 1b → <span style="color:var(--b)">VECTOR-INTEL</span> — Vector Readiness Assessment (VRA → operator only, per TRAINING-DATA-INTEGRITY.md)<br>
+Phase 1b → <span style="color:var(--b)">VECTOR-INTEL</span> — Vector Readiness Assessment (VRA → operator only, per DATA-INTEGRITY.md)<br>
 Phase 2&nbsp;&nbsp;→ <span style="color:var(--t)">T2 ADVISOR</span> — Micro-Specialization Map <em>+ Library Specification</em> (IQ-0053)<br>
 Phase 2b → <span style="color:var(--b)">T2→VECTOR-INTEL</span> — T2 Library Spec handed to VECTOR-INTEL; VECTOR-INTEL produces Collection Design<br>
-Phase 2c → <span style="color:var(--o)">OPERATOR GATE</span> — Review T2+Lattice output; approve or modify before fabrication<br>
+Phase 2c → <span style="color:var(--o)">OPERATOR GATE</span> — Review T2+VECTOR-INTEL output; approve or modify before fabrication<br>
 Phase 3a → <span style="color:var(--b)">RESEARCH-LEAD</span> — Research briefing (current TTPs, tools, failure modes)<br>
 Phase 3b → <span style="color:var(--p)">AGENT-FABRICATOR</span> — Fabricate agent with VRP embedded (if vector-enabled)<br>
 Phase 4a → <span style="color:var(--g)">QUALITY-GATE</span> — Quality gate: domain accuracy, VRP completeness, deployment readiness<br>
@@ -1303,7 +1303,7 @@ Phase 4b → <span style="color:var(--a)">STRUCTURAL-REVIEWER</span> — Structu
     </div>
   </div>
   <div class="op" id="op">
-    <div class="ophdr"><div class="optl">⬥ CRITICAL MASS — PACKAGE READY FOR DEPLOYMENT</div>
+    <div class="ophdr"><div class="optl">⬥ PACKAGE READY FOR DEPLOYMENT</div>
       <div class="oas">
         <button class="ab ab-cp" onclick="cpOut()">[ COPY ]</button>
         <button class="ab ab-dl" onclick="dlOut()">[ DOWNLOAD .MD ]</button>
@@ -1317,12 +1317,12 @@ Phase 4b → <span style="color:var(--a)">STRUCTURAL-REVIEWER</span> — Structu
 <script>
 // ============================================================================
 // MULTI-AGENT SWARM FORGE v3.0
-// 9-phase pipeline including IQ-0053 T2→Lattice→Operator workflow.
+// 9-phase pipeline including IQ-0053 T2→VECTOR-INTEL→Operator workflow.
 // 7 real API calls, each with unabridged agent system prompts.
 //
 // Phase order:
 //  1  DIRECTOR     — domain analysis, swarm architecture
-//  1b VECTOR-INTEL — VRA (goes to operator only per TRAINING-DATA-INTEGRITY.md)
+//  1b VECTOR-INTEL — VRA (goes to operator only per DATA-INTEGRITY.md)
 //  2  T2 ADVISOR   — micro-spec map + library specification (IQ-0053)
 //  2b T2→VEC-INTEL — VECTOR-INTEL receives library spec, produces collection design
 //  2c OP GATE      — operator reviews and approves before fabrication
@@ -1335,9 +1335,23 @@ Phase 4b → <span style="color:var(--a)">STRUCTURAL-REVIEWER</span> — Structu
 let selSwarm = 'red', running = false, finalPkg = '', agentCN = 'AGENT';
 let operatorNotes = '', vectorEnabled = false;
 let gateResolve = null;
-let forgeProvider = localStorage.getItem('tmp_provider') || 'anthropic';
-if(forgeProvider==='local'){forgeProvider='cc';localStorage.setItem('tmp_provider','cc');}
-let forgeOrModel = localStorage.getItem('tmp_or_model') || 'anthropic/claude-sonnet-4-6';
+// One-shot localStorage migration: rewrite legacy tmp_* keys to swarm_* and
+// drop the old ones. Returning users with existing saved settings (API keys
+// especially) keep their state across the rename without manual reconfig.
+(function migrateLegacyKeys(){
+  const map = ['or_key','provider','or_model','ollama_model','evolve_key','combat_key','evolve_source','evolve_export'];
+  for(const k of map){
+    const oldK='tmp_'+k, newK='swarm_'+k;
+    if(localStorage.getItem(newK)===null){
+      const v=localStorage.getItem(oldK);
+      if(v!==null){localStorage.setItem(newK,v);}
+    }
+    localStorage.removeItem(oldK);
+  }
+})();
+let forgeProvider = localStorage.getItem('swarm_provider') || 'anthropic';
+if(forgeProvider==='local'){forgeProvider='cc';localStorage.setItem('swarm_provider','cc');}
+let forgeOrModel = localStorage.getItem('swarm_or_model') || 'anthropic/claude-sonnet-4-6';
 let demoMode = false;
 
 // Pre-scripted demo content — per swarm type
@@ -1385,7 +1399,7 @@ Analyze the domain brief and produce a SWARM ARCHITECTURE DOCUMENT. Begin with #
 ### Mission Parameters
 [2-3 sentences: what this swarm does, for whom, operational constraints]
 
-### Critical Mass Calculation
+### Agent Count Rationale
 [2-3 sentences: why this number of agents, what coverage rationale]
 
 ### Agent Roster (5-7 agents)
@@ -1412,7 +1426,7 @@ Rationale: [one sentence]
 [Agent codename and one sentence: why this agent first]
 
 ### Vector Readiness Pre-Assessment
-[Brief paragraph: is this the type of swarm that repeats against similar environments, needs domain knowledge mid-task, maintains state across sessions, or has overlapping knowledge needs across agents? This pre-assessment informs the Lattice VRA.]
+[Brief paragraph: is this the type of swarm that repeats against similar environments, needs domain knowledge mid-task, maintains state across sessions, or has overlapping knowledge needs across agents? This pre-assessment informs the VECTOR-INTEL VRA.]
 
 Keep total under 700 words.`;
 
@@ -1420,7 +1434,7 @@ SYS.LATTICE_VRA = `You are VECTOR-INTEL — the vector intelligence specialist o
 
 You have received a Swarm Architecture Document from the DIRECTOR. Run the VRA against it.
 
-IMPORTANT — VRA OUTPUT ROUTING (per TRAINING-DATA-INTEGRITY.md Rule 1):
+IMPORTANT — VRA OUTPUT ROUTING (per DATA-INTEGRITY.md Rule 1):
 This VRA output goes to the OPERATOR ONLY. The T2 domain advisor will NOT see this output unless the operator chooses to share it. The T2 advisor will receive a blank Library Specification template and author their own library requirements from domain knowledge. This sequencing prevents suggestion-confirmation loops that would degrade training data quality.
 
 Produce the VRA REPORT:
@@ -1514,7 +1528,7 @@ OUTPUT B: LIBRARY SPECIFICATION
 
 Your expertise: detection rule development in Sigma (SIEM-agnostic YAML format compiling to SPL/KQL/etc.), YARA (file/memory patterns), Snort/Suricata (network traffic); alert tuning and false positive management (audit-mode deployment, rolling 7-day median ±2σ baseline, progressive refinement); detection coverage assessment against MITRE ATT&CK (T-code mapping, heatmap generation, gap analysis); threat hunting (hypothesis-driven hunt, IOC pivoting via process tree analysis, behavioral analytics for lateral movement); log source management (Windows Security Event IDs: 4624/4625/4648/4688/4698/7045, Sysmon Events: 1/3/7/8/10/11/13/15/17/22, Zeek conn.log/dns.log/http.log/ssl.log, Suricata alerts, PowerShell script block logging, WMI activity); SIEM query construction (Splunk SPL, Elastic KQL, Microsoft Sentinel KQL, QRadar AQL); EDR telemetry interpretation (CrowdStrike Falcon, SentinelOne, Microsoft Defender for Endpoint); correlation patterns (credential attack differentiation: password spray = distributed sources, brute force = single source, credential stuffing = valid-user targeting).
 
-Given a Swarm Architecture Document from Oppenheimer, produce TWO outputs:
+Given a Swarm Architecture Document from the DIRECTOR, produce TWO outputs:
 
 OUTPUT A: MICRO-SPECIALIZATION MAP
 ## MICRO-SPECIALIZATION MAP: [SWARM]
@@ -1546,7 +1560,7 @@ OUTPUT B: LIBRARY SPECIFICATION
 
 Your expertise: infrastructure enumeration (nmap, masscan, nuclei, cloud inventory via AWS CLI/gcloud/az); configuration review against CIS benchmarks (CIS Docker 1.x, CIS Kubernetes, CIS Linux) and DISA STIGs; container security (Trivy for image scanning, Grype for SBOMs, Falco for runtime monitoring, OPA/Gatekeeper for policy enforcement); Kubernetes hardening (RBAC review, network policies, pod security standards, etcd encryption, admission controllers, audit logging); CI/CD pipeline security (secret scanning with Gitleaks/TruffleHog, SAST integration, dependency review, signed commits, supply chain verification with SLSA); Infrastructure-as-Code review (Terraform static analysis with Checkov/tfsec, Helm chart security, Ansible playbook review); vulnerability management (CVE correlation with CVSS 3.x scoring, exploitability assessment with EPSS, patch prioritization matrices); cloud security posture management (Prowler, ScoutSuite, CloudMapper).
 
-Given a Swarm Architecture Document from Oppenheimer, produce TWO outputs:
+Given a Swarm Architecture Document from the DIRECTOR, produce TWO outputs:
 
 OUTPUT A: MICRO-SPECIALIZATION MAP
 ## MICRO-SPECIALIZATION MAP: [SWARM]
@@ -1578,7 +1592,7 @@ OUTPUT B: LIBRARY SPECIFICATION
 
 You analyze the operator's domain description and produce a domain-grounded Micro-Specialization Map using structured research methodology: decompose the operational workflow into discrete phases, identify the natural boundaries between phases (defined by handoff artifacts), design narrow agents that own exactly one phase, and specify the expertise content that makes each agent genuinely specialized.
 
-Given a Swarm Architecture Document from Oppenheimer, produce TWO outputs:
+Given a Swarm Architecture Document from the DIRECTOR, produce TWO outputs:
 
 OUTPUT A: MICRO-SPECIALIZATION MAP
 ## MICRO-SPECIALIZATION MAP: [SWARM]
@@ -1616,7 +1630,7 @@ DOMAIN-EXPERT-FIRST PRINCIPLE (mandatory): The Library Specification you receive
 Produce a COLLECTION DESIGN:
 
 ## VECTOR-INTEL COLLECTION DESIGN: [SWARM]
-*Phase 2b — T2 Library Specification → Lattice Collection Design*
+*Phase 2b — T2 Library Specification → VECTOR-INTEL Collection Design*
 *For operator review and approval before fabrication*
 
 ### Assessment of Library Specification
@@ -1628,7 +1642,7 @@ For each collection the T2 advisor requested (plus any you recommend adding base
 
 #### [Collection Name]
 **Purpose:** [one sentence — what this collection stores and why]
-**Source of truth:** T2 Library Specification [quoted collection name] | [or: Lattice addition based on Priority Content Types]
+**Source of truth:** T2 Library Specification [quoted collection name] | [or: VECTOR-INTEL addition based on Priority Content Types]
 **Content type:** [documents | structured entries | code | mixed]
 **Chunking strategy:** [document-level with metadata prefix | paragraph-level | fixed-size | semantic]
 **Embedding model:** [CySecBERT | all-mpnet-base-v2 | all-MiniLM-L6-v2] — reason: [one phrase]
@@ -1641,7 +1655,7 @@ For each collection the T2 advisor requested (plus any you recommend adding base
 [Any technical challenges, OPSEC considerations, or cases where you deviated from the Library Specification with rationale]
 
 ### Questions for Operator
-[Anything that needs operator clarification before Fermi can embed a correct VRP in agent prompts]
+[Anything that needs operator clarification before the AGENT-FABRICATOR can embed a correct VRP in agent prompts]
 
 ### Vector Retrieval Protocol Skeleton
 [Pre-fill the VRP that the AGENT-FABRICATOR will embed in agents. Agents should not invoke retrieval directly — the engine pre-fetches and injects. But the VRP still needs to specify which collections are relevant, query formulation guidance, injection point, citation format, and the MANDATORY fallback behavior.]
@@ -1937,7 +1951,7 @@ function approveGate(){
 function skipVectorGate(){
   vectorEnabled=false;
   document.getElementById('op-gate').remove();
-  t(`<div class="ts">Operator skipped vector layer. Fermi will fabricate without VRP.</div>`);
+  t(`<div class="ts">Operator skipped vector layer. AGENT-FABRICATOR will fabricate without VRP.</div>`);
   if(gateResolve){gateResolve('skipped');gateResolve=null;}
 }
 function tick(){document.getElementById('ts').textContent=new Date().toISOString().replace('T',' ').slice(0,19)+' UTC'}
@@ -1957,7 +1971,7 @@ async function callAnthropic(sys,user,ak){
 async function callOpenRouter(sys,user,ak){
   const model=(document.getElementById('or-model-inp')?.value.trim())||forgeOrModel;
   const h={'Content-Type':'application/json','Authorization':`Bearer ${ak}`,
-    'HTTP-Referer':'https://github.com/The-Manhattan-Project','X-Title':'The Manhattan Project'};
+    'HTTP-Referer':'https://github.com/Qweary/CybrHakConDemos','X-Title':'CybrHakConDemos'};
   const r=await fetch('https://openrouter.ai/api/v1/chat/completions',{
     method:'POST',headers:h,
     body:JSON.stringify({model,max_tokens:1800,messages:[{role:'system',content:sys},{role:'user',content:user}]})
@@ -2062,7 +2076,7 @@ async function callWithRecovery(label, fn, el){
     }catch(e){
       const choice=await showPhaseRecovery(label,e.message);
       if(choice==='continue'){
-        opts.timeoutSec=(opts.timeoutSec||TMP_DEFAULT_TIMEOUT)+60;
+        opts.timeoutSec=(opts.timeoutSec||FORGE_DEFAULT_TIMEOUT)+60;
       }else if(choice==='retry'){
         opts.timeoutSec=0;
       }else if(choice==='skip'){
@@ -2079,7 +2093,7 @@ async function callWithRecovery(label, fn, el){
     }
   }
 }
-const TMP_DEFAULT_TIMEOUT=600;
+const FORGE_DEFAULT_TIMEOUT=600;
 function showPhaseRecovery(label,msg){
   return new Promise(resolve=>{
     const banner=document.createElement('div');
@@ -2102,7 +2116,7 @@ function showPhaseRecovery(label,msg){
   });
 }
 async function callOllama(sys,user){
-  const model=(document.getElementById('ollama-model-inp')?.value.trim())||localStorage.getItem('tmp_ollama_model')||'llama3.2';
+  const model=(document.getElementById('ollama-model-inp')?.value.trim())||localStorage.getItem('swarm_ollama_model')||'llama3.2';
   const r=await fetch('http://localhost:11434/v1/chat/completions',{
     method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({model,max_tokens:1800,messages:[{role:'system',content:sys},{role:'user',content:user}]})
@@ -2116,7 +2130,7 @@ async function call(sys,user,ak){
   if(forgeProvider==='orfree'){
     const model=(document.getElementById('or-model-inp')?.value.trim())||'google/gemini-2.0-flash-exp:free';
     const h={'Content-Type':'application/json','Authorization':`Bearer ${ak}`,
-      'HTTP-Referer':'https://github.com/The-Manhattan-Project','X-Title':'The Manhattan Project'};
+      'HTTP-Referer':'https://github.com/Qweary/CybrHakConDemos','X-Title':'CybrHakConDemos'};
     const r=await fetch('https://openrouter.ai/api/v1/chat/completions',{
       method:'POST',headers:h,
       body:JSON.stringify({model,max_tokens:1800,messages:[{role:'system',content:sys},{role:'user',content:user}]})
@@ -2147,7 +2161,7 @@ async function runForge(){
   running=true;vectorEnabled=false;operatorNotes='';agentCN='AGENT';finalPkg='';
   hideTokens();
   const btn=document.getElementById('ibtn');
-  btn.disabled=true;btn.textContent='⚛ CHAIN REACTION IN PROGRESS...';
+  btn.disabled=true;btn.textContent='⚙ FORGE PIPELINE RUNNING...';
   document.getElementById('term').innerHTML='';
   document.getElementById('op').classList.remove('show');
   document.getElementById('vb').classList.remove('show');
@@ -2160,7 +2174,7 @@ async function runForge(){
 
   try{
     setP(0);
-    t(`<div class="ts">FISSION initiated — ${new Date().toISOString()}</div>`);
+    t(`<div class="ts">FORGE initiated — ${new Date().toISOString()}</div>`);
     t(`<div class="ts">Mission: ${sw.label} | T2 Advisor: ${sw.advName} | 9-phase pipeline</div>`);
     rf(0,'INITIALIZING','wr');rf(1,'INITIALIZING','wr');
     await sleep(300);
@@ -2173,7 +2187,7 @@ async function runForge(){
     {
       const e1=document.createElement('div');e1.innerHTML=`<div class="tc opp" id="e-opp"></div>`;term().appendChild(e1);
       const el=document.getElementById('e-opp');
-      archDoc=await callWithRecovery('OPPENHEIMER',
+      archDoc=await callWithRecovery('DIRECTOR',
         opts=>writeInto(el,SYS.OPPENHEIMER,budget(`Domain Brief:\n\n${brief}`,1500),ak,'OPPENHEIMER',opts),el);
     }
     dot('o','done');rf(0,'UPDATED ✓','up');rf(1,'UPDATED ✓','up');rf(2,'UPDATED ✓','up');rf(5,'UPDATED ✓','up');
@@ -2184,7 +2198,7 @@ async function runForge(){
     setP(2);dot('l','active');
     rf(3,'WRITING','wr');
     t(`<div class="tah cl">VECTOR-INTEL // VECTOR INTELLIGENCE — VRA (Phase 1b)</div>`);
-    t(`<div class="ts">Running Vector Readiness Assessment. Output: OPERATOR ONLY per TRAINING-DATA-INTEGRITY.md Rule 1...</div>`);
+    t(`<div class="ts">Running Vector Readiness Assessment. Output: OPERATOR ONLY per DATA-INTEGRITY.md Rule 1...</div>`);
     {
       const e2=document.createElement('div');e2.innerHTML=`<div class="tc lat" id="e-vra"></div>`;term().appendChild(e2);
       const el=document.getElementById('e-vra');
@@ -2224,7 +2238,7 @@ async function runForge(){
       partA=await callWithRecovery(`${sw.advName} (micro-spec)`,
         opts=>writeInto(elA,sysA,budget(advUser,1500),ak,'ADVISOR',opts),elA);
       await sleep(120);
-      t(`<div class="ts">Micro-Specialization Map authored. Now authoring Library Specification for Lattice...</div>`);
+      t(`<div class="ts">Micro-Specialization Map authored. Now authoring Library Specification for VECTOR-INTEL...</div>`);
       const e3b=document.createElement('div');e3b.innerHTML=`<div class="tc t2" id="e-t2b"></div>`;term().appendChild(e3b);
       const elB=document.getElementById('e-t2b');
       partB=await callWithRecovery(`${sw.advName} (library spec)`,
@@ -2324,12 +2338,12 @@ async function runForge(){
     dot('b','done');
     await sleep(250);
 
-    // ═══ PHASE 5: CRITICAL MASS ═══
+    // ═══ PHASE 5: PACKAGE ═══
     setP(8);
     t(`<div class="tg"></div>`);
-    t(`<div class="tcrit">⬥ CRITICAL MASS — ${agentCN} CLEARED FOR DEPLOYMENT ⬥</div>`);
+    t(`<div class="tcrit">⬥ PACKAGE READY — ${agentCN} CLEARED FOR DEPLOYMENT ⬥</div>`);
     t(`<div class="ts">9-phase FORGE pipeline complete. Commit to swarms/ in your repository.</div>`);
-    if(vectorEnabled)t(`<div class="ts">Vector-enabled: include vectors/ directory. Initialize VECTOR-CONFIG.md from Lattice Collection Design.</div>`);
+    if(vectorEnabled)t(`<div class="ts">Vector-enabled: include vectors/ directory. Initialize VECTOR-CONFIG.md from VECTOR-INTEL Collection Design.</div>`);
 
     const ts=new Date().toISOString();
     const gV=(geigerRpt.match(/\*\*Status:\*\*\s*(.+)/)||[])[1]||'SEE REPORT';
@@ -2346,7 +2360,7 @@ async function runForge(){
       `  Pipeline: IQ-0053 T2→VECTOR-INTEL→Operator workflow`,
       ``,
       `  Commit to: swarms/[name]/agents/${agentCN.toLowerCase()}.md`,
-      `  If vector-enabled: initialize vectors/VECTOR-CONFIG.md from Lattice Collection Design below`,
+      `  If vector-enabled: initialize vectors/VECTOR-CONFIG.md from VECTOR-INTEL Collection Design below`,
       `-->`,``,
       `# SWARM ARCHITECTURE DOCUMENT`,``,archDoc,``,`---`,``,
       `# VECTOR-INTEL VRA (OPERATOR ONLY)`,``,vraDoc,``,`---`,``,
@@ -2362,12 +2376,12 @@ async function runForge(){
     document.getElementById('op').classList.add('show');
 
   }catch(err){
-    t(`<div class="tg"></div><div class="terr">REACTOR FAULT: ${err.message}</div>`);
-    t(`<div class="ts">Check API key and network. Consult MELTDOWN.md for recovery.</div>`);
+    t(`<div class="tg"></div><div class="terr">FORGE FAULT: ${err.message}</div>`);
+    t(`<div class="ts">Check API key and network. Consult RECOVERY.md for recovery.</div>`);
     showErrorRecovery();
     setP(0);
   }finally{
-    running=false;btn.disabled=false;btn.textContent=demoMode?'▶ RUN DEMO':'⚛ INITIATE FISSION';
+    running=false;btn.disabled=false;btn.textContent=demoMode?'▶ RUN DEMO':'▶ INITIATE FORGE';
   }
 }
 
@@ -2384,7 +2398,7 @@ function cpOut(){
   });
 }
 function resetUI(){
-  document.getElementById('term').innerHTML='<div class="ts">Reset. Awaiting FISSION command.</div>';
+  document.getElementById('term').innerHTML='<div class="ts">Reset. Awaiting FORGE command.</div>';
   document.getElementById('op').classList.remove('show');
   document.getElementById('vb').classList.remove('show');
   document.getElementById('vp').style.display='block';
@@ -2395,7 +2409,7 @@ function resetUI(){
 
 function setForgeProvider(p,init){
   forgeProvider=p;
-  if(!init)localStorage.setItem('tmp_provider',p);
+  if(!init)localStorage.setItem('swarm_provider',p);
   document.getElementById('prv-ant').classList.toggle('sel',p==='anthropic');
   document.getElementById('prv-or').classList.toggle('sel',p==='openrouter');
   document.getElementById('prv-cc').classList.toggle('sel',p==='cc');
@@ -2421,7 +2435,7 @@ function setForgeProvider(p,init){
     if(ollamaRow)ollamaRow.style.display='';
     if(notice)notice.style.display='none';
     if(ollamaNotice)ollamaNotice.style.display='';
-    const saved=localStorage.getItem('tmp_ollama_model');
+    const saved=localStorage.getItem('swarm_ollama_model');
     const mi=document.getElementById('ollama-model-inp');
     if(mi&&saved)mi.value=saved;
   }else if(p==='orfree'){
@@ -2433,7 +2447,7 @@ function setForgeProvider(p,init){
     if(mi&&!mi.value)mi.placeholder='google/gemini-2.0-flash-exp:free';
     if(notice)notice.style.display='';
     if(ollamaNotice)ollamaNotice.style.display='none';
-    const ok=localStorage.getItem('tmp_or_key');
+    const ok=localStorage.getItem('swarm_or_key');
     if(ok){document.getElementById('ak').value=ok;document.getElementById('ak-row').style.display='none';document.getElementById('ak-conf').style.display='block';}
     else{document.getElementById('ak').value='';document.getElementById('ak-row').style.display='';document.getElementById('ak-conf').style.display='none';}
   }else if(p==='openrouter'){
@@ -2445,7 +2459,7 @@ function setForgeProvider(p,init){
     if(mi&&mi.placeholder==='google/gemini-2.0-flash-exp:free')mi.placeholder='anthropic/claude-sonnet-4-6';
     if(notice)notice.style.display='none';
     if(ollamaNotice)ollamaNotice.style.display='none';
-    const ok=localStorage.getItem('tmp_or_key');
+    const ok=localStorage.getItem('swarm_or_key');
     if(ok){document.getElementById('ak').value=ok;document.getElementById('ak-row').style.display='none';document.getElementById('ak-conf').style.display='block';}
     else{document.getElementById('ak').value='';document.getElementById('ak-row').style.display='';document.getElementById('ak-conf').style.display='none';}
   }else{
@@ -2461,24 +2475,24 @@ function setForgeProvider(p,init){
   }
 }
 function clearForgeKey(){
-  if(forgeProvider==='openrouter'||forgeProvider==='orfree')localStorage.removeItem('tmp_or_key');
+  if(forgeProvider==='openrouter'||forgeProvider==='orfree')localStorage.removeItem('swarm_or_key');
   else if(forgeProvider!=='cc'&&forgeProvider!=='ollama')localStorage.removeItem('tmp3_key');
   document.getElementById('ak').value='';
   document.getElementById('ak-row').style.display='';
   document.getElementById('ak-conf').style.display='none';
 }
 setForgeProvider(forgeProvider,true);
-const savedForgeMdl=localStorage.getItem('tmp_or_model');
+const savedForgeMdl=localStorage.getItem('swarm_or_model');
 if(savedForgeMdl){forgeOrModel=savedForgeMdl;const mi=document.getElementById('or-model-inp');if(mi)mi.value=savedForgeMdl;}
 document.getElementById('ak').addEventListener('input',e=>{
-  if(forgeProvider==='openrouter'||forgeProvider==='orfree')localStorage.setItem('tmp_or_key',e.target.value);
+  if(forgeProvider==='openrouter'||forgeProvider==='orfree')localStorage.setItem('swarm_or_key',e.target.value);
   else localStorage.setItem('tmp3_key',e.target.value);
 });
 document.getElementById('or-model-inp')?.addEventListener('input',e=>{
-  forgeOrModel=e.target.value;localStorage.setItem('tmp_or_model',forgeOrModel);
+  forgeOrModel=e.target.value;localStorage.setItem('swarm_or_model',forgeOrModel);
 });
 document.getElementById('ollama-model-inp')?.addEventListener('input',e=>{
-  localStorage.setItem('tmp_ollama_model',e.target.value);
+  localStorage.setItem('swarm_ollama_model',e.target.value);
 });
 
 function toggleDemoMode(){
@@ -2487,7 +2501,7 @@ function toggleDemoMode(){
   btn.classList.toggle('active',demoMode);
   btn.textContent=demoMode?'[ ◉ DEMO MODE ON ]':'[ ◉ DEMO MODE ]';
   const ibtn=document.getElementById('ibtn');
-  if(ibtn)ibtn.textContent=demoMode?'▶ RUN DEMO':'⚛ INITIATE FISSION';
+  if(ibtn)ibtn.textContent=demoMode?'▶ RUN DEMO':'▶ INITIATE FORGE';
   const badge=document.getElementById('demo-hdr-badge');
   if(badge)badge.style.display=demoMode?'inline-block':'none';
   const note=document.getElementById('demo-note');
@@ -2550,6 +2564,5 @@ document.addEventListener('keydown',function(e){if(e.code==='Space'&&e.target.ta
 document.addEventListener('keydown',function(e){if(e.ctrlKey&&e.key==='d'){e.preventDefault();toggleDemoMode();}});
 document.addEventListener('keydown',function(e){if(e.ctrlKey&&e.key==='p'){e.preventDefault();document.body.classList.toggle('pmode');}});
 </script>
-<div class="fw-attrib">Powered by <a href="https://github.com/Qweary/The-Manhattan-Project" target="_blank" rel="noopener">The Manhattan Project</a> framework</div>
 </body>
 </html>

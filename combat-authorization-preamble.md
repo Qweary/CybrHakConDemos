@@ -1,6 +1,6 @@
 # Combat Synthetic-Lab Grounding Note
 
-Source of truth for the `SYS_AUTHORIZATION_PREAMBLE` JS constant in `tmp-combat-live.html`. Prepended to system prompts on consumer-grade provider paths (`cc`, `orfree`, `ollama`); skipped on `anthropic` direct and paid `openrouter` (those tiers should be configured with the operator's CVP-approved API key for production reliability).
+Source of truth for the `SYS_AUTHORIZATION_PREAMBLE` JS constant in `web/combat.html`. Prepended to system prompts on consumer-grade provider paths (`cc`, `orfree`, `ollama`); skipped on `anthropic` direct and paid `openrouter` (those tiers should be configured with the operator's CVP-approved API key for production reliability).
 
 ## Design notes
 

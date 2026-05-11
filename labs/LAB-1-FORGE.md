@@ -12,14 +12,14 @@ The FORGE demo runs a 9-phase pipeline:
 
 | Phase | Agent | What Happens |
 |---|---|---|
-| P1 | Oppenheimer (Director) | Analyzes your domain, identifies the workflow stages |
-| P1b | Lattice | Vector Readiness Assessment — does this domain benefit from a knowledge store? |
+| P1 | DIRECTOR | Analyzes your domain, identifies the workflow stages |
+| P1b | VECTOR-INTEL | Vector Readiness Assessment — does this domain benefit from a knowledge store? |
 | P2 | Domain Advisor | Designs the micro-specialization map — which agents, what each one does |
-| P2b | T2→Lattice | Translates the advisor's library spec into a vector collection design |
-| **P2c** | **Operator Gate** | **⬥ Interactive pause — read the T2 + Lattice output and click [ ✓ APPROVE ] to continue** |
-| P3 | Curie (Research) | Identifies current tooling and techniques for your domain |
-| P3b | Fermi (Fabrication) | Builds each agent: name, role, system prompt, tool requirements |
-| P4 | Geiger + Bohr (QA) | Validates agents for domain accuracy, structural completeness, and design principles |
+| P2b | T2→VECTOR-INTEL | Translates the advisor's library spec into a vector collection design |
+| **P2c** | **Operator Gate** | **⬥ Interactive pause — read the T2 + VECTOR-INTEL output and click [ ✓ APPROVE ] to continue** |
+| P3 | RESEARCH-LEAD | Identifies current tooling and techniques for your domain |
+| P3b | AGENT-FABRICATOR | Builds each agent: name, role, system prompt, tool requirements |
+| P4 | QUALITY-GATE + STRUCTURAL-REVIEWER | Validates agents for domain accuracy, structural completeness, and design principles |
 | P5 | Packaging | Produces the final swarm package with README and deployment instructions |
 
 ---
@@ -50,16 +50,16 @@ You don't have to use security examples. This works for any domain.
 
 ### Step 3: Launch and Observe
 
-Click **[ ⚛ INITIATE FISSION ]** (the button is labeled **[ ▶ RUN DEMO ]** if you have DEMO MODE turned on). Watch each phase run.
+Click **[ ▶ INITIATE FORGE ]** (the button is labeled **[ ▶ RUN DEMO ]** if you have DEMO MODE turned on). Watch each phase run.
 
-> **Phase 2c — Operator Gate:** The pipeline pauses here and shows you the T2 Advisor's micro-specialization map and Lattice's vector collection design. Read them, then click **[ APPROVE — PROCEED TO FABRICATION ]** (or modify the spec first, or skip the vector layer). This is the only interactive pause in the pipeline.
+> **Phase 2c — Operator Gate:** The pipeline pauses here and shows you the T2 Advisor's micro-specialization map and VECTOR-INTEL's vector collection design. Read them, then click **[ APPROVE — PROCEED TO FABRICATION ]** (or modify the spec first, or skip the vector layer). This is the only interactive pause in the pipeline.
 
 Key things to notice:
 
-- How does Oppenheimer decompose your description into workflow stages?
-- What names does Fermi give the agents? Do they feel right for your domain?
+- How does the DIRECTOR phase decompose your description into workflow stages?
+- What names does AGENT-FABRICATOR give the agents? Do they feel right for your domain?
 - Read one or two of the fabricated system prompts — are the tool requirements and domain constraints accurate?
-- What does Geiger flag? Does it catch anything Fermi missed?
+- What does QUALITY-GATE flag? Does it catch anything AGENT-FABRICATOR missed?
 
 ### Step 4: Reflect
 

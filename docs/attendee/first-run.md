@@ -52,7 +52,7 @@ Prerequisite: `claude --version` works in your terminal. If not, install Claude 
 1. Run `python3 relay.py` from the workshop root directory (do this once, leave it running)
 2. Open any demo and click **[ CLAUDE CODE ]**
 3. No key field appears — authentication flows through your local `claude` CLI
-4. Click `[ ⚛ INITIATE FISSION ]` — calls go to `http://localhost:3001/v1/chat`, which spawns `claude -p` for each phase
+4. Click `[ ▶ INITIATE FORGE ]` — calls go to `http://localhost:3001/v1/chat`, which spawns `claude -p` for each phase
 
 See **providers/claude-code.md** for installation prerequisites and troubleshooting.
 
@@ -145,10 +145,10 @@ separately if your Claude Code subscription already covers your usage.
 
 Your key is stored under one of these localStorage keys depending on the demo:
 
-- Forge: `tmp_or_key`
-- Combat: `tmp_or_key`
-- Evolve: `tmp_or_key`
+- Forge: `swarm_or_key`
+- Combat: `swarm_or_key`
+- Evolve: `swarm_or_key`
 
 All three demos share the same key. Paste it once in any demo and it will be available in all three (as long as you're using the same browser and same origin path).
 
-To clear your key: open browser DevTools → Application → Local Storage → delete `tmp_or_key`.
+To clear your key: open browser DevTools → Application → Local Storage → delete `swarm_or_key`.

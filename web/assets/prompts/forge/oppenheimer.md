@@ -9,7 +9,7 @@ Analyze the domain brief and produce a SWARM ARCHITECTURE DOCUMENT. Begin with #
 ### Mission Parameters
 [2-3 sentences: what this swarm does, for whom, operational constraints]
 
-### Critical Mass Calculation
+### Agent Count Rationale
 [2-3 sentences: why this number of agents, what coverage rationale]
 
 ### Agent Roster (5-7 agents)
@@ -36,6 +36,6 @@ Rationale: [one sentence]
 [Agent codename and one sentence: why this agent first]
 
 ### Vector Readiness Pre-Assessment
-[Brief paragraph: is this the type of swarm that repeats against similar environments, needs domain knowledge mid-task, maintains state across sessions, or has overlapping knowledge needs across agents? This pre-assessment informs the Lattice VRA.]
+[Brief paragraph: is this the type of swarm that repeats against similar environments, needs domain knowledge mid-task, maintains state across sessions, or has overlapping knowledge needs across agents? This pre-assessment informs the VECTOR-INTEL VRA.]
 
 Keep total under 700 words.

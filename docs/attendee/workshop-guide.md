@@ -1,4 +1,4 @@
-SYSTEM CONTEXT FOR AI ASSISTANT: You are helping an attendee at the AI Village workshop at CybrHakCon 2026. The workshop is titled "Multi-Agent AI Systems for Offensive and Defensive Security." The presenter is demonstrating The Manhattan Project (TMP), a framework for building and running coordinated multi-agent AI swarms.
+SYSTEM CONTEXT FOR AI ASSISTANT: You are helping an attendee at the AI Village workshop at CybrHakCon 2026. The workshop is titled "Multi-Agent AI Systems for Offensive and Defensive Security." The presenter is demonstrating a framework for building and running coordinated multi-agent AI swarms.
 
 This guide gives you everything you need to answer the attendee's questions accurately.
 
@@ -6,7 +6,7 @@ This guide gives you everything you need to answer the attendee's questions accu
 
 ## What the Three Demos Do
 
-**FORGE** (`web/forge.html`): A swarm factory. The attendee describes a domain or workflow in plain language, and the demo runs a 9-phase pipeline that designs a complete multi-agent swarm from scratch. Phases are: Oppenheimer (domain analysis), Lattice (vector readiness), T2 Domain Advisor (micro-spec map), Curie (research), Fermi (agent fabrication), Geiger (quality gate), and packaging. Output is a full swarm package: agent names, system prompts, tool requirements, coordination files.
+**FORGE** (`web/forge.html`): A swarm factory. The attendee describes a domain or workflow in plain language, and the demo runs a 9-phase pipeline that designs a complete multi-agent swarm from scratch. Phases are: DIRECTOR (domain analysis), VECTOR-INTEL (vector readiness), T2 Domain Advisor (micro-spec map), RESEARCH-LEAD (research), AGENT-FABRICATOR (agent fabrication), QUALITY-GATE + STRUCTURAL-REVIEWER (quality and structural review), and packaging. Output is a full swarm package: agent names, system prompts, tool requirements, coordination files.
 
 **COMBAT** (`web/combat.html`): A red-vs-blue adversarial exercise. Two swarms — red team (attackers) and blue team (defenders) — run through a structured 6-phase exercise. Two scenarios are available: IRONCLAD (traditional enterprise network attack) and PHANTOM FEED (MLOps/AI pipeline supply chain poisoning). Blue must detect red at each phase. The demo shows how the same blue team performs differently against these two very different threat models.
 
@@ -79,7 +79,7 @@ Use DEMO MODE to observe the workflow, understand the phases, or present to an a
 ## Lab Progression
 
 **LAB-1 (labs/LAB-1-FORGE.md) — ~30 minutes**
-Open FORGE. Write 2–4 sentences describing your real workflow (security function, operational domain, or anything else). Click `[ ⚛ INITIATE FISSION ]` (or `[ ▶ RUN DEMO ]` if DEMO MODE is on) and watch the 9 phases run. Reflect on decomposition accuracy, agent design quality, and what you'd refine first.
+Open FORGE. Write 2–4 sentences describing your real workflow (security function, operational domain, or anything else). Click `[ ▶ INITIATE FORGE ]` (or `[ ▶ RUN DEMO ]` if DEMO MODE is on) and watch the 9 phases run. Reflect on decomposition accuracy, agent design quality, and what you'd refine first.
 
 **LAB-2 (labs/LAB-2-COMBAT.md) — ~45 minutes**
 Open COMBAT. Run IRONCLAD, then PHANTOM FEED. Compare how the blue team performs across the two scenarios — same agents, different threat models, different detection outcomes. Answer the reflection questions in the lab file.
@@ -94,13 +94,13 @@ The forge output from LAB-1 can also be pasted into EVOLVE's CUSTOM mode to impr
 ## How Export/Import Between Demos Works
 
 **COMBAT → EVOLVE:**
-When a COMBAT exercise completes, the status bar under the blue pane shows an `[ OPEN IN EVOLVE DEMO ]` link, and COMBAT writes the exercise transcript to `localStorage` under the key `tmp_evolve_source`. Open EVOLVE and click CHAIN MODE; it reads the transcript automatically and shows it ready to load.
+When a COMBAT exercise completes, the status bar under the blue pane shows an `[ OPEN IN EVOLVE DEMO ]` link, and COMBAT writes the exercise transcript to `localStorage` under the key `swarm_evolve_source`. Open EVOLVE and click CHAIN MODE; it reads the transcript automatically and shows it ready to load.
 
 **FORGE → EVOLVE:**
 Copy the fabricated agent output from FORGE's terminal. In EVOLVE, select CUSTOM mode and paste the agent system prompt into the input field. Run the improvement cycle on it.
 
 **Key persistence:**
-All three demos share `tmp_provider` (provider choice) and `tmp_or_key` (OpenRouter key) in localStorage. Set your key in any demo and it's available in all three as long as you're in the same browser session on the same origin (file:// path or localhost:8080).
+All three demos share `swarm_provider` (provider choice) and `swarm_or_key` (OpenRouter key) in localStorage. Set your key in any demo and it's available in all three as long as you're in the same browser session on the same origin (file:// path or localhost:8080).
 
 ---
 
@@ -114,7 +114,7 @@ All three demos share `tmp_provider` (provider choice) and `tmp_or_key` (OpenRou
 
 4. **Switch from file:// to the relay** — if you're opening the demo via `file://`, start the relay (`python3 relay.py` from the workshop root) and load the demo at `http://localhost:3001/forge.html` instead. Same-origin avoids browser `file://` restrictions on `fetch()`.
 
-5. **Ask the presenter** during the session, or open an issue at https://github.com/Qweary/The-Manhattan-Project after the conference.
+5. **Ask the presenter** during the session, or open an issue at https://github.com/Qweary/CybrHakConDemos after the conference.
 
 ---
 

@@ -797,9 +797,23 @@ let networkState='';
 let combatDemo=false;
 let currentScenario='ironclad';
 
-let combatProvider = localStorage.getItem('tmp_provider') || 'anthropic';
-if(combatProvider==='local'){combatProvider='cc';localStorage.setItem('tmp_provider','cc');}
-let combatOrModel = localStorage.getItem('tmp_or_model') || 'anthropic/claude-sonnet-4-6';
+// One-shot localStorage migration: rewrite legacy tmp_* keys to swarm_* and
+// drop the old ones. Returning users with existing saved settings (API keys
+// especially) keep their state across the rename without manual reconfig.
+(function migrateLegacyKeys(){
+  const map = ['or_key','provider','or_model','ollama_model','evolve_key','combat_key','evolve_source','evolve_export'];
+  for(const k of map){
+    const oldK='tmp_'+k, newK='swarm_'+k;
+    if(localStorage.getItem(newK)===null){
+      const v=localStorage.getItem(oldK);
+      if(v!==null){localStorage.setItem(newK,v);}
+    }
+    localStorage.removeItem(oldK);
+  }
+})();
+let combatProvider = localStorage.getItem('swarm_provider') || 'anthropic';
+if(combatProvider==='local'){combatProvider='cc';localStorage.setItem('swarm_provider','cc');}
+let combatOrModel = localStorage.getItem('swarm_or_model') || 'anthropic/claude-sonnet-4-6';
 let evolvedAgent = null; // refined agent loaded from evolve demo export
 
 // Pre-scripted demo content
@@ -1330,7 +1344,7 @@ function toggleCombatDemo(){
     document.getElementById('cak-conf').style.display='none';
     document.getElementById('binfo').textContent='DEMO MODE — pre-scripted playback, no API key needed.';
   }else{
-    const ck=localStorage.getItem('tmp_combat_key');
+    const ck=localStorage.getItem('swarm_combat_key');
     if(ck){document.getElementById('cak').style.display='none';document.getElementById('cak-conf').style.display='block';}
     else{document.getElementById('cak').style.display='';document.getElementById('cak-conf').style.display='none';}
     document.getElementById('binfo').textContent='Setup vulnerable network, then engage to begin the exercise.';
@@ -2342,14 +2356,14 @@ async function streamPhase(el,sys,user,ak,opts){
 // Per-phase recovery wrapper for combat. Same shape as forge's: continue/
 // retry/skip/demo/abort. Skip writes a `[stage skipped]` marker into the
 // phase pane so the SIEM and downstream stages can keep running.
-const TMP_COMBAT_DEFAULT_TIMEOUT=600;
+const SWARM_COMBAT_DEFAULT_TIMEOUT=600;
 async function callWithRecovery(label, fn, el){
   const opts={timeoutSec:0};
   while(true){
     try{ return await fn(opts); }
     catch(e){
       const choice=await showCombatPhaseRecovery(label,e.message);
-      if(choice==='continue'){opts.timeoutSec=(opts.timeoutSec||TMP_COMBAT_DEFAULT_TIMEOUT)+60;}
+      if(choice==='continue'){opts.timeoutSec=(opts.timeoutSec||SWARM_COMBAT_DEFAULT_TIMEOUT)+60;}
       else if(choice==='retry'){opts.timeoutSec=0;}
       else if(choice==='skip'){
         const marker=`[${label} skipped by operator — recovery from: ${e.message}]`;
@@ -2387,7 +2401,7 @@ async function callAPI(sys,user,ak){
   sys=applyAuthPreamble(sys);
   if(combatProvider==='cc')return callClaudeCode(sys,user);
   if(combatProvider==='ollama'){
-    const model=(document.getElementById('cor-ollama-model')?.value.trim())||localStorage.getItem('tmp_ollama_model')||'llama3.2';
+    const model=(document.getElementById('cor-ollama-model')?.value.trim())||localStorage.getItem('swarm_ollama_model')||'llama3.2';
     const r=await fetch('http://localhost:11434/v1/chat/completions',{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({model,max_tokens:900,messages:[{role:'system',content:sys},{role:'user',content:user}]})
@@ -2400,7 +2414,7 @@ async function callAPI(sys,user,ak){
       ?((document.getElementById('cor-model')?.value.trim())||'google/gemini-2.0-flash-exp:free')
       :((document.getElementById('cor-model')?.value.trim())||combatOrModel);
     const h={'Content-Type':'application/json','Authorization':`Bearer ${ak}`,
-      'HTTP-Referer':'https://github.com/The-Manhattan-Project','X-Title':'The Manhattan Project'};
+      'HTTP-Referer':'https://github.com/Qweary/CybrHakConDemos','X-Title':'CybrHakConDemos'};
     const r=await fetch('https://openrouter.ai/api/v1/chat/completions',{
       method:'POST',headers:h,
       body:JSON.stringify({model,max_tokens:900,messages:[{role:'system',content:sys},{role:'user',content:user}]})
@@ -2606,7 +2620,7 @@ async function engage(){
         return{stage:`${st.rLabel}/${st.bLabel}`,red_outcome:'PASS',
           blue_outcome:passed&&!failed?'PASS':failed?'FAIL':'PARTIAL'};
       });
-      localStorage.setItem('tmp_evolve_source',JSON.stringify({
+      localStorage.setItem('swarm_evolve_source',JSON.stringify({
         version:1,timestamp:new Date().toISOString(),
         exercise_name:currentScenario==='phantom'?'OPERATION PHANTOM FEED':'OPERATION IRONCLAD',domain:'red_vs_blue',
         network_summary:networkState.slice(0,800),
@@ -2661,7 +2675,7 @@ tick2();setInterval(tick2,1000);
 
 function setCombatProvider(p,init){
   combatProvider=p;
-  if(!init)localStorage.setItem('tmp_provider',p);
+  if(!init)localStorage.setItem('swarm_provider',p);
   document.getElementById('cprv-ant').classList.toggle('sel',p==='anthropic');
   document.getElementById('cprv-or').classList.toggle('sel',p==='openrouter');
   document.getElementById('cprv-cc').classList.toggle('sel',p==='cc');
@@ -2681,7 +2695,7 @@ function setCombatProvider(p,init){
     if(ollamaNote)ollamaNote.style.display='none';
   }else if(p==='ollama'){
     if(mdl)mdl.style.display='none';
-    if(ollamaMdl){ollamaMdl.style.display='';const saved=localStorage.getItem('tmp_ollama_model');if(saved)ollamaMdl.value=saved;}
+    if(ollamaMdl){ollamaMdl.style.display='';const saved=localStorage.getItem('swarm_ollama_model');if(saved)ollamaMdl.value=saved;}
     if(cak)cak.style.display='none';
     document.getElementById('cak-conf').style.display='none';
     if(freeNote)freeNote.style.display='none';
@@ -2692,7 +2706,7 @@ function setCombatProvider(p,init){
     if(freeNote)freeNote.style.display='';
     if(ollamaNote)ollamaNote.style.display='none';
     if(cak)cak.placeholder='OpenRouter Key (sk-or-...)';
-    const ok=localStorage.getItem('tmp_or_key');
+    const ok=localStorage.getItem('swarm_or_key');
     if(ok){cak.value=ok;cak.style.display='none';document.getElementById('cak-conf').style.display='block';}
     else{cak.value='';cak.style.display='';document.getElementById('cak-conf').style.display='none';}
   }else if(p==='openrouter'){
@@ -2701,7 +2715,7 @@ function setCombatProvider(p,init){
     if(freeNote)freeNote.style.display='none';
     if(ollamaNote)ollamaNote.style.display='none';
     if(cak)cak.placeholder='OpenRouter Key (sk-or-...)';
-    const ok=localStorage.getItem('tmp_or_key');
+    const ok=localStorage.getItem('swarm_or_key');
     if(ok){cak.value=ok;cak.style.display='none';document.getElementById('cak-conf').style.display='block';}
     else{cak.value='';cak.style.display='';document.getElementById('cak-conf').style.display='none';}
   }else{
@@ -2710,37 +2724,37 @@ function setCombatProvider(p,init){
     if(freeNote)freeNote.style.display='none';
     if(ollamaNote)ollamaNote.style.display='none';
     if(cak)cak.placeholder='Anthropic API Key (sk-ant-...)';
-    const ak=localStorage.getItem('tmp_combat_key');
+    const ak=localStorage.getItem('swarm_combat_key');
     if(ak){cak.value=ak;cak.style.display='none';document.getElementById('cak-conf').style.display='block';}
     else{cak.value='';cak.style.display='';document.getElementById('cak-conf').style.display='none';}
   }
 }
 function clearCombatKey(){
-  if(combatProvider==='openrouter'||combatProvider==='orfree')localStorage.removeItem('tmp_or_key');
-  else localStorage.removeItem('tmp_combat_key');
+  if(combatProvider==='openrouter'||combatProvider==='orfree')localStorage.removeItem('swarm_or_key');
+  else localStorage.removeItem('swarm_combat_key');
   const cak=document.getElementById('cak');
   cak.value='';cak.style.display='';
   document.getElementById('cak-conf').style.display='none';
 }
 setCombatProvider(combatProvider,true);
-const savedCombatMdl=localStorage.getItem('tmp_or_model');
+const savedCombatMdl=localStorage.getItem('swarm_or_model');
 if(savedCombatMdl){combatOrModel=savedCombatMdl;const mi=document.getElementById('cor-model');if(mi)mi.value=savedCombatMdl;}
 document.getElementById('cak').addEventListener('input',e=>{
-  if(combatProvider==='openrouter'||combatProvider==='orfree')localStorage.setItem('tmp_or_key',e.target.value);
-  else localStorage.setItem('tmp_combat_key',e.target.value);
+  if(combatProvider==='openrouter'||combatProvider==='orfree')localStorage.setItem('swarm_or_key',e.target.value);
+  else localStorage.setItem('swarm_combat_key',e.target.value);
 });
 document.getElementById('cor-model')?.addEventListener('input',e=>{
-  combatOrModel=e.target.value;localStorage.setItem('tmp_or_model',combatOrModel);
+  combatOrModel=e.target.value;localStorage.setItem('swarm_or_model',combatOrModel);
 });
 document.getElementById('cor-ollama-model')?.addEventListener('input',e=>{
-  localStorage.setItem('tmp_ollama_model',e.target.value);
+  localStorage.setItem('swarm_ollama_model',e.target.value);
 });
 
 // ─── Evolve demo bidirectional import ───
 let _evolveData=null;
 function checkEvolveExport(){
   try{
-    const raw=localStorage.getItem('tmp_evolve_export');
+    const raw=localStorage.getItem('swarm_evolve_export');
     if(!raw)return;
     const data=JSON.parse(raw);
     if(data.version!==1||!data.refined_agent?.name||!data.refined_agent?.refined_prompt)return;
@@ -2754,7 +2768,7 @@ function checkEvolveExport(){
   }catch(_){}
 }
 checkEvolveExport();
-window.addEventListener('storage', function(e){ if(e.key==='tmp_evolve_export'&&e.newValue) checkEvolveExport(); });
+window.addEventListener('storage', function(e){ if(e.key==='swarm_evolve_export'&&e.newValue) checkEvolveExport(); });
 function loadEvolvedAgent(){
   if(!_evolveData)return;
   evolvedAgent=_evolveData.refined_agent;
@@ -2819,6 +2833,5 @@ document.addEventListener('keydown',function(e){if(e.code==='Space'&&e.target.ta
 document.addEventListener('keydown',function(e){if(e.ctrlKey&&e.key==='d'){e.preventDefault();toggleCombatDemo();}});
 document.addEventListener('keydown',function(e){if(e.ctrlKey&&e.key==='p'){e.preventDefault();document.body.classList.toggle('pmode');}});
 </script>
-<div class="fw-attrib">Powered by <a href="https://github.com/Qweary/The-Manhattan-Project" target="_blank" rel="noopener">The Manhattan Project</a> framework</div>
 </body>
 </html>

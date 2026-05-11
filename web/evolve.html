@@ -1244,9 +1244,23 @@ let cycleNum = 1;
 let evolveRunning = false;
 let demoMode = false;
 let stepMode = false;
-let evolveProvider = localStorage.getItem('tmp_provider') || 'anthropic';
-if(evolveProvider==='local'){evolveProvider='cc';localStorage.setItem('tmp_provider','cc');}
-let evolveOrModel = localStorage.getItem('tmp_or_model') || 'anthropic/claude-sonnet-4-6';
+// One-shot localStorage migration: rewrite legacy tmp_* keys to swarm_* and
+// drop the old ones. Returning users with existing saved settings (API keys
+// especially) keep their state across the rename without manual reconfig.
+(function migrateLegacyKeys(){
+  const map = ['or_key','provider','or_model','ollama_model','evolve_key','combat_key','evolve_source','evolve_export'];
+  for(const k of map){
+    const oldK='tmp_'+k, newK='swarm_'+k;
+    if(localStorage.getItem(newK)===null){
+      const v=localStorage.getItem(oldK);
+      if(v!==null){localStorage.setItem(newK,v);}
+    }
+    localStorage.removeItem(oldK);
+  }
+})();
+let evolveProvider = localStorage.getItem('swarm_provider') || 'anthropic';
+if(evolveProvider==='local'){evolveProvider='cc';localStorage.setItem('swarm_provider','cc');}
+let evolveOrModel = localStorage.getItem('swarm_or_model') || 'anthropic/claude-sonnet-4-6';
 let chainData = null;
 
 let exerciseTranscript = '';
@@ -1485,7 +1499,7 @@ RULES:
 // ─── Provider / API ───
 function setEvolveProvider(p, init) {
   evolveProvider = p;
-  if (!init) localStorage.setItem('tmp_provider', p);
+  if (!init) localStorage.setItem('swarm_provider', p);
   document.getElementById('eprv-ant').classList.toggle('sel', p === 'anthropic');
   document.getElementById('eprv-or').classList.toggle('sel', p === 'openrouter');
   document.getElementById('eprv-cc').classList.toggle('sel', p === 'cc');
@@ -1505,7 +1519,7 @@ function setEvolveProvider(p, init) {
     if (ollamaNote) ollamaNote.style.display = 'none';
   } else if (p === 'ollama') {
     if (mdl) mdl.style.display = 'none';
-    if (ollamaMdl) { ollamaMdl.style.display = ''; const saved = localStorage.getItem('tmp_ollama_model'); if (saved) ollamaMdl.value = saved; }
+    if (ollamaMdl) { ollamaMdl.style.display = ''; const saved = localStorage.getItem('swarm_ollama_model'); if (saved) ollamaMdl.value = saved; }
     if (eak) eak.style.display = 'none';
     document.getElementById('eak-conf').style.display = 'none';
     if (freeNote) freeNote.style.display = 'none';
@@ -1516,7 +1530,7 @@ function setEvolveProvider(p, init) {
     if (freeNote) freeNote.style.display = '';
     if (ollamaNote) ollamaNote.style.display = 'none';
     if (eak) eak.placeholder = 'OpenRouter Key (sk-or-...)';
-    const ok = localStorage.getItem('tmp_or_key');
+    const ok = localStorage.getItem('swarm_or_key');
     if (ok) { eak.value = ok; eak.style.display = 'none'; document.getElementById('eak-conf').style.display = 'block'; }
     else { eak.value = ''; eak.style.display = ''; document.getElementById('eak-conf').style.display = 'none'; }
   } else if (p === 'openrouter') {
@@ -1525,7 +1539,7 @@ function setEvolveProvider(p, init) {
     if (freeNote) freeNote.style.display = 'none';
     if (ollamaNote) ollamaNote.style.display = 'none';
     if (eak) eak.placeholder = 'OpenRouter Key (sk-or-...)';
-    const ok = localStorage.getItem('tmp_or_key');
+    const ok = localStorage.getItem('swarm_or_key');
     if (ok) { eak.value = ok; eak.style.display = 'none'; document.getElementById('eak-conf').style.display = 'block'; }
     else { eak.value = ''; eak.style.display = ''; document.getElementById('eak-conf').style.display = 'none'; }
   } else {
@@ -1534,15 +1548,15 @@ function setEvolveProvider(p, init) {
     if (freeNote) freeNote.style.display = 'none';
     if (ollamaNote) ollamaNote.style.display = 'none';
     if (eak) eak.placeholder = 'Anthropic API Key (sk-ant-...)';
-    const ak = localStorage.getItem('tmp_evolve_key');
+    const ak = localStorage.getItem('swarm_evolve_key');
     if (ak) { eak.value = ak; eak.style.display = 'none'; document.getElementById('eak-conf').style.display = 'block'; }
     else { eak.value = ''; eak.style.display = ''; document.getElementById('eak-conf').style.display = 'none'; }
   }
 }
 
 function clearEvolveKey() {
-  if (evolveProvider === 'openrouter' || evolveProvider === 'orfree') localStorage.removeItem('tmp_or_key');
-  else localStorage.removeItem('tmp_evolve_key');
+  if (evolveProvider === 'openrouter' || evolveProvider === 'orfree') localStorage.removeItem('swarm_or_key');
+  else localStorage.removeItem('swarm_evolve_key');
   const eak = document.getElementById('eak');
   eak.value = ''; eak.style.display = '';
   document.getElementById('eak-conf').style.display = 'none';
@@ -1599,7 +1613,7 @@ async function callClaudeCode(sys, user, onDelta, opts) {
 async function evolveCallAPI(sys, user, ak) {
   if (evolveProvider === 'cc') return callClaudeCode(sys, user);
   if (evolveProvider === 'ollama') {
-    const model = (document.getElementById('eor-ollama-model')?.value.trim()) || localStorage.getItem('tmp_ollama_model') || 'llama3.2';
+    const model = (document.getElementById('eor-ollama-model')?.value.trim()) || localStorage.getItem('swarm_ollama_model') || 'llama3.2';
     const r = await fetch('http://localhost:11434/v1/chat/completions', {
       method: 'POST', headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ model, max_tokens: 1400, messages: [{ role: 'system', content: sys }, { role: 'user', content: user }] })
@@ -1614,8 +1628,8 @@ async function evolveCallAPI(sys, user, ak) {
     const h = {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${ak}`,
-      'HTTP-Referer': 'https://github.com/The-Manhattan-Project',
-      'X-Title': 'The Manhattan Project'
+      'HTTP-Referer': 'https://github.com/Qweary/CybrHakConDemos',
+      'X-Title': 'CybrHakConDemos'
     };
     const r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST', headers: h,
@@ -1646,7 +1660,7 @@ function toggleDemo() {
     document.getElementById('binfo').textContent = 'DEMO MODE — pre-scripted playback, no API key needed.';
     if (evolveMode === 'custom') populateCustomDemoFields();
   } else {
-    const saved = localStorage.getItem('tmp_evolve_key');
+    const saved = localStorage.getItem('swarm_evolve_key');
     if (saved) { document.getElementById('eak').style.display = 'none'; document.getElementById('eak-conf').style.display = 'block'; }
     else { document.getElementById('eak').style.display = ''; document.getElementById('eak-conf').style.display = 'none'; }
     document.getElementById('binfo').textContent = 'Select a mode to begin the self-refinement loop.';
@@ -1706,7 +1720,7 @@ function setPhase(n) {
 // ─── LocalStorage ───
 function loadEvolveSource() {
   try {
-    const raw = localStorage.getItem('tmp_evolve_source');
+    const raw = localStorage.getItem('swarm_evolve_source');
     if (!raw) return null;
     const d = JSON.parse(raw);
     if (d.version !== 1 || !d.domain || !Array.isArray(d.stage_results)) return null;
@@ -1730,7 +1744,7 @@ function exportToCombat() {
     iteration: cycleNum,
     source_exercise: 'OPERATION IRONCLAD'
   };
-  localStorage.setItem('tmp_evolve_export', JSON.stringify(data));
+  localStorage.setItem('swarm_evolve_export', JSON.stringify(data));
   const btn = document.getElementById('export-combat-btn');
   btn.textContent = '[ EXPORTED ✓ ]';
   btn.classList.add('done');
@@ -1988,14 +2002,14 @@ async function streamPhaseText(streamEl, sys, user, ak, demoFetch, opts) {
   return res;
 }
 // Per-phase recovery wrapper for evolve.
-const TMP_EVOLVE_DEFAULT_TIMEOUT = 600;
+const SWARM_EVOLVE_DEFAULT_TIMEOUT = 600;
 async function callWithRecovery(label, fn, el) {
   const opts = { timeoutSec: 0 };
   while (true) {
     try { return await fn(opts); }
     catch (e) {
       const choice = await showEvolvePhaseRecovery(label, e.message);
-      if (choice === 'continue') { opts.timeoutSec = (opts.timeoutSec || TMP_EVOLVE_DEFAULT_TIMEOUT) + 60; }
+      if (choice === 'continue') { opts.timeoutSec = (opts.timeoutSec || SWARM_EVOLVE_DEFAULT_TIMEOUT) + 60; }
       else if (choice === 'retry') { opts.timeoutSec = 0; }
       else if (choice === 'skip') {
         const marker = `[${label} skipped by operator — recovery from: ${e.message}]`;
@@ -2519,19 +2533,19 @@ function initEvolve() {
   }
 
   setEvolveProvider(evolveProvider, true);
-  const savedMdl = localStorage.getItem('tmp_or_model');
+  const savedMdl = localStorage.getItem('swarm_or_model');
   if (savedMdl) { evolveOrModel = savedMdl; const mi = document.getElementById('eor-model'); if (mi) mi.value = savedMdl; }
 
   document.getElementById('eak').addEventListener('input', e => {
-    if (evolveProvider === 'openrouter' || evolveProvider === 'orfree') localStorage.setItem('tmp_or_key', e.target.value);
-    else localStorage.setItem('tmp_evolve_key', e.target.value);
+    if (evolveProvider === 'openrouter' || evolveProvider === 'orfree') localStorage.setItem('swarm_or_key', e.target.value);
+    else localStorage.setItem('swarm_evolve_key', e.target.value);
   });
   document.getElementById('eor-model')?.addEventListener('input', e => {
     evolveOrModel = e.target.value;
-    localStorage.setItem('tmp_or_model', evolveOrModel);
+    localStorage.setItem('swarm_or_model', evolveOrModel);
   });
   document.getElementById('eor-ollama-model')?.addEventListener('input', e => {
-    localStorage.setItem('tmp_ollama_model', e.target.value);
+    localStorage.setItem('swarm_ollama_model', e.target.value);
   });
 
   setPhase(0);
@@ -2545,6 +2559,5 @@ document.addEventListener('keydown', function(e) { if (e.code === 'Space' && e.t
 document.addEventListener('keydown', function(e) { if (e.ctrlKey && e.key === 'd') { e.preventDefault(); toggleDemo(); } });
 document.addEventListener('keydown', function(e) { if (e.ctrlKey && e.key === 'p') { e.preventDefault(); document.body.classList.toggle('pmode'); } });
 </script>
-<div class="fw-attrib">Powered by <a href="https://github.com/Qweary/The-Manhattan-Project" target="_blank" rel="noopener">The Manhattan Project</a> framework</div>
 </body>
 </html>

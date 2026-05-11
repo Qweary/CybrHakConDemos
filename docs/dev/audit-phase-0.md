@@ -232,7 +232,7 @@ Total: ~17 string replacements. Mechanical.
 ## 8. Hardcoded external URLs
 
 Demos send `HTTP-Referer` / `X-Title` headers identifying themselves to
-OpenRouter as `https://github.com/The-Manhattan-Project`.
+OpenRouter via a hardcoded GitHub URL.
 
 | File | Lines |
 |---|---|
@@ -240,10 +240,9 @@ OpenRouter as `https://github.com/The-Manhattan-Project`.
 | `demos/tmp-combat-live.html` | 2375 |
 | `demos/tmp-evolve-live.html` | 1613 |
 
-This URL is not the actual upstream repo (which is
-`Qweary/The-Manhattan-Project` per `README.md:54`). Worth a one-line fix
-when we touch `providers.js` in Phase 6 — but flag for the upstream
-developer; may be intentional shorthand.
+The hardcoded URL does not match the actual upstream repo location.
+Worth a one-line fix when we touch `providers.js` in Phase 6 — but flag
+for the upstream developer; may be intentional shorthand.
 
 The OpenRouter and Anthropic API endpoints themselves (`api.anthropic.com`,
 `openrouter.ai/api/v1/chat/completions`) are duplicated 6× — Phase 6
@@ -258,7 +257,7 @@ be reviewed before the module split:
 
 | Line | Concern |
 |---|---|
-| 46 | 600s timeout default — based on the FERMI phase observation; what about non-FERMI/non-claude models? |
+| 46 | 600s timeout default — based on the AGENT-FABRICATOR phase observation; what about non-AGENT-FABRICATOR/non-claude models? |
 | 53 | 4 MB stream-json line buffer — defended in comment, but worth confirming against current Claude Code CLI behavior |
 | 100–119 | `--tools ""`, `--disable-slash-commands`, `--setting-sources ""` — comments claim 30k → 3k token reduction; worth verifying this is still accurate after recent CLI updates |
 | 119 | `--system-prompt` override — what does Claude Code do today if this is empty? |
