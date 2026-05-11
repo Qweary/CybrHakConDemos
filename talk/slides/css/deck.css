@@ -1,0 +1,913 @@
+/* ====================================================================
+   SMALL UNIT, DEEP IMPACT — slide deck CSS
+   Terminal-aesthetic, hacker-conference register.
+   Values read-from-source from web/index.html, web/forge.html,
+   web/combat.html, web/evolve.html. See deck head comment for drift.
+   ==================================================================== */
+
+/* ---------- Fonts (local) ---------- */
+@font-face{
+  font-family:'Orbitron';
+  font-style:normal;
+  font-weight:400;
+  font-display:block;
+  src:url('../fonts/orbitron.woff2') format('woff2');
+}
+@font-face{
+  font-family:'Orbitron';
+  font-style:normal;
+  font-weight:700;
+  font-display:block;
+  src:url('../fonts/orbitron.woff2') format('woff2');
+}
+@font-face{
+  font-family:'Orbitron';
+  font-style:normal;
+  font-weight:900;
+  font-display:block;
+  src:url('../fonts/orbitron.woff2') format('woff2');
+}
+@font-face{
+  font-family:'Share Tech Mono';
+  font-style:normal;
+  font-weight:400;
+  font-display:block;
+  src:url('../fonts/sharetechmono.woff2') format('woff2');
+}
+
+/* ---------- CSS vars: lifted verbatim from web/*.html ---------- */
+:root{
+  /* base palette (forge.html/index.html baseline) */
+  --bg:#040407;
+  --bg-combat:#020208;        /* combat/evolve alt baseline; surfaced as branch */
+  --bp:#07070e;
+  --bi:#0a0a14;
+
+  /* amber family — FORGE/RAILS primary */
+  --a:#f0a500;
+  --ad:#b07800;
+  --am:#d08800;
+
+  /* red — COMBAT */
+  --r:#ff1744;
+  --rm:#e02040;
+  --r-combat:#ff3355;         /* combat.html uses #ff3355; --r:#ff1744 from index/forge */
+
+  /* blue — blue-team contrasts */
+  --b:#4fc3f7;
+  --blm:#2a9ae0;
+  --bld:#0e4488;
+
+  /* greens / utility */
+  --g:#00e676;
+  --gd:#004d26;
+
+  /* purple — EVOLVE */
+  --p:#ce93d8;
+  --pm:#9e6cb0;
+
+  /* text */
+  --w:#d4d4e8;
+  --gr:#8080aa;
+  --bdr:#0e0e1c;
+
+  /* glows (verbatim) */
+  --ga:0 0 10px rgba(240,165,0,.38);
+  --gg:0 0 10px rgba(0,230,118,.38);
+  --gb:0 0 10px rgba(79,195,247,.28);
+  --gp:0 0 10px rgba(206,147,216,.28);
+  --gr-r:0 0 10px rgba(255,23,68,.45);
+}
+
+/* ---------- reveal.js overrides ---------- */
+html, body{
+  background:var(--bg);
+}
+.reveal{
+  font-family:'Share Tech Mono','Courier New',monospace;
+  font-size:24px;
+  color:var(--w);
+  font-weight:400;
+}
+.reveal .slides{
+  text-align:left;
+}
+.reveal .slides section{
+  /* terminal panels are flat — kill reveal's default centering glow */
+  text-align:left;
+  padding:0;
+}
+/* Anchors & headers should be flat: no gradient text, no rounded corners */
+.reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6{
+  font-family:'Orbitron','Share Tech Mono',sans-serif;
+  text-transform:none;
+  letter-spacing:3px;
+  margin:0;
+  font-weight:900;
+  color:var(--a);
+}
+.reveal p{margin:0;color:var(--w);line-height:1.55}
+.reveal code,.reveal pre{
+  font-family:'Share Tech Mono',monospace;
+  color:var(--w);
+  background:transparent;
+  box-shadow:none;
+  white-space:pre;
+}
+.reveal pre{
+  display:block;
+  width:auto;
+  margin:0;
+  background:transparent;
+  font-size:.85em;
+  line-height:1.4;
+}
+
+/* Suppress reveal.js link/image defaults */
+.reveal a{color:var(--am);text-decoration:none}
+.reveal a:hover{color:var(--a);text-shadow:var(--ga)}
+
+/* Reveal controls: amber, minimal, low-contrast — they shouldn't shout */
+.reveal .controls{color:var(--ad)}
+.reveal .controls .controls-arrow:before,.reveal .controls .controls-arrow:after{background:var(--ad)}
+.reveal .progress{color:var(--am)}
+.reveal .progress span{background:var(--am);box-shadow:none}
+
+/* Slide number — bottom-right, muted */
+.reveal .slide-number{
+  background:transparent;
+  color:#3f3f5e;
+  font-family:'Share Tech Mono',monospace;
+  font-size:11px;
+  letter-spacing:1px;
+  right:14px;
+  bottom:12px;
+}
+
+/* ---------- Scanline overlay (global, default ON) ---------- */
+/* matches web/*.html body::after verbatim */
+body::after{
+  content:'';
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:9999;
+  background:repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0,0,0,.055) 3px,
+    rgba(0,0,0,.055) 4px
+  );
+}
+/* Branch toggle: body.no-scanline removes the overlay (operator presses 'n') */
+body.no-scanline::after{display:none}
+/* Branch toggle: body.bg-combat switches the deck baseline to combat #020208 */
+body.bg-combat,body.bg-combat .reveal{background:var(--bg-combat) !important}
+
+/* ---------- Slide layout primitives ---------- */
+.slide{
+  width:100%;
+  height:100%;
+  padding:64px 72px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+  gap:24px;
+  position:relative;
+}
+.slide.center{justify-content:center;align-items:center}
+.slide.tight{padding:48px 64px;gap:18px}
+
+/* Slide section anchor tag — small all-caps marker at top-left, like a console prompt */
+.anchor{
+  font-family:'Share Tech Mono',monospace;
+  font-size:11px;
+  letter-spacing:3px;
+  color:#5a5a82;
+  position:absolute;
+  top:30px;
+  left:72px;
+}
+.anchor::before{content:'// '}
+
+/* Trailing operator-side marker — bottom-left, faint */
+.brand{
+  position:absolute;
+  bottom:18px;
+  left:72px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:10px;
+  letter-spacing:2.5px;
+  color:#3f3f5e;
+}
+
+/* ---------- Block cursor (blinking & static) ---------- */
+.cur{
+  display:inline-block;
+  width:.55em;
+  height:1em;
+  background:currentColor;
+  vertical-align:-0.12em;
+  margin-left:.22em;
+  box-shadow:0 0 8px currentColor;
+}
+.cur.blink{animation:blink .8s steps(1) infinite}
+@keyframes blink{0%,50%{opacity:1}50.01%,100%{opacity:0}}
+
+/* ---------- S1 — Title card ---------- */
+.s1 .title{
+  font-family:'Orbitron',sans-serif;
+  font-weight:900;
+  font-size:84px;
+  letter-spacing:8px;
+  color:var(--a);
+  text-shadow:var(--ga);
+  line-height:1.05;
+}
+.s1 .sub{
+  font-family:'Share Tech Mono',monospace;
+  font-size:30px;
+  letter-spacing:2px;
+  color:var(--am);
+  text-shadow:0 0 8px rgba(208,136,0,.35);
+  margin-top:22px;
+}
+.s1 .venue{
+  font-family:'Share Tech Mono',monospace;
+  font-size:13px;
+  letter-spacing:5px;
+  color:var(--gr);
+  margin-top:46px;
+}
+
+/* ---------- S2 — BUILD → FIGHT → REFINE loop diagram ---------- */
+.s2 .loop{
+  font-family:'Orbitron',sans-serif;
+  font-weight:900;
+  font-size:64px;
+  letter-spacing:6px;
+  color:var(--a);
+  text-shadow:var(--ga);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:42px;
+}
+.s2 .arrow{
+  font-family:'Share Tech Mono',monospace;
+  font-size:48px;
+  color:var(--am);
+  letter-spacing:0;
+  text-shadow:0 0 8px rgba(208,136,0,.35);
+}
+.s2 .loop-wrap{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+/* Dashed loop-back: drawn as three borders forming a U beneath the labels */
+.s2 .loop-arc{
+  position:relative;
+  width:760px;        /* spans roughly from REFINE back to BUILD */
+  height:74px;
+  margin-top:14px;
+}
+.s2 .lac-top{
+  position:absolute;
+  left:0; right:0; top:48px;
+  height:0;
+  border-bottom:2px dashed var(--am);
+  opacity:.7;
+}
+.s2 .lac-left{
+  position:absolute;
+  left:0; top:0; width:0; height:50px;
+  border-left:2px dashed var(--am);
+  opacity:.7;
+}
+.s2 .lac-right{
+  position:absolute;
+  right:0; top:0; width:0; height:50px;
+  border-left:2px dashed var(--am);
+  opacity:.7;
+}
+.s2 .lac-arrow{
+  position:absolute;
+  left:-12px;
+  top:-12px;
+  color:var(--am);
+  font-size:24px;
+  background:var(--bg);
+  padding:0 6px;
+  text-shadow:0 0 6px rgba(208,136,0,.35);
+}
+.s2 .lac-label{
+  position:absolute;
+  left:50%;
+  top:48px;
+  transform:translate(-50%,-50%);
+  background:var(--bg);
+  padding:0 16px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:14px;
+  letter-spacing:2.5px;
+  color:var(--am);
+}
+
+/* ---------- Chapter divider shared (S3/S4/S6/S9) ---------- */
+.divider{padding:64px 72px}
+.divider .chapter{
+  font-family:'Orbitron',sans-serif;
+  font-weight:900;
+  font-size:104px;
+  letter-spacing:10px;
+  line-height:1.0;
+  display:flex;
+  align-items:center;
+}
+.divider .rule{
+  font-family:'Share Tech Mono',monospace;
+  font-size:36px;
+  letter-spacing:4px;
+  margin-top:32px;
+  color:var(--am);
+  text-shadow:0 0 10px rgba(208,136,0,.40);
+}
+.divider .tag{
+  font-family:'Share Tech Mono',monospace;
+  font-size:22px;
+  letter-spacing:3px;
+  color:var(--w);
+  margin-top:38px;
+}
+
+/* S3 — FORGE divider, amber */
+.s3 .chapter{color:var(--a);text-shadow:var(--ga)}
+.s3 .rule{color:var(--am)}
+
+/* Optional phase bar under FORGE divider (decorative, matches forge.html .pbar) */
+.pbar9{
+  display:flex;
+  margin-top:36px;
+  border:1px solid var(--bdr);
+  background:var(--bp);
+  max-width:1100px;
+}
+.pbar9 .ph{
+  flex:1;
+  padding:10px 4px;
+  text-align:center;
+  font-family:'Share Tech Mono',monospace;
+  font-size:13px;
+  letter-spacing:2px;
+  color:#484870;
+  border-right:1px solid var(--bdr);
+}
+.pbar9 .ph:last-child{border-right:none}
+.pbar9 .ph .pn{display:block;font-size:10px;color:#606090;margin-bottom:3px;letter-spacing:1px}
+
+/* S4 — COMBAT divider, red */
+.s4 .chapter{color:var(--r-combat);text-shadow:0 0 12px rgba(255,51,85,.55)}
+.s4 .rule{color:var(--rm)}
+.s4 .same-line{
+  font-family:'Share Tech Mono',monospace;
+  font-size:18px;
+  letter-spacing:3px;
+  color:var(--w);
+  margin-top:38px;
+}
+.scenarios{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:32px;
+  margin-top:24px;
+}
+.scenario{
+  padding:24px 28px;
+  background:var(--bp);
+  font-family:'Share Tech Mono',monospace;
+}
+.scenario .stitle{
+  font-family:'Orbitron',sans-serif;
+  font-weight:900;
+  font-size:34px;
+  letter-spacing:5px;
+  color:var(--r-combat);
+  text-shadow:0 0 10px rgba(255,51,85,.45);
+  margin-bottom:10px;
+}
+.scenario .stag{
+  font-size:12px;
+  letter-spacing:3px;
+  color:var(--rm);
+  margin-bottom:14px;
+}
+.scenario .sbody{
+  font-size:16px;
+  letter-spacing:1px;
+  color:var(--w);
+  line-height:1.55;
+}
+.scenario.ironclad{border:2px solid var(--r-combat)}
+.scenario.phantom{border:2px dashed var(--r-combat)}
+.scenario.phantom .stag{color:#ff7090}
+
+/* ---------- S5 — Rubric ---------- */
+.s5 .title{
+  font-family:'Orbitron',sans-serif;
+  font-weight:900;
+  font-size:54px;
+  letter-spacing:7px;
+  color:var(--am);
+  text-shadow:0 0 10px rgba(208,136,0,.35);
+}
+.s5 .quote{
+  font-family:'Share Tech Mono',monospace;
+  font-size:30px;
+  letter-spacing:1.5px;
+  color:var(--w);
+  margin-top:24px;
+  line-height:1.6;
+}
+.s5 .quote .l2{display:block;margin-left:48px;color:var(--w)}
+.rubric{
+  margin-top:36px;
+  border:1px solid var(--bdr);
+  background:var(--bp);
+  font-family:'Share Tech Mono',monospace;
+  max-width:880px;
+}
+.rubric .rhdr{
+  padding:8px 18px;
+  font-family:'Orbitron',sans-serif;
+  font-weight:700;
+  font-size:11px;
+  letter-spacing:3px;
+  color:var(--am);
+  background:rgba(240,165,0,.04);
+  border-bottom:1px solid var(--bdr);
+}
+.rubric .row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:14px 22px;
+  border-bottom:1px solid var(--bdr);
+  font-size:18px;
+  letter-spacing:2.5px;
+  color:var(--w);
+}
+.rubric .row:last-of-type{border-bottom:1px solid var(--bdr)}
+.rubric .row .cell{
+  color:#5a5a82;
+  font-family:'Orbitron',sans-serif;
+  font-weight:700;
+  font-size:16px;
+  letter-spacing:2px;
+}
+.rubric .total{
+  display:flex;
+  justify-content:flex-end;
+  padding:12px 22px;
+  font-family:'Orbitron',sans-serif;
+  font-weight:700;
+  font-size:14px;
+  letter-spacing:3px;
+  color:var(--am);
+  background:rgba(240,165,0,.03);
+}
+.rubric .total .tcell{
+  margin-left:24px;
+  color:#5a5a82;
+}
+
+/* ---------- S6 — EVOLVE divider, purple ---------- */
+.s6 .chapter{color:var(--p);text-shadow:var(--gp)}
+.s6 .rule{color:var(--pm)}
+.s6 .callout{
+  font-family:'Share Tech Mono',monospace;
+  font-size:24px;
+  letter-spacing:2px;
+  color:var(--w);
+  margin-top:34px;
+}
+.s6 .callout .verbatim{
+  display:block;
+  margin-top:14px;
+  font-size:22px;
+  color:var(--w);
+}
+
+/* ---------- S7 — The Cycle diagram ---------- */
+.s7 .title{
+  font-family:'Orbitron',sans-serif;
+  font-weight:900;
+  font-size:54px;
+  letter-spacing:7px;
+  color:var(--p);
+  text-shadow:var(--gp);
+}
+.cycle-wrap{
+  position:relative;
+  margin-top:54px;
+  padding-bottom:84px;       /* room for the re-score loop drawn below */
+}
+.cycle{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:22px;
+  flex-wrap:nowrap;
+  position:relative;
+  z-index:2;
+}
+.cycle .role{
+  padding:28px 36px;
+  border:2px solid var(--p);
+  background:var(--bp);
+  font-family:'Orbitron',sans-serif;
+  font-weight:700;
+  font-size:30px;
+  letter-spacing:4px;
+  color:var(--p);
+  text-shadow:var(--gp);
+  min-width:220px;
+  text-align:center;
+}
+.cycle .ar{
+  font-family:'Share Tech Mono',monospace;
+  font-size:14px;
+  letter-spacing:2px;
+  color:var(--am);
+  text-align:center;
+  line-height:1.4;
+  white-space:nowrap;
+}
+.cycle .ar .larr{display:block;font-size:24px;letter-spacing:0;margin-top:2px}
+/* The re-score loop: drawn as an absolute-positioned SVG-style ascii path
+   that goes from RERUN down, left, up, and into ARBITER. */
+.cycle-back{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  font-family:'Share Tech Mono',monospace;
+  font-size:14px;
+  letter-spacing:0;
+  color:var(--am);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  pointer-events:none;
+}
+.cycle-back .cbline{
+  display:inline-block;
+  position:relative;
+  /* span horizontally beneath the three role boxes */
+  width:80%;
+  max-width:1280px;
+  height:60px;
+}
+.cycle-back .cbtop{
+  position:absolute;
+  left:0; right:0; top:0;
+  height:2px;
+  background:transparent;
+  border-bottom:1px dashed var(--am);
+  opacity:.7;
+}
+.cycle-back .cblabel{
+  position:absolute;
+  left:50%;
+  top:-2px;
+  transform:translate(-50%,-50%);
+  background:var(--bg);
+  padding:0 18px;
+  font-size:14px;
+  letter-spacing:2.5px;
+  color:var(--am);
+}
+.cycle-back .cbleft,.cycle-back .cbright{
+  position:absolute;
+  width:2px;
+  background:transparent;
+  border-left:1px dashed var(--am);
+  opacity:.7;
+}
+.cycle-back .cbleft{
+  left:0;
+  top:-40px;       /* extend up toward ARBITER */
+  height:40px;
+}
+.cycle-back .cbright{
+  right:0;
+  top:-40px;       /* extend up toward RERUN */
+  height:40px;
+}
+.cycle-back .cbarrow{
+  position:absolute;
+  left:0;
+  top:-50px;
+  transform:translateX(-50%);
+  color:var(--am);
+  font-size:18px;
+  background:var(--bg);
+  padding:0 4px;
+}
+.s7 .annot{
+  margin-top:42px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:18px;
+  letter-spacing:2.5px;
+  color:var(--w);
+  text-align:center;
+}
+
+/* ---------- S8 — Rubric persisted ---------- */
+.s8 .title{
+  font-family:'Orbitron',sans-serif;
+  font-weight:900;
+  font-size:48px;
+  letter-spacing:6px;
+  color:var(--am);
+  text-shadow:0 0 10px rgba(208,136,0,.35);
+}
+.rounds{
+  margin-top:36px;
+  display:grid;
+  grid-template-columns:auto auto auto auto auto;
+  gap:14px 24px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:24px;
+  letter-spacing:1.5px;
+  color:var(--w);
+  align-items:center;
+  max-width:1000px;
+}
+.rounds .rn{color:var(--am)}
+.rounds .same{color:var(--p);font-weight:700;letter-spacing:2.5px}
+.rounds .arr{color:var(--am)}
+.s8 .punch{
+  margin-top:48px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:28px;
+  letter-spacing:2.5px;
+  color:var(--a);
+  text-shadow:var(--ga);
+}
+
+/* ---------- S9 — RAILS divider, muted amber ---------- */
+.s9 .chapter{color:var(--am);text-shadow:0 0 8px rgba(208,136,0,.30)}
+.s9 .rule{color:var(--gr)}
+.pills{display:flex;gap:24px;margin-top:38px;flex-wrap:wrap}
+.pill{
+  font-family:'Share Tech Mono',monospace;
+  font-size:16px;
+  letter-spacing:2.5px;
+  padding:14px 24px;
+  background:rgba(0,230,118,.05);
+  border:2px solid var(--g);
+  color:var(--g);
+}
+.pill .plabel{
+  font-family:'Orbitron',sans-serif;
+  font-weight:900;
+  font-size:18px;
+  letter-spacing:4px;
+  margin-right:14px;
+}
+.pill.amber{
+  border-color:var(--a);
+  color:var(--a);
+  background:rgba(240,165,0,.05);
+}
+
+/* ---------- S10 — Limits ---------- */
+.s10 .title{
+  font-family:'Orbitron',sans-serif;
+  font-weight:900;
+  font-size:54px;
+  letter-spacing:7px;
+  color:var(--am);
+  text-shadow:0 0 10px rgba(208,136,0,.35);
+}
+.s10 .lines{
+  margin-top:38px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:26px;
+  letter-spacing:1.5px;
+  color:var(--w);
+  line-height:1.85;
+}
+.s10 .lines .line{display:block}
+.s10 .lines .line::before{content:'> ';color:var(--ad)}
+.s10 .anti{
+  margin-top:54px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:30px;
+  letter-spacing:3px;
+  color:var(--a);
+  text-shadow:var(--ga);
+}
+
+/* ---------- S11 — Closing card ---------- */
+.s11 .close-title{
+  font-family:'Orbitron',sans-serif;
+  font-weight:900;
+  font-size:64px;
+  letter-spacing:6px;
+  color:var(--a);
+  text-shadow:var(--ga);
+  text-transform:lowercase;
+  line-height:1.1;
+}
+.s11 .close-tag{
+  font-family:'Share Tech Mono',monospace;
+  font-size:26px;
+  letter-spacing:1.5px;
+  color:var(--w);
+  margin-top:40px;
+  text-transform:lowercase;
+}
+
+/* ---------- Back-pocket — FORGE-recap ---------- */
+.recap .recap-title{
+  font-family:'Orbitron',sans-serif;
+  font-weight:900;
+  font-size:32px;
+  letter-spacing:4px;
+  color:var(--a);
+  text-shadow:var(--ga);
+}
+.recap .recap-sub{
+  font-family:'Share Tech Mono',monospace;
+  font-size:14px;
+  letter-spacing:2px;
+  color:var(--am);
+  margin-top:6px;
+}
+.recap-pbar{
+  display:flex;
+  margin-top:30px;
+  border:1px solid var(--bdr);
+  background:var(--bp);
+}
+.recap-pbar .pcell{
+  flex:1;
+  padding:18px 6px;
+  text-align:center;
+  font-family:'Share Tech Mono',monospace;
+  font-size:14px;
+  letter-spacing:2px;
+  color:#484870;
+  border-right:1px solid var(--bdr);
+  line-height:1.4;
+  min-height:90px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.recap-pbar .pcell:last-child{border-right:none}
+.recap-pbar .pcell .pn{display:block;font-size:11px;color:#606090;margin-bottom:6px;letter-spacing:1.5px}
+.recap-pbar .pcell.named{color:var(--a);background:rgba(240,165,0,.025)}
+.recap-pbar .pcell.named .pn{color:var(--ad)}
+.artifact-pill{
+  margin-top:38px;
+  align-self:flex-start;
+  display:inline-block;
+  padding:14px 24px;
+  border:1px solid var(--a);
+  background:rgba(240,165,0,.05);
+  color:var(--a);
+  font-family:'Share Tech Mono',monospace;
+  font-size:18px;
+  letter-spacing:2.5px;
+  width:max-content;
+  max-width:100%;
+}
+
+/* ---------- Back-pocket — COMBAT-recap ---------- */
+.cphases{
+  display:flex;
+  flex-direction:column;
+  margin-top:28px;
+  border:1px solid var(--bdr);
+  background:var(--bp);
+}
+.cphases .crow{display:flex}
+.cphases .crow .pcell{
+  flex:1;
+  padding:14px 4px;
+  text-align:center;
+  font-family:'Share Tech Mono',monospace;
+  font-size:14px;
+  letter-spacing:2px;
+  border-right:1px solid var(--bdr);
+}
+.cphases .crow .pcell:last-child{border-right:none}
+.cphases .crow.red .pcell{color:#c04050;background:rgba(255,51,85,.04)}
+.cphases .crow.blue .pcell{color:var(--blm);background:rgba(26,122,208,.05)}
+.cphases .crow .pn{display:block;font-size:10px;color:#5a5a82;margin-bottom:4px;letter-spacing:1.5px}
+.cphases .vdiv{
+  height:2px;
+  background:linear-gradient(90deg,var(--r-combat),var(--blm));
+  opacity:.5;
+}
+.score-sketch{
+  margin-top:30px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:30px;
+}
+.score-sketch .scol{
+  border:1px solid var(--bdr);
+  background:var(--bp);
+  padding:16px 22px;
+  font-family:'Share Tech Mono',monospace;
+}
+.score-sketch .scol .stitle{
+  font-family:'Orbitron',sans-serif;
+  font-weight:700;
+  font-size:18px;
+  letter-spacing:3px;
+  color:var(--r-combat);
+  margin-bottom:12px;
+  display:flex;
+  justify-content:space-between;
+}
+.score-sketch .scol .stitle .stotal{color:#5a5a82;font-size:14px}
+.score-sketch .scol .scat{
+  display:flex;
+  justify-content:space-between;
+  font-size:14px;
+  letter-spacing:2px;
+  color:var(--w);
+  padding:4px 0;
+  border-bottom:1px solid var(--bdr);
+}
+.score-sketch .scol .scat:last-child{border-bottom:none}
+.score-sketch .scol .scat .v{color:#3f3f5e}
+
+/* ---------- Operator-only HUD ---------- */
+#hud{
+  position:fixed;
+  top:14px;
+  right:14px;
+  z-index:10000;
+  display:flex;
+  gap:8px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:10px;
+  letter-spacing:1.5px;
+  color:#3f3f5e;
+  pointer-events:none;
+  opacity:.0;
+  transition:opacity .15s;
+}
+#hud.show{opacity:1}
+#hud .hk{
+  padding:3px 8px;
+  border:1px solid #3f3f5e;
+  background:rgba(0,0,0,.4);
+}
+#hud .hk b{color:var(--am);font-weight:400}
+
+/* Goto chord prompt — appears center-bottom when operator hits 'g' */
+#goto{
+  position:fixed;
+  bottom:24px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:10001;
+  padding:10px 18px;
+  background:#0a0a14;
+  border:1px solid var(--am);
+  color:var(--am);
+  font-family:'Share Tech Mono',monospace;
+  font-size:14px;
+  letter-spacing:2px;
+  display:none;
+  box-shadow:var(--ga);
+}
+#goto.show{display:block}
+#goto input{
+  background:transparent;
+  border:none;
+  outline:none;
+  color:var(--a);
+  font-family:inherit;
+  font-size:inherit;
+  letter-spacing:inherit;
+  width:140px;
+  margin-left:6px;
+}
+
+/* ---------- Reveal: instant cut transitions ---------- */
+.reveal .slides>section.future,.reveal .slides>section.past{opacity:0}
+.reveal .slides>section.present{opacity:1}
+
+/* ---------- Pretty-print fallbacks ---------- */
+.reveal .slides section.has-light-background{background:transparent}
+.reveal .slide-background{background:var(--bg)}

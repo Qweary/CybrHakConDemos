@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SMALL UNIT, DEEP IMPACT — AI Village 2026</title>
+
+<!--
+  Slide deck for "Small Unit, Deep Impact: Creating Motion in the Ocean
+  with Multi-Agent Swarms" — AI Village 2026.
+
+  Aesthetic spec is read-from-source against:
+    /home/qweary/Desktop/CybrHakConDemos-pr-prep/web/index.html
+    /home/qweary/Desktop/CybrHakConDemos-pr-prep/web/forge.html
+    /home/qweary/Desktop/CybrHakConDemos-pr-prep/web/combat.html
+    /home/qweary/Desktop/CybrHakConDemos-pr-prep/web/evolve.html
+
+  Drift surfaced:
+    - CONTENT.md says forge/index baseline is #040407 (correct, lifted verbatim
+      from forge.html line 10 and index.html line 10).
+    - combat.html line 10 uses #020208 — branched as body.bg-combat (keypress 'c').
+    - combat.html red is #ff3355 (line 11), distinct from index/forge --r:#ff1744.
+      For the COMBAT chapter we use #ff3355 (matches the tab the operator will
+      switch to) — CONTENT.md S4 quotes both but ships --r:#ff1744; this is
+      surfaced rather than silently degraded.
+
+  Verbatim-locked-v7 phrases (DO NOT paraphrase):
+    S5: "scored against a rubric / fixed before the bell, not after."
+    S6: "the agent that grades is not the agent that rewrites."
+    S11: "no vendor fluff. come watch the first rounds."
+
+  Back-pocket placement: option (b) — slides live at end of deck after S11,
+  reached via 'g' key chord (type slide id, Enter). Reasoning: reveal.js 5.x
+  named slides work cleanly with id-based goto via Reveal.slide(h,v); pure
+  URL routing (#/forge-recap) ALSO works because the slides have ids; either
+  path lands. Operator can use either. Forward-arrow nav from S11 hits END
+  (does not advance into back-pocket).
+-->
+
+<link rel="stylesheet" href="lib/reveal.js/dist/reset.css">
+<link rel="stylesheet" href="lib/reveal.js/dist/reveal.css">
+<link rel="stylesheet" href="css/deck.css">
+</head>
+<body>
+
+<!-- Operator HUD: shows on 'h' keypress; lists key chords -->
+<div id="hud">
+  <span class="hk"><b>g</b>=goto</span>
+  <span class="hk"><b>n</b>=scanline</span>
+  <span class="hk"><b>c</b>=combat-bg</span>
+  <span class="hk"><b>h</b>=help</span>
+  <span class="hk"><b>f</b>=fullscreen</span>
+</div>
+
+<!-- Goto chord: 'g' then type slide id (e.g. forge-recap) -->
+<div id="goto">goto: <input id="goto-input" type="text" placeholder="forge-recap"></div>
+
+<div class="reveal">
+<div class="slides">
+
+<!-- ===================================================================
+     S1 — Title card
+     OPEN · 3 min visible · backdrop only, operator opening line lands
+     without slide reference.
+     =================================================================== -->
+<section id="s1-title" data-slide="S1">
+  <div class="slide s1 center">
+    <div class="anchor">OPEN</div>
+    <div style="text-align:center">
+      <div class="title">SMALL UNIT,<br>DEEP IMPACT</div>
+      <div class="sub">creating motion in the ocean with multi-agent swarms</div>
+      <div class="venue">AI VILLAGE &middot; 2026</div>
+    </div>
+    <div class="brand">small-unit-deep-impact.deck</div>
+  </div>
+</section>
+
+<!-- ===================================================================
+     S2 — The Loop (named-hook plant)
+     OPEN -> FORGE transition · 1 min visible · diagram IS the slide.
+     ASCII default per CONTENT.md ("terminal-aesthetic default").
+     Surfaced branch: SVG curve. Operator can dry-run prefer.
+     =================================================================== -->
+<section id="s2-loop" data-slide="S2">
+  <div class="slide s2 center">
+    <div class="anchor">OPEN &middot; the loop</div>
+    <div class="loop-wrap">
+      <div class="loop">
+        <span>BUILD</span>
+        <span class="arrow">&rarr;</span>
+        <span>FIGHT</span>
+        <span class="arrow">&rarr;</span>
+        <span>REFINE</span>
+      </div>
+      <!-- Loop-back: dashed amber line beneath BUILD..REFINE, returning to BUILD -->
+      <div class="loop-arc">
+        <div class="lac-left"></div>
+        <div class="lac-top"></div>
+        <div class="lac-right"></div>
+        <div class="lac-arrow">&larr;</div>
+        <div class="lac-label">and back to BUILD</div>
+      </div>
+    </div>
+    <div class="brand">small-unit-deep-impact.deck</div>
+  </div>
+</section>
+
+<!-- ===================================================================
+     S3 — FORGE chapter divider
+     FORGE start · 30 sec visible · cue line then tab-switch to forge.html
+     =================================================================== -->
+<section id="s3-forge" data-slide="S3">
+  <div class="slide divider s3">
+    <div class="anchor">FORGE &middot; build</div>
+    <div class="chapter">FORGE<span class="cur blink"></span></div>
+    <div class="rule">&mdash;&mdash;&mdash; BUILD &mdash;&mdash;&mdash;</div>
+    <div class="tag">9 phases &middot; domain in &middot; swarm out</div>
+    <div class="pbar9">
+      <div class="ph"><span class="pn">P1</span>ANALYZE</div>
+      <div class="ph"><span class="pn">P2</span>SOURCE</div>
+      <div class="ph"><span class="pn">P3</span>ROSTER</div>
+      <div class="ph"><span class="pn">P4</span>DRAFT</div>
+      <div class="ph"><span class="pn">P5</span>REVIEW</div>
+      <div class="ph"><span class="pn">P6</span>FABRICATE</div>
+      <div class="ph"><span class="pn">P7</span>WIRE</div>
+      <div class="ph"><span class="pn">P8</span>VALIDATE</div>
+      <div class="ph"><span class="pn">P9</span>EMIT</div>
+    </div>
+    <div class="brand">small-unit-deep-impact.deck</div>
+  </div>
+</section>
+
+<!-- ===================================================================
+     S4 — COMBAT chapter divider (Same-Blue-Team hook plant)
+     COMBAT start · 1 min visible · IRONCLAD // PHANTOM FEED contrast
+     =================================================================== -->
+<section id="s4-combat" data-slide="S4">
+  <div class="slide divider s4 tight">
+    <div class="anchor">COMBAT &middot; fight</div>
+    <div class="chapter">COMBAT<span class="cur blink"></span></div>
+    <div class="rule">&mdash;&mdash;&mdash; FIGHT &mdash;&mdash;&mdash;</div>
+    <div class="same-line">same blue team &middot; two threat models</div>
+    <div class="scenarios">
+      <div class="scenario ironclad">
+        <div class="stitle">IRONCLAD</div>
+        <div class="stag">AUTHORIZED &middot; enterprise compromise</div>
+        <div class="sbody">ProFTPd + SMBv1 + DC pivot. The blue team is in scope &mdash; question is how cleanly.</div>
+      </div>
+      <div class="scenario phantom">
+        <div class="stitle">PHANTOM FEED</div>
+        <div class="stag">UNAUTHORIZED &middot; MLOps supply chain</div>
+        <div class="sbody">Poisoned upstream model. The blue team is NOT in scope. They have to figure out they're being attacked.</div>
+      </div>
+    </div>
+    <div class="brand">small-unit-deep-impact.deck</div>
+  </div>
+</section>
+
+<!-- ===================================================================
+     S5 — Rubric structure
+     COMBAT mid · 1-2 min visible · verbatim-v7 quote
+     Categories pulled from combat.html line 1821 ARBITER framing:
+       "detection speed, coverage, response effectiveness, evasion impact"
+     Plus the 5th universal scorecard slot (root-cause attribution)
+     observed in combat.html's per-stage rubric rows (see line 728).
+     The cells are intentionally empty per CONTENT.md S5 spec.
+     =================================================================== -->
+<section id="s5-rubric" data-slide="S5">
+  <div class="slide s5 tight">
+    <div class="anchor">COMBAT &middot; how do you know who won</div>
+    <div class="title">RUBRIC</div>
+    <div class="quote">
+      scored against a rubric
+      <span class="l2">fixed before the bell, not after.</span>
+    </div>
+    <div class="rubric">
+      <div class="rhdr">## ARBITER SCORECARD</div>
+      <div class="row"><span>DETECTION SPEED</span><span class="cell">&mdash; / 10</span></div>
+      <div class="row"><span>DETECTION COVERAGE</span><span class="cell">&mdash; / 10</span></div>
+      <div class="row"><span>RESPONSE EFFECTIVENESS</span><span class="cell">&mdash; / 10</span></div>
+      <div class="row"><span>EVASION IMPACT</span><span class="cell">&mdash; / 10</span></div>
+      <div class="row"><span>ROOT-CAUSE ATTRIBUTION</span><span class="cell">&mdash; / 10</span></div>
+      <div class="total">TOTAL<span class="tcell">&mdash; / 50</span></div>
+    </div>
+    <div class="brand">small-unit-deep-impact.deck</div>
+  </div>
+</section>
+
+<!-- ===================================================================
+     S6 — EVOLVE chapter divider (Same-Pen hook plant)
+     EVOLVE start · 45 sec visible · verbatim-v7 line
+     =================================================================== -->
+<section id="s6-evolve" data-slide="S6">
+  <div class="slide divider s6">
+    <div class="anchor">EVOLVE &middot; refine</div>
+    <div class="chapter">EVOLVE<span class="cur blink"></span></div>
+    <div class="rule">&mdash;&mdash;&mdash; REFINE &mdash;&mdash;&mdash;</div>
+    <div class="callout">
+      same pen &middot; different hand
+      <span class="verbatim">the agent that grades is not the agent that rewrites.</span>
+    </div>
+    <div class="brand">small-unit-deep-impact.deck</div>
+  </div>
+</section>
+
+<!-- ===================================================================
+     S7 — ARBITER / SCULPTOR / RERUN cycle
+     EVOLVE mid · 1-2 min visible · three roles, equal weight
+     Role separation is load-bearing — none of the three boxes is
+     hierarchically above the others (CONTENT.md S7).
+     =================================================================== -->
+<section id="s7-cycle" data-slide="S7">
+  <div class="slide s7 center">
+    <div class="anchor">EVOLVE &middot; the cycle</div>
+    <div style="width:100%">
+      <div class="title" style="text-align:center">THE CYCLE</div>
+      <div class="cycle-wrap">
+        <div class="cycle">
+          <div class="role">ARBITER</div>
+          <div class="ar">score<span class="larr">&rarr;</span></div>
+          <div class="role">SCULPTOR</div>
+          <div class="ar">rewrite<span class="larr">&rarr;</span></div>
+          <div class="role">RERUN</div>
+        </div>
+        <!-- re-score loop: dashed amber path running RERUN -> down -> left -> up -> ARBITER -->
+        <div class="cycle-back">
+          <div class="cbline">
+            <div class="cbleft"></div>
+            <div class="cbtop"></div>
+            <div class="cbright"></div>
+            <div class="cblabel">&larr; re-score</div>
+          </div>
+        </div>
+      </div>
+      <div class="annot">rubric fixed before the bell.</div>
+    </div>
+    <div class="brand">small-unit-deep-impact.deck</div>
+  </div>
+</section>
+
+<!-- ===================================================================
+     S8 — Rubric, persisted
+     EVOLVE mid · 1 min visible · the SAME rubric across rounds
+     =================================================================== -->
+<section id="s8-persisted" data-slide="S8">
+  <div class="slide s8 tight">
+    <div class="anchor">EVOLVE &middot; why the rubric survives</div>
+    <div class="title">WHY THE RUBRIC SURVIVES</div>
+    <div class="rounds">
+      <span class="rn">round 1</span><span>:</span><span>rubric</span><span class="arr">&rarr; exercise &rarr;</span><span>ARBITER score</span>
+      <span class="rn">round 2</span><span>:</span><span class="same">SAME rubric</span><span class="arr">&rarr; rerun &nbsp;&nbsp;&rarr;</span><span>ARBITER score</span>
+      <span class="rn">round 3</span><span>:</span><span class="same">SAME rubric</span><span class="arr">&rarr; rerun &nbsp;&nbsp;&rarr;</span><span>ARBITER score</span>
+    </div>
+    <div class="punch">the score is the diff. the rubric is the bell.</div>
+    <div class="brand">small-unit-deep-impact.deck</div>
+  </div>
+</section>
+
+<!-- ===================================================================
+     S9 — RAILS chapter divider
+     RAILS start · 3 min visible · DEMO MODE // LIVE MODE pills
+     RAILS is structural-grounding so the chapter title is intentionally
+     less hot than FORGE/COMBAT/EVOLVE (muted amber, not glowing amber).
+     =================================================================== -->
+<section id="s9-rails" data-slide="S9">
+  <div class="slide divider s9">
+    <div class="anchor">RAILS &middot; how this runs</div>
+    <div class="chapter">RAILS<span class="cur blink"></span></div>
+    <div class="rule">&mdash;&mdash;&mdash; HOW THIS RUNS &mdash;&mdash;&mdash;</div>
+    <div class="pills">
+      <div class="pill"><span class="plabel">DEMO MODE</span>no key, no cost.</div>
+      <div class="pill amber"><span class="plabel">LIVE MODE</span>real models &middot; your provider &middot; your key.</div>
+    </div>
+    <div class="brand">small-unit-deep-impact.deck</div>
+  </div>
+</section>
+
+<!-- ===================================================================
+     S10 — Authorization preamble / limits (A14 anti-marker LIVES HERE)
+     RAILS mid · 3 min visible · LONGEST DWELL OF ANY SLIDE
+     "not a product. not a service. not a vendor." is the load-bearing
+     anti-vendor anti-marker per CONTENT.md S10.
+     =================================================================== -->
+<section id="s10-limits" data-slide="S10">
+  <div class="slide s10 tight">
+    <div class="anchor">RAILS &middot; limits</div>
+    <div class="title">LIMITS</div>
+    <div class="lines">
+      <span class="line">the swarm needs a written authorization scope.</span>
+      <span class="line">the swarm refuses targets outside it.</span>
+      <span class="line">the rubric does not score "should this be done."</span>
+    </div>
+    <div class="anti">not a product. not a service. not a vendor.</div>
+    <div class="brand">small-unit-deep-impact.deck</div>
+  </div>
+</section>
+
+<!-- ===================================================================
+     S11 — Closing card
+     CLOSE · 5 min visible (CLOSE + Q&A) · verbatim-v7 closing pair
+     Title fragment is intentionally LOWERCASED per CONTENT.md S11.
+     Forward-arrow nav from here goes to END, NOT to back-pocket.
+     =================================================================== -->
+<section id="s11-close" data-slide="S11">
+  <div class="slide s11 center">
+    <div class="anchor">CLOSE</div>
+    <div style="text-align:left">
+      <div class="close-title">small unit.<br>deep impact.</div>
+      <div class="close-tag">no vendor fluff. come watch the first rounds.<span class="cur"></span></div>
+    </div>
+    <div class="brand">small-unit-deep-impact.deck</div>
+  </div>
+</section>
+
+<!-- ===================================================================
+     BACK-POCKET — placed at end of deck.
+     Forward-arrow nav from S11 reaches END (these slides are NOT in the
+     natural forward sequence). Access:
+       (1) URL hash:    #/forge-recap or #/combat-recap
+       (2) Key chord:   'g' then type 'forge-recap' or 'combat-recap'
+     Both paths use reveal.js named-slide addressing.
+     =================================================================== -->
+
+<!-- ===================================================================
+     BACK-POCKET S4 — FORGE-recap
+     90-sec spoken recap if forge.html demo wedges.
+     Phase bar matches forge.html .pbar (line 31).
+     =================================================================== -->
+<section id="forge-recap" data-slide="BP-FORGE">
+  <div class="slide recap tight">
+    <div class="anchor">BACK-POCKET &middot; forge wedged</div>
+    <div class="recap-title">FORGE &mdash; WHAT THE DEMO WOULD HAVE SHOWN</div>
+    <div class="recap-sub">9-phase pipeline &middot; domain &rarr; swarm package</div>
+    <div class="recap-pbar">
+      <div class="pcell named"><span class="pn">P1</span>DOMAIN<br>ANALYSIS</div>
+      <div class="pcell"><span class="pn">P2</span></div>
+      <div class="pcell named"><span class="pn">P3</span>ROSTER<br>DESIGN</div>
+      <div class="pcell"><span class="pn">P4</span></div>
+      <div class="pcell"><span class="pn">P5</span></div>
+      <div class="pcell named"><span class="pn">P6</span>AGENT<br>FABRICATION</div>
+      <div class="pcell"><span class="pn">P7</span></div>
+      <div class="pcell"><span class="pn">P8</span></div>
+      <div class="pcell named"><span class="pn">P9</span>PACKAGE<br>EMITTED</div>
+    </div>
+    <div class="artifact-pill">[ swarm package &middot; agents/ + commands/ + manifest ]</div>
+    <div class="brand">small-unit-deep-impact.deck &middot; back-pocket</div>
+  </div>
+</section>
+
+<!-- ===================================================================
+     BACK-POCKET S6 — COMBAT-recap
+     90-sec spoken recap if combat.html demo wedges.
+     Two-row phase bar matches combat.html .phases (line 38-56),
+     with diagonal red->blue gradient divider (line 56 .vdiv).
+     =================================================================== -->
+<section id="combat-recap" data-slide="BP-COMBAT">
+  <div class="slide recap tight">
+    <div class="anchor">BACK-POCKET &middot; combat wedged</div>
+    <div class="recap-title">COMBAT &mdash; WHAT THE DEMO WOULD HAVE SHOWN</div>
+    <div class="recap-sub">2 swarms &middot; 6 phases &middot; same blue team &middot; two threat models</div>
+    <div class="cphases">
+      <div class="crow red">
+        <div class="pcell"><span class="pn">R1</span>RECON</div>
+        <div class="pcell"><span class="pn">R2</span>ACCESS</div>
+        <div class="pcell"><span class="pn">R3</span>PRIVESC</div>
+        <div class="pcell"><span class="pn">R4</span>CRED</div>
+        <div class="pcell"><span class="pn">R5</span>LATERAL</div>
+        <div class="pcell"><span class="pn">R6</span>OBJECTIVE</div>
+      </div>
+      <div class="vdiv"></div>
+      <div class="crow blue">
+        <div class="pcell"><span class="pn">B1</span>TELEMETRY</div>
+        <div class="pcell"><span class="pn">B2</span>DETECT</div>
+        <div class="pcell"><span class="pn">B3</span>CONTAIN</div>
+        <div class="pcell"><span class="pn">B4</span>IR</div>
+        <div class="pcell"><span class="pn">B5</span>ROOT</div>
+        <div class="pcell"><span class="pn">B6</span>REPORT</div>
+      </div>
+    </div>
+    <div class="score-sketch">
+      <div class="scol">
+        <div class="stitle">IRONCLAD<span class="stotal">&mdash; / 50</span></div>
+        <div class="scat"><span>detection speed</span><span class="v">&mdash;</span></div>
+        <div class="scat"><span>detection coverage</span><span class="v">&mdash;</span></div>
+        <div class="scat"><span>response effectiveness</span><span class="v">&mdash;</span></div>
+        <div class="scat"><span>evasion impact</span><span class="v">&mdash;</span></div>
+        <div class="scat"><span>root-cause attribution</span><span class="v">&mdash;</span></div>
+      </div>
+      <div class="scol" style="border-style:dashed">
+        <div class="stitle">PHANTOM FEED<span class="stotal">&mdash; / 50</span></div>
+        <div class="scat"><span>detection speed</span><span class="v">&mdash;</span></div>
+        <div class="scat"><span>detection coverage</span><span class="v">&mdash;</span></div>
+        <div class="scat"><span>response effectiveness</span><span class="v">&mdash;</span></div>
+        <div class="scat"><span>evasion impact</span><span class="v">&mdash;</span></div>
+        <div class="scat"><span>root-cause attribution</span><span class="v">&mdash;</span></div>
+      </div>
+    </div>
+    <div class="brand">small-unit-deep-impact.deck &middot; back-pocket</div>
+  </div>
+</section>
+
+</div>
+</div>
+
+<script src="lib/reveal.js/dist/reveal.js"></script>
+<script>
+  // ==================================================================
+  // Reveal.js config — aesthetic spec from CONTENT.md
+  //   - transition: none (instant cut)
+  //   - 16:9 aspect at 1920x1080 base (reveal scales to viewport)
+  //   - no auto-advance; operator drives every transition
+  //   - no controls-tutorial nag
+  // ==================================================================
+  Reveal.initialize({
+    width: 1920,
+    height: 1080,
+    margin: 0,
+    minScale: 0.2,
+    maxScale: 2.0,
+    transition: 'none',
+    backgroundTransition: 'none',
+    controls: true,
+    controlsTutorial: false,
+    progress: false,            // hide the progress bar — clean register
+    slideNumber: 'c/t',         // small "3/11" muted bottom-right
+    showSlideNumber: 'speaker', // hide from audience; visible only in speaker view
+    hash: true,                 // enable #/forge-recap addressing
+    history: false,
+    keyboard: true,
+    overview: false,            // disable 'ESC' overview — would expose back-pocket
+    touch: true,
+    fragments: false,           // no fragment reveals — slides are static
+    // Lock the visible sequence to S1-S11. Back-pocket slides exist in the
+    // DOM after S11 but are NOT reachable by forward arrow because we cap
+    // the navigable range below.
+    navigationMode: 'linear',
+    plugins: []
+  });
+
+  // ==================================================================
+  // Forward-arrow lockdown: cap the navigable range at S11.
+  // Back-pocket slides (forge-recap, combat-recap) remain reachable via
+  // (1) #/forge-recap URL hash, (2) Reveal.slide() programmatically, and
+  // (3) the 'g' goto chord. They are NOT reachable by pressing right-arrow
+  // from S11.
+  // ==================================================================
+  const VISIBLE_LAST_ID = 's11-close';
+  Reveal.on('ready', () => {
+    syncHud();
+  });
+  Reveal.on('slidechanged', (e) => {
+    syncHud();
+  });
+
+  // Hijack forward navigation when on S11
+  document.addEventListener('keydown', (e) => {
+    const cur = Reveal.getCurrentSlide();
+    if (!cur) return;
+    if (cur.id === VISIBLE_LAST_ID) {
+      // ArrowRight / PageDown / Space / N — block them
+      const blockKeys = ['ArrowRight', 'PageDown', 'Space', ' ', 'N', 'n'];
+      // 'n' is also our scanline toggle — that handler runs separately and
+      // returns; we must let 'n' bubble for the scanline toggle but block
+      // it for reveal's next() call. reveal.js v5 listens for 'N' as next.
+      if (blockKeys.includes(e.key)) {
+        // 'n' should toggle scanline, NOT advance
+        if (e.key === 'n' || e.key === 'N') {
+          // let the scanline handler below run; just prevent reveal default
+          e.stopImmediatePropagation();
+          // re-fire to ensure scanline handler still gets it
+          // (we attach scanline below at capture phase to be safe)
+        } else {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+        }
+      }
+    }
+  }, true);  // capture phase: run before reveal's listener
+
+  // ==================================================================
+  // Operator key chords
+  //   h — toggle HUD overlay (shows keybindings briefly)
+  //   n — toggle scanline overlay ON/OFF
+  //   c — toggle background between #040407 (default) and #020208 (combat)
+  //   f — request fullscreen
+  //   g — goto chord: prompt for slide id, jump there
+  // ==================================================================
+  const hud = document.getElementById('hud');
+  const gotoEl = document.getElementById('goto');
+  const gotoInput = document.getElementById('goto-input');
+  let hudTimer = null;
+
+  function flashHud(ms = 2500){
+    hud.classList.add('show');
+    if (hudTimer) clearTimeout(hudTimer);
+    hudTimer = setTimeout(() => hud.classList.remove('show'), ms);
+  }
+  function syncHud(){
+    // Show HUD briefly on each slide change — keeps operator oriented
+    // without nagging the audience.
+    flashHud(1200);
+  }
+
+  document.addEventListener('keydown', (e) => {
+    // Don't intercept when typing in the goto input
+    if (e.target === gotoInput) return;
+
+    if (e.key === 'h' || e.key === 'H') {
+      if (hud.classList.contains('show')) hud.classList.remove('show');
+      else flashHud(60000);
+      e.preventDefault();
+    }
+    if (e.key === 'n' || e.key === 'N') {
+      document.body.classList.toggle('no-scanline');
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    }
+    if (e.key === 'c' || e.key === 'C') {
+      document.body.classList.toggle('bg-combat');
+      e.preventDefault();
+    }
+    if (e.key === 'f' || e.key === 'F') {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
+      e.preventDefault();
+    }
+    if (e.key === 'g' || e.key === 'G') {
+      gotoEl.classList.add('show');
+      gotoInput.value = '';
+      gotoInput.focus();
+      e.preventDefault();
+    }
+    if (e.key === 'Escape' && gotoEl.classList.contains('show')) {
+      gotoEl.classList.remove('show');
+      e.preventDefault();
+    }
+  }, false);
+
+  gotoInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const id = gotoInput.value.trim().replace(/^#\/?/, '');
+      gotoEl.classList.remove('show');
+      if (id) {
+        // Try id-based addressing first; fall back to hash
+        const target = document.getElementById(id);
+        if (target) {
+          // Find slide index
+          const slides = Array.from(document.querySelectorAll('.reveal .slides > section'));
+          const idx = slides.indexOf(target);
+          if (idx >= 0) Reveal.slide(idx);
+        } else {
+          window.location.hash = '#/' + id;
+        }
+      }
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    if (e.key === 'Escape') {
+      gotoEl.classList.remove('show');
+      e.preventDefault();
+    }
+  });
+</script>
+</body>
+</html>
