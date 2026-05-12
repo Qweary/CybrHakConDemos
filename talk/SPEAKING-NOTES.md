@@ -5,6 +5,52 @@
 
 ---
 
+## QUICKSTART — T-MINUS 10 MIN
+
+```bash
+# 1. Start the demo relay (one terminal, leave running)
+cd /path/to/CybrHakConDemos
+bin/start.sh
+# Opens http://localhost:3001/ automatically. Keep this terminal open.
+
+# 2. Open the slide deck — open the file directly in your browser
+#    (the relay does NOT serve talk/slides/; open it as a local file)
+#
+#    Linux:
+xdg-open talk/slides/index.html
+#    macOS:
+# open talk/slides/index.html
+#    Or drag-and-drop talk/slides/index.html into a browser tab.
+#
+# NOTE: If you get a plain scrollable page instead of a slideshow,
+# the reveal.js dist files are missing (they're .gitignored).
+# Re-download them once with:
+#   curl -sL https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css  -o talk/slides/lib/reveal.js/dist/reset.css
+#   curl -sL https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css -o talk/slides/lib/reveal.js/dist/reveal.css
+#   curl -sL https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js  -o talk/slides/lib/reveal.js/dist/reveal.js
+# Then reload the tab. Does not require a running server.
+```
+
+**Browser tab order (open all four before going on stage):**
+1. `talk/slides/index.html` — on **S1 title card** (the opening frame)
+2. `http://localhost:3001/web/forge.html` — **DEMO MODE on**, RED TEAM seeded
+3. `http://localhost:3001/web/combat.html` — **DEMO MODE on**, IRONCLAD seeded
+4. `http://localhost:3001/web/evolve.html` — **DEMO MODE on**, CHAIN MODE selected
+
+**Slide key chords (once slides tab is focused):**
+- `←` `→` — advance slides (no auto-advance; you drive every cut)
+- `f` — fullscreen toggle (use this on stage)
+- `h` — HUD overlay (lists all chords; flashes briefly on slide change)
+- `n` — scanline overlay toggle (turn off if projector is dim)
+- `c` — switch background to COMBAT dark (`#020208`) when switching to combat tab and back
+- `g` → type `forge-recap` or `combat-recap` → Enter — jump to back-pocket recovery slide
+
+**Pacing and slide/demo relationship:**
+
+The slides are scaffolding, not the show. Eleven visible slides (S1–S11) carry chapter dividers, the named-hook diagrams (The Loop, Same-Blue-Team, Same-Pen), and the rubric/limits cards. The demos — forge.html, combat.html, evolve.html — are where the clock actually runs: ~25 of 60 minutes are spent in demo tabs. The rhythm is: *open on slides → cue line → tab-switch to demo → narrate the run → tab-switch back to slides for the recap beat → advance to next chapter divider → repeat*. Every tab switch is called out inline in these notes with **▶▶ TAB → target ▶▶**. Keep slides fullscreened in their tab so switching back is instant. The COMBAT tab is the only one with a hard rule: **do not reset mid-run** — work the recovery banner instead. FORGE and EVOLVE can reset between phases if needed.
+
+---
+
 ## ⏱ RUNTIME · 60 MIN TOTAL
 
 **4 OPEN · 11 FORGE · 18 COMBAT · 13 EVOLVE · 9 RAILS · 5 CLOSE**
