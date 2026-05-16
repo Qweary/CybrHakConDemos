@@ -4,11 +4,18 @@ __pycache__/
 *$py.class
 .pytest_cache/
 *.egg-info/
-build/
-dist/
+# Anchored to the repo root so these Python build-artifact rules do not
+# also catch nested vendored directories (e.g. talk/slides/lib/reveal.js/dist/).
+/build/
+/dist/
 # uv generates this from pyproject.toml on first `uv run` — deterministic,
 # not worth committing for a workshop kit.
 uv.lock
+
+# reveal.js engine: vendor only the runtime files (reset.css, reveal.css,
+# reveal.js). Keep the dev-only source maps and ESM build out of the repo.
+talk/slides/lib/reveal.js/dist/*.map
+talk/slides/lib/reveal.js/dist/*.esm.js
 
 # Virtual environments
 .venv-e2e/

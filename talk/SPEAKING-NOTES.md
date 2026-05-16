@@ -22,13 +22,8 @@ xdg-open talk/slides/index.html
 # open talk/slides/index.html
 #    Or drag-and-drop talk/slides/index.html into a browser tab.
 #
-# NOTE: If you get a plain scrollable page instead of a slideshow,
-# the reveal.js dist files are missing (they're .gitignored).
-# Re-download them once with:
-#   curl -sL https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css  -o talk/slides/lib/reveal.js/dist/reset.css
-#   curl -sL https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css -o talk/slides/lib/reveal.js/dist/reveal.css
-#   curl -sL https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js  -o talk/slides/lib/reveal.js/dist/reveal.js
-# Then reload the tab. Does not require a running server.
+# The deck is self-contained — the reveal.js engine is vendored in the repo.
+# Just open talk/slides/index.html in a browser; no download or server needed.
 ```
 
 **Browser tab order (open all four before going on stage):**

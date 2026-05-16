@@ -4,8 +4,29 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MULTI-AGENT RED-VS-BLUE COMBAT EXERCISE</title>
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
+/* Vendored fonts — local @font-face, no CDN. Files in web/assets/fonts/.
+   Keeps the demo fully self-contained: open the HTML straight from disk. */
+@font-face{
+  font-family:'Orbitron';
+  font-style:normal;font-weight:400;font-display:swap;
+  src:url('assets/fonts/orbitron-400.woff2') format('woff2');
+}
+@font-face{
+  font-family:'Orbitron';
+  font-style:normal;font-weight:700;font-display:swap;
+  src:url('assets/fonts/orbitron-700.woff2') format('woff2');
+}
+@font-face{
+  font-family:'Orbitron';
+  font-style:normal;font-weight:900;font-display:swap;
+  src:url('assets/fonts/orbitron-900.woff2') format('woff2');
+}
+@font-face{
+  font-family:'Share Tech Mono';
+  font-style:normal;font-weight:400;font-display:swap;
+  src:url('assets/fonts/sharetechmono-400.woff2') format('woff2');
+}
 :root{
   --bg:#020208;--bp:#05050f;--bi:#08081a;
   --red:#ff3355;--rd:#a01030;--rm:#e02040;
